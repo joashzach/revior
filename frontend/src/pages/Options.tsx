@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Hourglass, Send, Zap } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import * as m from 'motion/react-m'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -145,11 +146,11 @@ export default function Options() {
           <ul className="grid gap-3" aria-label="Options sorted by arrival time">
             <AnimatePresence initial={false}>
               {items.map((o) => (
-                <motion.li key={o.option_id} layout="position" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}>
+                <m.li key={o.option_id} layout="position" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}>
                   <ServiceCard option={o} rank={rankOf(o.request_service_id)} disabled={any || !o.meets_deadline} onSelect={() => toggle(o.request_service_id)}
                     openBooking={allocationDone && o.seats_left > 0 && !noGrab.has(o.request_service_id)}
                     onGrab={() => { setGrabSid(o.request_service_id); claim.run(o.request_service_id) }} grabbing={claim.pending} />
-                </motion.li>
+                </m.li>
               ))}
             </AnimatePresence>
           </ul>

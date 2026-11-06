@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { Bell, ChevronRight, CircleUserRound, Compass, HelpCircle, MapPinned, Menu, Route, Ticket } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import * as m from 'motion/react-m'
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { meApi } from '@/api/endpoints'
@@ -139,10 +140,10 @@ export function PassengerShell() {
         </header>
         <AnimatePresence>
           {banner && (
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="sticky top-16 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-warning/40 bg-warning-bg px-4 py-3 text-warning-fg sm:px-6 lg:px-10" role="status">
+            <m.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="sticky top-16 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-warning/40 bg-warning-bg px-4 py-3 text-warning-fg sm:px-6 lg:px-10" role="status">
               <span className="text-[14px]">Your trip changed. Your next step is on another screen.</span>
               <Button size="xs" variant="dark" onClick={goBanner}>Go <ChevronRight /></Button>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
         <main id="main" className="mx-auto w-full max-w-[1280px] flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">

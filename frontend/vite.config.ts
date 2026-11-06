@@ -12,11 +12,6 @@ export default defineConfig({
     chunkSizeWarningLimit: 700,
     rollupOptions: {
       output: {
-        manualChunks: {
-          map: ['leaflet', 'react-leaflet'],
-          charts: ['recharts'],
-          qr: ['qrcode.react'],
-        },
       },
     },
   },

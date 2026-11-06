@@ -1,27 +1,21 @@
-import { z } from 'zod'
+const e = import.meta.env as Record<string, string | undefined>
+const str = (v: string | undefined, d: string) => (v && v.trim() ? v.trim() : d)
 
-const schema = z.object({
-  VITE_API_BASE: z.string().url().default('http://localhost:8000/api/v1'),
-  VITE_WS_BASE: z.string().default('ws://localhost:8000'),
-  VITE_USE_MOCKS: z.string().default('true'),
-  VITE_DEFAULT_SCENARIO: z.string().default('potheri-demo'),
-  VITE_MAP_TILE_URL: z.string().default('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
-  VITE_MAP_ATTRIBUTION: z.string().default('&copy; OpenStreetMap contributors'),
-})
+function validUrl(v: string) {
+  try { new URL(v); return true } catch { return false }
+}
+const apiBase = str(e.VITE_API_BASE, 'http://localhost:8000/api/v1')
 
-const parsed = schema.safeParse(import.meta.env)
-
-export const envError: string | null = parsed.success ? null : parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')
-
-const raw = parsed.success ? parsed.data : schema.parse({})
+/** A malformed VITE_API_BASE would make every request fail silently; surface it. */
+export const envError: string | null = validUrl(apiBase) ? null : 'VITE_API_BASE: not a valid URL'
 
 export const env = {
-  apiBase: raw.VITE_API_BASE.replace(/\/$/, ''),
-  wsBase: raw.VITE_WS_BASE.replace(/\/$/, ''),
-  useMocksDefault: raw.VITE_USE_MOCKS === 'true',
-  scenario: raw.VITE_DEFAULT_SCENARIO,
-  tileUrl: raw.VITE_MAP_TILE_URL,
-  attribution: raw.VITE_MAP_ATTRIBUTION,
+  apiBase: apiBase.replace(/\/$/, ''),
+  wsBase: str(e.VITE_WS_BASE, 'ws://localhost:8000').replace(/\/$/, ''),
+  useMocksDefault: str(e.VITE_USE_MOCKS, 'true') === 'true',
+  scenario: str(e.VITE_DEFAULT_SCENARIO, 'potheri-demo'),
+  tileUrl: str(e.VITE_MAP_TILE_URL, 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+  attribution: str(e.VITE_MAP_ATTRIBUTION, '&copy; OpenStreetMap contributors'),
 }
 
 const MOCK_KEY = 'revior_mock'

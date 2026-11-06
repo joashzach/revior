@@ -3,10 +3,13 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
 import { ErrorBoundary } from '@/components/common/primitives'
 import { SkeletonBlocks } from '@/components/common/primitives'
 import { MarketingLayout, OpsAuthLayout, PassengerAuthLayout } from '@/components/layout/Shells'
-import { PassengerShell } from '@/components/layout/PassengerShell'
-import { Login, NotFound, OpsLogin, QrLogin } from '@/pages/Login'
 import { AuthWatcher, RequireOps, RequirePassenger } from './guards'
 
+const PassengerShell = lazy(() => import('@/components/layout/PassengerShell').then((m) => ({ default: m.PassengerShell })))
+const Login = lazy(() => import('@/pages/Login').then((m) => ({ default: m.Login })))
+const QrLogin = lazy(() => import('@/pages/Login').then((m) => ({ default: m.QrLogin })))
+const OpsLogin = lazy(() => import('@/pages/Login').then((m) => ({ default: m.OpsLogin })))
+const NotFound = lazy(() => import('@/pages/Login').then((m) => ({ default: m.NotFound })))
 const Landing = lazy(() => import('@/pages/Landing'))
 const DemoJoin = lazy(() => import('@/pages/DemoJoin'))
 const Join = lazy(() => import('@/pages/Join'))
@@ -37,12 +40,12 @@ export const routes = [
         children: [
           { path: '/demo-join', element: <Page><DemoJoin /></Page> },
           { path: '/join', element: <Page><Join /></Page> },
-          { path: '/login', element: <Login /> },
-          { path: '/qr-login', element: <QrLogin /> },
+          { path: '/login', element: <Page><Login /></Page> },
+          { path: '/qr-login', element: <Page><QrLogin /></Page> },
         ],
       },
       {
-        element: <RequirePassenger><PassengerShell /></RequirePassenger>,
+        element: <RequirePassenger><Page><PassengerShell /></Page></RequirePassenger>,
         children: [
           { path: '/trip', element: <Page><Trip /></Page> },
           { path: '/options', element: <Page><Options /></Page> },
@@ -52,10 +55,10 @@ export const routes = [
           { path: '/profile', element: <Page><Profile /></Page> },
         ],
       },
-      { element: <OpsAuthLayout />, children: [{ path: '/ops/login', element: <OpsLogin /> }] },
+      { element: <OpsAuthLayout />, children: [{ path: '/ops/login', element: <Page><OpsLogin /></Page> }] },
       { path: '/ops', element: <RequireOps><Page><OpsDashboard /></Page></RequireOps> },
       { path: '/app', element: <Navigate to="/trip" replace /> },
-      { path: '*', element: <NotFound /> },
+      { path: '*', element: <Page><NotFound /></Page> },
     ],
   },
 ]

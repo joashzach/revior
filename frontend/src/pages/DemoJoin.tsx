@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { motion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { Dices } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils'
 
 function PersonaCard({ p, busy, onPick, i }: { p: Persona; busy: boolean; onPick: () => void; i: number }) {
   return (
-    <motion.li initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 8) * 0.04, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+    <m.li initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 8) * 0.04, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
       <button
         type="button"
         disabled={p.is_taken || busy}
@@ -40,7 +40,7 @@ function PersonaCard({ p, busy, onPick, i }: { p: Persona; busy: boolean; onPick
         <p className="text-[13px] text-faint">To {p.destination.name}{p.party_size > 1 ? ` · party of ${p.party_size}` : ''}</p>
         <NeedChips needs={p.needs} />
       </button>
-    </motion.li>
+    </m.li>
   )
 }
 

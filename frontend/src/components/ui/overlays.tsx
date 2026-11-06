@@ -4,7 +4,8 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { Check, ChevronDown, X } from 'lucide-react'
-import { motion, AnimatePresence } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import * as m from 'motion/react-m'
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import { Drawer } from 'vaul'
 import { cn } from '@/lib/utils'
@@ -88,10 +89,10 @@ export function SidePanel({ open, onOpenChange, title, children }: { open: boole
         {open && (
           <DialogPrimitive.Portal forceMount>
             <DialogPrimitive.Overlay asChild forceMount>
-              <motion.div className="fixed inset-0 z-50 bg-off-black/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+              <m.div className="fixed inset-0 z-50 bg-off-black/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
             </DialogPrimitive.Overlay>
             <DialogPrimitive.Content asChild forceMount>
-              <motion.aside
+              <m.aside
                 className="scroll-thin fixed bottom-0 right-0 top-0 z-50 w-[min(96vw,560px)] overflow-y-auto border-l border-line bg-bg p-7 outline-none"
                 initial={{ x: 48, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -104,7 +105,7 @@ export function SidePanel({ open, onOpenChange, title, children }: { open: boole
                   <X className="size-5" />
                 </DialogPrimitive.Close>
                 <div className="mt-5">{children}</div>
-              </motion.aside>
+              </m.aside>
             </DialogPrimitive.Content>
           </DialogPrimitive.Portal>
         )}

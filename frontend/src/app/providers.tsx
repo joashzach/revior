@@ -1,3 +1,4 @@
+import { MotionProvider } from '@/lib/motion'
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState, type ReactNode } from 'react'
 import { Toaster } from 'sonner'
@@ -20,7 +21,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const [client] = useState(makeQueryClient)
   return (
     <QueryClientProvider client={client}>
-      {children}
+      <MotionProvider>{children}</MotionProvider>
       <Toaster
         position="top-center"
         closeButton

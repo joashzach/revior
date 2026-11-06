@@ -1,5 +1,6 @@
 import { AlertCircle, Inbox, RefreshCw } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import * as m from 'motion/react-m'
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { S } from '@/config/strings'
 import { useConnStore } from '@/realtime/bus'
@@ -33,7 +34,7 @@ export function NumberRoll({ value, className, suffix }: { value: number | strin
     <span className={cn('tnum relative inline-flex overflow-hidden align-baseline', className)}>
       <span className="sr-only">{text}{suffix}</span>
       <AnimatePresence mode="popLayout" initial={false}>
-        <motion.span
+        <m.span
           key={text}
           initial={{ y: 10, opacity: 0, filter: 'blur(3px)' }}
           animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
@@ -43,7 +44,7 @@ export function NumberRoll({ value, className, suffix }: { value: number | strin
        >
           {text}
           {suffix}
-        </motion.span>
+        </m.span>
       </AnimatePresence>
     </span>
   )
