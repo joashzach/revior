@@ -1,0 +1,5206 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Revior API",
+    "description": "Revior - group disruption-recovery platform. Passengers choose. Revior decides fairly. Every decision is explainable. (Hackathon PS2: The Stranded Network)",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/scenarios/active": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Scenario Active",
+        "operationId": "scenario_active_api_v1_scenarios_active_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActiveScenarioOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/hubs/nearby": {
+      "post": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Hubs Nearby",
+        "operationId": "hubs_nearby_api_v1_hubs_nearby_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HubsNearbyIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HubsNearbyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/destinations": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Destinations",
+        "operationId": "destinations_api_v1_destinations_get",
+        "parameters": [
+          {
+            "name": "scenario",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scenario"
+            }
+          },
+          {
+            "name": "hub",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hub"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/demo/personas": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Demo Personas",
+        "operationId": "demo_personas_api_v1_demo_personas_get",
+        "parameters": [
+          {
+            "name": "scenario",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scenario"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonaList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/ops-login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Ops Login",
+        "operationId": "ops_login_api_v1_auth_ops_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpsLoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register",
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/qr-login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Qr Login",
+        "operationId": "qr_login_api_v1_auth_qr_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QrLoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logout",
+        "operationId": "logout_api_v1_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/demo-claim": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Demo Claim",
+        "operationId": "demo_claim_api_v1_auth_demo_claim_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoClaimIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoClaimOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Me",
+        "operationId": "me_api_v1_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PassengerOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Patch Me",
+        "operationId": "patch_me_api_v1_me_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchMeIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PassengerOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/trip": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Trip",
+        "operationId": "trip_api_v1_me_trip_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/login-qr": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Login Qr",
+        "operationId": "login_qr_api_v1_me_login_qr_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginQrOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/notifications": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Notifications",
+        "operationId": "notifications_api_v1_me_notifications_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationsOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/notifications/read": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Notifications Read",
+        "operationId": "notifications_read_api_v1_me_notifications_read_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotifReadIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/demo-switch": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Demo Switch",
+        "operationId": "demo_switch_api_v1_me_demo_switch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoSwitchIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoClaimOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/options": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Options",
+        "operationId": "options_api_v1_me_options_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OptionsOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/request": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Submit Request",
+        "operationId": "submit_request_api_v1_me_request_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/status": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "My Status",
+        "operationId": "my_status_api_v1_me_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyStatus"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/why": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "My Why",
+        "operationId": "my_why_api_v1_me_why_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Why"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/allocation/accept": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Allocation Accept",
+        "operationId": "allocation_accept_api_v1_me_allocation_accept_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AllocationActionIn"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/allocation/decline": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Allocation Decline",
+        "operationId": "allocation_decline_api_v1_me_allocation_decline_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AllocationActionIn"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/swap": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Swap",
+        "operationId": "swap_api_v1_me_swap_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwapIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/claim": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Claim",
+        "operationId": "claim_api_v1_me_claim_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClaimIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/alternatives": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Alternatives",
+        "operationId": "alternatives_api_v1_me_alternatives_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlternativesOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/alternatives/accept": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Alternatives Accept",
+        "operationId": "alternatives_accept_api_v1_me_alternatives_accept_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AltAcceptIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/pods/suggested": {
+      "get": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Pods Suggested",
+        "operationId": "pods_suggested_api_v1_me_pods_suggested_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PodsOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/pods": {
+      "post": {
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Pods Create",
+        "operationId": "pods_create_api_v1_me_pods_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PodCreateIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PodOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/pods/{pod_id}/join": {
+      "post": {
+        "tags": [
+          "pods"
+        ],
+        "summary": "Join",
+        "operationId": "join_api_v1_pods__pod_id__join_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pod_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Pod Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PodOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pods/{pod_id}/leave": {
+      "post": {
+        "tags": [
+          "pods"
+        ],
+        "summary": "Leave",
+        "operationId": "leave_api_v1_pods__pod_id__leave_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pod_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Pod Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pods/{pod_id}/confirm": {
+      "post": {
+        "tags": [
+          "pods"
+        ],
+        "summary": "Confirm",
+        "operationId": "confirm_api_v1_pods__pod_id__confirm_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pod_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Pod Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PodOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/scenarios": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "List Scenarios",
+        "operationId": "list_scenarios_api_v1_ops_scenarios_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Scenarios Api V1 Ops Scenarios Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/scenarios/{slug}/activate": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Activate Scenario",
+        "operationId": "activate_scenario_api_v1_ops_scenarios__slug__activate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Activate Scenario Api V1 Ops Scenarios  Slug  Activate Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/scenarios/{slug}/reset": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Reset",
+        "operationId": "reset_api_v1_ops_scenarios__slug__reset_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Reset Api V1 Ops Scenarios  Slug  Reset Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/scenarios/{slug}/config": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Get Config",
+        "operationId": "get_config_api_v1_ops_scenarios__slug__config_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioConfig"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Patch Config",
+        "operationId": "patch_config_api_v1_ops_scenarios__slug__config_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioConfig"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/passengers/{passenger_id}/login-qr": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Passenger Login Qr",
+        "operationId": "passenger_login_qr_api_v1_ops_passengers__passenger_id__login_qr_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "passenger_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Passenger Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Passenger Login Qr Api V1 Ops Passengers  Passenger Id  Login Qr Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/demo/personas": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Ops Demo Personas",
+        "operationId": "ops_demo_personas_api_v1_ops_demo_personas_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Ops Demo Personas Api V1 Ops Demo Personas Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/demo/personas/release-all": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Release All Personas",
+        "operationId": "release_all_personas_api_v1_ops_demo_personas_release_all_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/demo/personas/{persona_id}/release": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Release Persona",
+        "operationId": "release_persona_api_v1_ops_demo_personas__persona_id__release_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "persona_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Persona Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/network": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Network",
+        "operationId": "network_api_v1_ops_network_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Network Api V1 Ops Network Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/services": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "List Services",
+        "operationId": "list_services_api_v1_ops_services_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Mode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Services Api V1 Ops Services Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Add Service",
+        "operationId": "add_service_api_v1_ops_services_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddServiceIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Add Service Api V1 Ops Services Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/disruptions/preview": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Disruption Preview",
+        "operationId": "disruption_preview_api_v1_ops_disruptions_preview_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Type"
+            }
+          },
+          {
+            "name": "service_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Service Id"
+            }
+          },
+          {
+            "name": "edge_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Edge Id"
+            }
+          },
+          {
+            "name": "delay_minutes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Delay Minutes"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Disruption Preview Api V1 Ops Disruptions Preview Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/disruptions": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "List Disruptions",
+        "operationId": "list_disruptions_api_v1_ops_disruptions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Disruptions Api V1 Ops Disruptions Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Create Disruption",
+        "operationId": "create_disruption_api_v1_ops_disruptions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisruptionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Create Disruption Api V1 Ops Disruptions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/disruptions/{disruption_id}/resolve": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Resolve Disruption",
+        "operationId": "resolve_disruption_api_v1_ops_disruptions__disruption_id__resolve_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "disruption_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Disruption Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Resolve Disruption Api V1 Ops Disruptions  Disruption Id  Resolve Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/batches/current": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Batches Current",
+        "operationId": "batches_current_api_v1_ops_batches_current_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Batches Current Api V1 Ops Batches Current Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/batches/current/close": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Batches Close",
+        "operationId": "batches_close_api_v1_ops_batches_current_close_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Batches Close Api V1 Ops Batches Current Close Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/allocation/run": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Allocation Run",
+        "operationId": "allocation_run_api_v1_ops_allocation_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Allocation Run Api V1 Ops Allocation Run Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/allocation/runs/{run_id}": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Allocation Run Get",
+        "operationId": "allocation_run_get_api_v1_ops_allocation_runs__run_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Allocation Run Get Api V1 Ops Allocation Runs  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/audit": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Audit Log",
+        "operationId": "audit_log_api_v1_ops_audit_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "passenger_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Passenger Id"
+            }
+          },
+          {
+            "name": "entity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entity"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Audit Log Api V1 Ops Audit Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/passengers/{passenger_id}": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Passenger Detail",
+        "operationId": "passenger_detail_api_v1_ops_passengers__passenger_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "passenger_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Passenger Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Passenger Detail Api V1 Ops Passengers  Passenger Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/open-booking": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Open Booking",
+        "operationId": "open_booking_api_v1_ops_open_booking_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenBookingIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Open Booking Api V1 Ops Open Booking Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/invariants": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Invariants",
+        "operationId": "invariants_api_v1_ops_invariants_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Invariants Api V1 Ops Invariants Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/kpis": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Kpis Endpoint",
+        "operationId": "kpis_endpoint_api_v1_ops_kpis_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Kpis Endpoint Api V1 Ops Kpis Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/clusters": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Clusters Endpoint",
+        "operationId": "clusters_endpoint_api_v1_ops_clusters_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Clusters Endpoint Api V1 Ops Clusters Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/capacity": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Capacity Endpoint",
+        "operationId": "capacity_endpoint_api_v1_ops_capacity_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Capacity Endpoint Api V1 Ops Capacity Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/allocations": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Allocations Endpoint",
+        "operationId": "allocations_endpoint_api_v1_ops_allocations_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Destination"
+            }
+          },
+          {
+            "name": "needs",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Needs"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Allocations Endpoint Api V1 Ops Allocations Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/unresolved": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Unresolved Endpoint",
+        "operationId": "unresolved_endpoint_api_v1_ops_unresolved_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Unresolved Endpoint Api V1 Ops Unresolved Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/fairness": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Fairness Endpoint",
+        "operationId": "fairness_endpoint_api_v1_ops_fairness_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Fairness Endpoint Api V1 Ops Fairness Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/map": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Map Endpoint",
+        "operationId": "map_endpoint_api_v1_ops_map_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Map Endpoint Api V1 Ops Map Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/rules": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Rules Get",
+        "operationId": "rules_get_api_v1_ops_rules_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Rules Get Api V1 Ops Rules Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/rules/preview": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Rules Preview",
+        "operationId": "rules_preview_api_v1_ops_rules_preview_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeightsIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Rules Preview Api V1 Ops Rules Preview Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/rules/apply": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Rules Apply",
+        "operationId": "rules_apply_api_v1_ops_rules_apply_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeightsIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Rules Apply Api V1 Ops Rules Apply Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/notifications": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Ops Notifications",
+        "operationId": "ops_notifications_api_v1_ops_notifications_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Ops Notifications Api V1 Ops Notifications Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/stress/run": {
+      "post": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Stress Run",
+        "operationId": "stress_run_api_v1_ops_stress_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StressIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Stress Run Api V1 Ops Stress Run Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActiveScenarioOut": {
+        "properties": {
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "default_hub": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "join_url": {
+            "type": "string",
+            "title": "Join Url"
+          },
+          "demo_mode": {
+            "type": "boolean",
+            "title": "Demo Mode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "slug",
+          "name",
+          "default_hub",
+          "join_url",
+          "demo_mode"
+        ],
+        "title": "ActiveScenarioOut"
+      },
+      "AddServiceIn": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "charter_bus",
+              "shuttle"
+            ],
+            "title": "Mode"
+          },
+          "stop_node_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Stop Node Ids"
+          },
+          "depart_in_minutes": {
+            "type": "integer",
+            "maximum": 720.0,
+            "minimum": 0.0,
+            "title": "Depart In Minutes"
+          },
+          "total_seats": {
+            "type": "integer",
+            "maximum": 300.0,
+            "minimum": 1.0,
+            "title": "Total Seats"
+          },
+          "accessible_seats": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Accessible Seats",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "mode",
+          "stop_node_ids",
+          "depart_in_minutes",
+          "total_seats"
+        ],
+        "title": "AddServiceIn"
+      },
+      "AllocationActionIn": {
+        "properties": {
+          "allocation_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allocation Id"
+          }
+        },
+        "type": "object",
+        "title": "AllocationActionIn"
+      },
+      "AllocationOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "service": {
+            "$ref": "#/components/schemas/ServiceSummary"
+          },
+          "seat_count": {
+            "type": "integer",
+            "title": "Seat Count"
+          },
+          "seats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Seats"
+          },
+          "choice_rank": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2",
+              "auto",
+              "cascade",
+              "claim",
+              "swap"
+            ],
+            "title": "Choice Rank"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "held",
+              "swap_held",
+              "confirmed",
+              "declined",
+              "expired",
+              "released"
+            ],
+            "title": "Status"
+          },
+          "is_primary": {
+            "type": "boolean",
+            "title": "Is Primary"
+          },
+          "hold_expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hold Expires At"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "service",
+          "seat_count",
+          "seats",
+          "choice_rank",
+          "status",
+          "is_primary",
+          "hold_expires_at",
+          "score",
+          "explanation"
+        ],
+        "title": "AllocationOut"
+      },
+      "AltAcceptIn": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "LATER_SERVICE",
+              "MULTI_LEG",
+              "POD",
+              "ALT_HUB",
+              "WAIT_DELAYED"
+            ],
+            "title": "Type"
+          },
+          "ref": {
+            "type": "string",
+            "title": "Ref"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "ref"
+        ],
+        "title": "AltAcceptIn"
+      },
+      "Alternative": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "LATER_SERVICE",
+              "MULTI_LEG",
+              "POD",
+              "ALT_HUB",
+              "WAIT_DELAYED"
+            ],
+            "title": "Type"
+          },
+          "ref": {
+            "type": "string",
+            "title": "Ref"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "eta_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Eta At"
+          },
+          "legs": {
+            "items": {
+              "$ref": "#/components/schemas/Leg"
+            },
+            "type": "array",
+            "title": "Legs"
+          },
+          "pod": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PodOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requires_allocation": {
+            "type": "boolean",
+            "title": "Requires Allocation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "ref",
+          "title",
+          "description",
+          "eta_at",
+          "legs",
+          "pod",
+          "requires_allocation"
+        ],
+        "title": "Alternative"
+      },
+      "AlternativesOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Alternative"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "AlternativesOut"
+      },
+      "AuthOut": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "passenger": {
+            "$ref": "#/components/schemas/PassengerOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "passenger"
+        ],
+        "title": "AuthOut"
+      },
+      "BatchOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "allocated"
+            ],
+            "title": "Status"
+          },
+          "opens_at": {
+            "type": "string",
+            "title": "Opens At"
+          },
+          "closes_at": {
+            "type": "string",
+            "title": "Closes At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "opens_at",
+          "closes_at"
+        ],
+        "title": "BatchOut"
+      },
+      "ClaimIn": {
+        "properties": {
+          "service_id": {
+            "type": "integer",
+            "title": "Service Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "service_id"
+        ],
+        "title": "ClaimIn"
+      },
+      "ConfigPatch": {
+        "properties": {
+          "batch_window_seconds": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3600.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batch Window Seconds"
+          },
+          "hold_seconds": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 7200.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hold Seconds"
+          },
+          "auto_run_on_batch_close": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Auto Run On Batch Close"
+          },
+          "delay_threshold_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delay Threshold Minutes"
+          },
+          "hub_radius_km": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 200.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hub Radius Km"
+          },
+          "open_booking_enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Open Booking Enabled"
+          },
+          "sim_speed": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sim Speed"
+          },
+          "demo_mode": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Demo Mode"
+          },
+          "join_qr_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "corner",
+                  "fullscreen",
+                  "hidden"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Join Qr Mode"
+          }
+        },
+        "type": "object",
+        "title": "ConfigPatch"
+      },
+      "DemoClaimIn": {
+        "properties": {
+          "scenario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario"
+          },
+          "persona_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Persona Id"
+          },
+          "surprise": {
+            "type": "boolean",
+            "title": "Surprise",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "DemoClaimIn"
+      },
+      "DemoClaimOut": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "passenger": {
+            "$ref": "#/components/schemas/PassengerOut"
+          },
+          "persona": {
+            "$ref": "#/components/schemas/Persona"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "passenger",
+          "persona"
+        ],
+        "title": "DemoClaimOut"
+      },
+      "DemoSwitchIn": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "next",
+              "pick"
+            ],
+            "title": "Mode"
+          },
+          "persona_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Persona Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "title": "DemoSwitchIn"
+      },
+      "DisruptionIn": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "cancellation",
+              "delay",
+              "closure"
+            ],
+            "title": "Type"
+          },
+          "service_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Service Id"
+          },
+          "edge_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edge Id"
+          },
+          "delay_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 600.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delay Minutes"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "DisruptionIn"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "db": {
+            "type": "string",
+            "title": "Db"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "server_time": {
+            "type": "string",
+            "title": "Server Time"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "db",
+          "version",
+          "server_time"
+        ],
+        "title": "HealthOut"
+      },
+      "HubEntry": {
+        "properties": {
+          "hub": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "is_default": {
+            "type": "boolean",
+            "title": "Is Default"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hub",
+          "distance_km",
+          "is_default"
+        ],
+        "title": "HubEntry"
+      },
+      "HubsNearbyIn": {
+        "properties": {
+          "scenario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lng": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lng"
+          }
+        },
+        "type": "object",
+        "title": "HubsNearbyIn"
+      },
+      "HubsNearbyOut": {
+        "properties": {
+          "hubs": {
+            "items": {
+              "$ref": "#/components/schemas/HubEntry"
+            },
+            "type": "array",
+            "title": "Hubs"
+          },
+          "selected_hub_id": {
+            "type": "integer",
+            "title": "Selected Hub Id"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "nearest",
+              "default"
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hubs",
+          "selected_hub_id",
+          "reason"
+        ],
+        "title": "HubsNearbyOut"
+      },
+      "Leg": {
+        "properties": {
+          "service": {
+            "$ref": "#/components/schemas/ServiceSummary"
+          },
+          "from": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "to": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "depart_at": {
+            "type": "string",
+            "title": "Depart At"
+          },
+          "arrive_at": {
+            "type": "string",
+            "title": "Arrive At"
+          },
+          "has_seats": {
+            "type": "boolean",
+            "title": "Has Seats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "service",
+          "from",
+          "to",
+          "depart_at",
+          "arrive_at",
+          "has_seats"
+        ],
+        "title": "Leg"
+      },
+      "LoginIn": {
+        "properties": {
+          "scenario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario"
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginIn"
+      },
+      "LoginQrOut": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "expires_at": {
+            "type": "string",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "expires_at"
+        ],
+        "title": "LoginQrOut"
+      },
+      "MyStatus": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "REGISTERED",
+              "BOOKED",
+              "AFFECTED",
+              "REQUESTED",
+              "HELD",
+              "CONFIRMED",
+              "WAITLISTED",
+              "UNRESOLVED",
+              "RESOLVED_ALT",
+              "REOFFER"
+            ],
+            "title": "State"
+          },
+          "batch": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BatchOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "allocation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AllocationOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "swap_offer": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AllocationOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "waitlist": {
+            "items": {
+              "$ref": "#/components/schemas/WaitlistPosition"
+            },
+            "type": "array",
+            "title": "Waitlist"
+          },
+          "resolved_alternative": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Alternative"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "server_time": {
+            "type": "string",
+            "title": "Server Time"
+          }
+        },
+        "type": "object",
+        "required": [
+          "state",
+          "batch",
+          "allocation",
+          "swap_offer",
+          "waitlist",
+          "resolved_alternative",
+          "headline",
+          "server_time"
+        ],
+        "title": "MyStatus"
+      },
+      "Needs": {
+        "properties": {
+          "wheelchair": {
+            "type": "boolean",
+            "title": "Wheelchair",
+            "default": false
+          },
+          "elderly": {
+            "type": "boolean",
+            "title": "Elderly",
+            "default": false
+          },
+          "with_children": {
+            "type": "boolean",
+            "title": "With Children",
+            "default": false
+          },
+          "medical": {
+            "type": "boolean",
+            "title": "Medical",
+            "default": false
+          },
+          "connection_deadline_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connection Deadline At"
+          }
+        },
+        "type": "object",
+        "title": "Needs"
+      },
+      "NeedsIn": {
+        "properties": {
+          "wheelchair": {
+            "type": "boolean",
+            "title": "Wheelchair",
+            "default": false
+          },
+          "elderly": {
+            "type": "boolean",
+            "title": "Elderly",
+            "default": false
+          },
+          "with_children": {
+            "type": "boolean",
+            "title": "With Children",
+            "default": false
+          },
+          "medical": {
+            "type": "boolean",
+            "title": "Medical",
+            "default": false
+          },
+          "connection_deadline_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connection Deadline At"
+          }
+        },
+        "type": "object",
+        "title": "NeedsIn"
+      },
+      "NodeList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NodeRef"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "NodeList"
+      },
+      "NodeRef": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lng": {
+            "type": "number",
+            "title": "Lng"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "rail_station",
+              "bus_stop",
+              "hub_only"
+            ],
+            "title": "Kind"
+          },
+          "is_hub": {
+            "type": "boolean",
+            "title": "Is Hub"
+          },
+          "is_default_hub": {
+            "type": "boolean",
+            "title": "Is Default Hub"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "name",
+          "lat",
+          "lng",
+          "kind",
+          "is_hub",
+          "is_default_hub"
+        ],
+        "title": "NodeRef"
+      },
+      "NotifReadIn": {
+        "properties": {
+          "ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ids"
+        ],
+        "title": "NotifReadIn"
+      },
+      "NotificationOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "template": {
+            "type": "string",
+            "title": "Template"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "body": {
+            "type": "string",
+            "title": "Body"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "read": {
+            "type": "boolean",
+            "title": "Read"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "template",
+          "title",
+          "body",
+          "created_at",
+          "read"
+        ],
+        "title": "NotificationOut"
+      },
+      "NotificationsOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NotificationOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "NotificationsOut"
+      },
+      "OpenBookingIn": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "title": "OpenBookingIn"
+      },
+      "OpsLoginIn": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "password"
+        ],
+        "title": "OpsLoginIn"
+      },
+      "Option": {
+        "properties": {
+          "option_id": {
+            "type": "string",
+            "title": "Option Id"
+          },
+          "request_service_id": {
+            "type": "integer",
+            "title": "Request Service Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "local_train",
+              "bus",
+              "charter_bus",
+              "shuttle"
+            ],
+            "title": "Mode"
+          },
+          "legs": {
+            "items": {
+              "$ref": "#/components/schemas/Leg"
+            },
+            "type": "array",
+            "title": "Legs"
+          },
+          "depart_at": {
+            "type": "string",
+            "title": "Depart At"
+          },
+          "eta_at": {
+            "type": "string",
+            "title": "Eta At"
+          },
+          "transfers": {
+            "type": "integer",
+            "title": "Transfers"
+          },
+          "is_multi_leg": {
+            "type": "boolean",
+            "title": "Is Multi Leg"
+          },
+          "seats_left": {
+            "type": "integer",
+            "title": "Seats Left"
+          },
+          "accessible_seats_left": {
+            "type": "integer",
+            "title": "Accessible Seats Left"
+          },
+          "is_full": {
+            "type": "boolean",
+            "title": "Is Full"
+          },
+          "meets_deadline": {
+            "type": "boolean",
+            "title": "Meets Deadline"
+          },
+          "accessible": {
+            "type": "boolean",
+            "title": "Accessible"
+          }
+        },
+        "type": "object",
+        "required": [
+          "option_id",
+          "request_service_id",
+          "label",
+          "mode",
+          "legs",
+          "depart_at",
+          "eta_at",
+          "transfers",
+          "is_multi_leg",
+          "seats_left",
+          "accessible_seats_left",
+          "is_full",
+          "meets_deadline",
+          "accessible"
+        ],
+        "title": "Option"
+      },
+      "OptionsOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Option"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "batch": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BatchOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "batch"
+        ],
+        "title": "OptionsOut"
+      },
+      "PassengerOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "is_seeded": {
+            "type": "boolean",
+            "title": "Is Seeded"
+          },
+          "is_demo_persona": {
+            "type": "boolean",
+            "title": "Is Demo Persona"
+          },
+          "hub": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "party_size": {
+            "type": "integer",
+            "title": "Party Size"
+          },
+          "needs": {
+            "$ref": "#/components/schemas/Needs"
+          },
+          "allow_auto": {
+            "type": "boolean",
+            "title": "Allow Auto"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "REGISTERED",
+              "BOOKED",
+              "AFFECTED",
+              "REQUESTED",
+              "HELD",
+              "CONFIRMED",
+              "WAITLISTED",
+              "UNRESOLVED",
+              "RESOLVED_ALT",
+              "REOFFER"
+            ],
+            "title": "State"
+          },
+          "ticket_id": {
+            "type": "string",
+            "title": "Ticket Id"
+          },
+          "affected_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Affected At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "is_seeded",
+          "is_demo_persona",
+          "hub",
+          "destination",
+          "party_size",
+          "needs",
+          "allow_auto",
+          "state",
+          "ticket_id",
+          "affected_at"
+        ],
+        "title": "PassengerOut"
+      },
+      "PatchMeIn": {
+        "properties": {
+          "destination_node_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination Node Id"
+          },
+          "hub_node_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hub Node Id"
+          },
+          "needs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NeedsIn"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "party_size": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 6.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Party Size"
+          },
+          "allow_auto": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allow Auto"
+          }
+        },
+        "type": "object",
+        "title": "PatchMeIn"
+      },
+      "Persona": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "emoji": {
+            "type": "string",
+            "title": "Emoji"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "party_size": {
+            "type": "integer",
+            "title": "Party Size"
+          },
+          "needs": {
+            "$ref": "#/components/schemas/Needs"
+          },
+          "is_taken": {
+            "type": "boolean",
+            "title": "Is Taken"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "emoji",
+          "summary",
+          "destination",
+          "party_size",
+          "needs",
+          "is_taken"
+        ],
+        "title": "Persona"
+      },
+      "PersonaList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Persona"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "PersonaList"
+      },
+      "PodCreateIn": {
+        "properties": {
+          "destination_node_id": {
+            "type": "integer",
+            "title": "Destination Node Id"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "cab",
+              "auto"
+            ],
+            "title": "Mode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "destination_node_id",
+          "mode"
+        ],
+        "title": "PodCreateIn"
+      },
+      "PodMember": {
+        "properties": {
+          "passenger_id": {
+            "type": "integer",
+            "title": "Passenger Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "seat_count": {
+            "type": "integer",
+            "title": "Seat Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "passenger_id",
+          "name",
+          "seat_count"
+        ],
+        "title": "PodMember"
+      },
+      "PodOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "cab",
+              "auto"
+            ],
+            "title": "Mode"
+          },
+          "capacity": {
+            "type": "integer",
+            "title": "Capacity"
+          },
+          "seats_taken": {
+            "type": "integer",
+            "title": "Seats Taken"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "forming",
+              "full",
+              "confirmed",
+              "departed",
+              "cancelled"
+            ],
+            "title": "Status"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/PodMember"
+            },
+            "type": "array",
+            "title": "Members"
+          },
+          "route_km": {
+            "type": "number",
+            "title": "Route Km"
+          },
+          "fare_total": {
+            "type": "number",
+            "title": "Fare Total"
+          },
+          "fare_per_seat": {
+            "type": "number",
+            "title": "Fare Per Seat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "origin",
+          "destination",
+          "mode",
+          "capacity",
+          "seats_taken",
+          "status",
+          "members",
+          "route_km",
+          "fare_total",
+          "fare_per_seat"
+        ],
+        "title": "PodOut"
+      },
+      "PodsOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PodOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "PodsOut"
+      },
+      "QrLoginIn": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "title": "QrLoginIn"
+      },
+      "RegisterIn": {
+        "properties": {
+          "scenario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 6,
+            "title": "Password"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "hub_node_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hub Node Id"
+          },
+          "destination_node_id": {
+            "type": "integer",
+            "title": "Destination Node Id"
+          },
+          "needs": {
+            "$ref": "#/components/schemas/NeedsIn",
+            "default": {
+              "wheelchair": false,
+              "elderly": false,
+              "with_children": false,
+              "medical": false
+            }
+          },
+          "party_size": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 1.0,
+            "title": "Party Size",
+            "default": 1
+          },
+          "allow_auto": {
+            "type": "boolean",
+            "title": "Allow Auto",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password",
+          "destination_node_id"
+        ],
+        "title": "RegisterIn"
+      },
+      "RegisterOut": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "passenger": {
+            "$ref": "#/components/schemas/PassengerOut"
+          },
+          "ticket": {
+            "$ref": "#/components/schemas/Ticket"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "passenger",
+          "ticket"
+        ],
+        "title": "RegisterOut"
+      },
+      "RequestIn": {
+        "properties": {
+          "choice1_service_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Choice1 Service Id"
+          },
+          "choice2_service_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Choice2 Service Id"
+          },
+          "any_fastest": {
+            "type": "boolean",
+            "title": "Any Fastest",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "RequestIn"
+      },
+      "RequestOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "batch": {
+            "$ref": "#/components/schemas/BatchOut"
+          },
+          "choice1_service_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Choice1 Service Id"
+          },
+          "choice2_service_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Choice2 Service Id"
+          },
+          "any_fastest": {
+            "type": "boolean",
+            "title": "Any Fastest"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "batch",
+          "choice1_service_id",
+          "choice2_service_id",
+          "any_fastest"
+        ],
+        "title": "RequestOut"
+      },
+      "RunIn": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "greedy",
+              "ortools"
+            ],
+            "title": "Mode",
+            "default": "greedy"
+          }
+        },
+        "type": "object",
+        "title": "RunIn"
+      },
+      "ScenarioConfig": {
+        "properties": {
+          "batch_window_seconds": {
+            "type": "integer",
+            "title": "Batch Window Seconds"
+          },
+          "hold_seconds": {
+            "type": "integer",
+            "title": "Hold Seconds"
+          },
+          "auto_run_on_batch_close": {
+            "type": "boolean",
+            "title": "Auto Run On Batch Close"
+          },
+          "delay_threshold_minutes": {
+            "type": "integer",
+            "title": "Delay Threshold Minutes"
+          },
+          "hub_radius_km": {
+            "type": "number",
+            "title": "Hub Radius Km"
+          },
+          "open_booking_enabled": {
+            "type": "boolean",
+            "title": "Open Booking Enabled"
+          },
+          "sim_speed": {
+            "type": "number",
+            "title": "Sim Speed"
+          },
+          "demo_mode": {
+            "type": "boolean",
+            "title": "Demo Mode"
+          },
+          "join_qr_mode": {
+            "type": "string",
+            "enum": [
+              "corner",
+              "fullscreen",
+              "hidden"
+            ],
+            "title": "Join Qr Mode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "batch_window_seconds",
+          "hold_seconds",
+          "auto_run_on_batch_close",
+          "delay_threshold_minutes",
+          "hub_radius_km",
+          "open_booking_enabled",
+          "sim_speed",
+          "demo_mode",
+          "join_qr_mode"
+        ],
+        "title": "ScenarioConfig"
+      },
+      "ServiceSummary": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "local_train",
+              "bus",
+              "charter_bus",
+              "shuttle"
+            ],
+            "title": "Mode"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "delayed",
+              "cancelled",
+              "running",
+              "completed",
+              "rerouted"
+            ],
+            "title": "Status"
+          },
+          "delay_minutes": {
+            "type": "integer",
+            "title": "Delay Minutes"
+          },
+          "depart_at": {
+            "type": "string",
+            "title": "Depart At"
+          },
+          "arrive_at": {
+            "type": "string",
+            "title": "Arrive At"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/NodeRef"
+          },
+          "accessible": {
+            "type": "boolean",
+            "title": "Accessible"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "label",
+          "mode",
+          "status",
+          "delay_minutes",
+          "depart_at",
+          "arrive_at",
+          "origin",
+          "destination",
+          "accessible"
+        ],
+        "title": "ServiceSummary"
+      },
+      "StressIn": {
+        "properties": {
+          "requests": {
+            "type": "integer",
+            "maximum": 5000.0,
+            "minimum": 1.0,
+            "title": "Requests",
+            "default": 1000
+          },
+          "seats": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Seats",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "StressIn"
+      },
+      "SwapIn": {
+        "properties": {
+          "service_id": {
+            "type": "integer",
+            "title": "Service Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "service_id"
+        ],
+        "title": "SwapIn"
+      },
+      "Ticket": {
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "title": "Ticket Id"
+          },
+          "service": {
+            "$ref": "#/components/schemas/ServiceSummary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ticket_id",
+          "service"
+        ],
+        "title": "Ticket"
+      },
+      "TokenOut": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "title": "TokenOut"
+      },
+      "TripDisruption": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cancellation",
+              "delay",
+              "closure"
+            ],
+            "title": "Type"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "reason",
+          "created_at"
+        ],
+        "title": "TripDisruption"
+      },
+      "TripOut": {
+        "properties": {
+          "ticket": {
+            "$ref": "#/components/schemas/Ticket"
+          },
+          "disruption": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TripDisruption"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ticket",
+          "disruption",
+          "headline"
+        ],
+        "title": "TripOut"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WaitlistPosition": {
+        "properties": {
+          "service_id": {
+            "type": "integer",
+            "title": "Service Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "is_swap": {
+            "type": "boolean",
+            "title": "Is Swap"
+          }
+        },
+        "type": "object",
+        "required": [
+          "service_id",
+          "label",
+          "position",
+          "total",
+          "is_swap"
+        ],
+        "title": "WaitlistPosition"
+      },
+      "WeightsIn": {
+        "properties": {
+          "weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Weights"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weights"
+        ],
+        "title": "WeightsIn"
+      },
+      "Why": {
+        "properties": {
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "breakdown": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Breakdown"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          },
+          "decision_explanation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Explanation"
+          },
+          "rule_version": {
+            "type": "integer",
+            "title": "Rule Version"
+          },
+          "weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Weights"
+          },
+          "waitlist": {
+            "items": {
+              "$ref": "#/components/schemas/WaitlistPosition"
+            },
+            "type": "array",
+            "title": "Waitlist"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "breakdown",
+          "explanation",
+          "decision_explanation",
+          "rule_version",
+          "weights",
+          "waitlist"
+        ],
+        "title": "Why"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

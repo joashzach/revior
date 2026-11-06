@@ -1,0 +1,35 @@
+# Render blueprint for Revior (single instance — WebSocket hub and loops are in-process).
+databases:
+  - name: revior-db
+    plan: free
+    databaseName: revior
+    user: revior
+
+services:
+  - type: web
+    name: revior-api
+    runtime: docker
+    rootDir: backend
+    plan: starter
+    numInstances: 1
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: DATABASE_URL
+        # Render gives postgres://… ; the app needs the asyncpg driver prefix: set this by hand after the DB is created
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: OPS_PASSWORD
+        sync: false
+      - key: DEMO_PERSONA_PASSWORD
+        value: revior-demo
+      - key: CORS_ORIGINS
+        sync: false
+      - key: FRONTEND_BASE_URL
+        sync: false
+      - key: DEMO_MODE
+        value: "true"
+      - key: BATCH_WINDOW_SECONDS
+        value: "30"
+      - key: HOLD_SECONDS
+        value: "120"

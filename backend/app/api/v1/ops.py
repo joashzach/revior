@@ -405,3 +405,46 @@ async def ops_notifications(page: int = 1, page_size: int = 50, session: AsyncSe
                                   .offset((page - 1) * page_size).limit(page_size))).all()
     return {"items": [{"passenger_name": name, "channel": n.channel, "template": n.template, "body": n.body or n.title,
                        "created_at": iso(n.created_at)} for n, name in rows], "page": page, "page_size": page_size, "total": total}
+
+
+# ---- stress test (F23.2) — demo mode only ----------------------------------------------------------------------------
+import asyncio as _asyncio  # noqa: E402
+import uuid as _uuid  # noqa: E402
+
+from app.domain import stress as stress_dom  # noqa: E402
+from app.schemas.contract import StressIn  # noqa: E402
+from app.services.scenarios import cfg as _cfg  # noqa: E402
+from app.ws.events import Event as _Event  # noqa: E402
+
+_stress_tasks: set = set()
+
+
+@router.post("/stress/run")
+async def stress_run(body: StressIn, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    if not _cfg(sc)["demo_mode"]:
+        raise AppError("FORBIDDEN", "The stress test is only available in demo mode")
+    slug = sc.slug
+    run_id = f"stress-{_uuid.uuid4().hex[:8]}"
+
+    async def job() -> None:
+        import httpx
+        from app.main import app as _app
+
+        async def emit(kind: str, data: dict) -> None:
+            await hub.publish([_Event(kind, data, ops=True, dirty_kpi=False)], slug)
+        world = await stress_dom.build_world(body.requests, body.seats)
+        try:
+            async with httpx.AsyncClient(transport=httpx.ASGITransport(app=_app), base_url="http://stress") as c:
+                await stress_dom.run_stress(c, world, requests=body.requests, emit=emit)
+        except Exception:  # noqa: BLE001
+            import structlog
+            structlog.get_logger().error("stress_failed", exc_info=True)
+            await emit("stress.result", {"total": 0, "confirmed": 0, "capacity": body.seats, "over_allocations": 0, "five_xx": 1, "passed": False})
+        finally:
+            await stress_dom.cleanup(world["scenario_id"])
+
+    t = _asyncio.create_task(job())
+    _stress_tasks.add(t)
+    t.add_done_callback(_stress_tasks.discard)
+    return {"run_id": run_id}
