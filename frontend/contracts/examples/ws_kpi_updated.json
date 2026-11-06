@@ -1,0 +1,20 @@
+{
+  "type": "kpi.updated",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "affected": 340,
+    "checked_in": 338,
+    "not_checked_in": 2,
+    "requested": 0,
+    "held": 120,
+    "confirmed": 180,
+    "waitlisted": 7,
+    "unresolved": 4,
+    "resolved_alt": 0,
+    "avg_wait_min": 6.4,
+    "median_time_to_placement_min": 1.2,
+    "fill_rate": 0.96,
+    "batch": null
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "items": [
+    {
+      "option_id": "S9",
+      "request_service_id": 9,
+      "label": "MTC 570A Potheri → Guindy",
+      "mode": "bus",
+      "legs": [
+        {
+          "service": {
+            "id": 9,
+            "code": "MTC-570A",
+            "label": "MTC 570A Potheri → Guindy",
+            "mode": "bus",
+            "status": "scheduled",
+            "delay_minutes": 0,
+            "depart_at": "2026-11-05T12:35:00+00:00",
+            "arrive_at": "2026-11-05T13:40:00+00:00",
+            "origin": {
+              "id": 6,
+              "code": "POT",
+              "name": "Potheri",
+              "lat": 12.8231,
+              "lng": 80.0442,
+              "kind": "rail_station",
+              "is_hub": true,
+              "is_default_hub": true
+            },
+            "destination": {
+              "id": 15,
+              "code": "GND",
+              "name": "Guindy",
+              "lat": 13.0067,
+              "lng": 80.2206,
+              "kind": "rail_station",
+              "is_hub": false,
+              "is_default_hub": false
+            },
+            "accessible": true
+          },
+          "from": {
+            "id": 6,
+            "code": "POT",
+            "name": "Potheri",
+            "lat": 12.8231,
+            "lng": 80.0442,
+            "kind": "rail_station",
+            "is_hub": true,
+            "is_default_hub": true
+          },
+          "to": {
+            "id": 15,
+            "code": "GND",
+            "name": "Guindy",
+            "lat": 13.0067,
+            "lng": 80.2206,
+            "kind": "rail_station",
+            "is_hub": false,
+            "is_default_hub": false
+          },
+          "depart_at": "2026-11-05T12:35:00+00:00",
+          "arrive_at": "2026-11-05T13:40:00+00:00",
+          "has_seats": true
+        }
+      ],
+      "depart_at": "2026-11-05T12:35:00+00:00",
+      "eta_at": "2026-11-05T13:40:00+00:00",
+      "transfers": 0,
+      "is_multi_leg": false,
+      "seats_left": 3,
+      "accessible_seats_left": 1,
+      "is_full": false,
+      "meets_deadline": true,
+      "accessible": true
+    }
+  ],
+  "batch": {
+    "id": 7,
+    "status": "open",
+    "opens_at": "2026-11-05T12:31:00+00:00",
+    "closes_at": "2026-11-05T12:31:30+00:00"
+  }
+}

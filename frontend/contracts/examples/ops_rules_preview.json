@@ -1,0 +1,19 @@
+{
+  "placed_delta": 2,
+  "by_needs_class": [
+    {
+      "needs_class": "priority",
+      "placement_rate_before": 0.9,
+      "placement_rate_after": 0.95
+    }
+  ],
+  "movers": [
+    {
+      "passenger_id": 4021,
+      "name": "Asha Wheeler",
+      "service_label": "MTC 570A Potheri → Guindy",
+      "position_before": 4,
+      "position_after": 2
+    }
+  ]
+}

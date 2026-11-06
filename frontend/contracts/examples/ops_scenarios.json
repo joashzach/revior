@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "slug": "potheri-demo",
+      "name": "Potheri",
+      "is_active": true
+    },
+    {
+      "slug": "secondary-demo",
+      "name": "Mumbai CSMT",
+      "is_active": false
+    }
+  ]
+}

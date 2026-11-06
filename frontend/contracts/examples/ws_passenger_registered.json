@@ -1,0 +1,48 @@
+{
+  "type": "passenger.registered",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "passenger": {
+      "id": 4021,
+      "name": "Asha Wheeler",
+      "email": "wheelchair-guindy@demo.revior.test",
+      "phone": null,
+      "is_seeded": false,
+      "is_demo_persona": true,
+      "hub": {
+        "id": 6,
+        "code": "POT",
+        "name": "Potheri",
+        "lat": 12.8231,
+        "lng": 80.0442,
+        "kind": "rail_station",
+        "is_hub": true,
+        "is_default_hub": true
+      },
+      "destination": {
+        "id": 15,
+        "code": "GND",
+        "name": "Guindy",
+        "lat": 13.0067,
+        "lng": 80.2206,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "party_size": 1,
+      "needs": {
+        "wheelchair": true,
+        "elderly": false,
+        "with_children": false,
+        "medical": false,
+        "connection_deadline_at": null
+      },
+      "allow_auto": true,
+      "state": "AFFECTED",
+      "ticket_id": "VT-3FA9C2",
+      "affected_at": "2026-11-05T12:31:00+00:00"
+    },
+    "is_demo_persona": true
+  }
+}

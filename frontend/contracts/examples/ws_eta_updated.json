@@ -1,0 +1,9 @@
+{
+  "type": "eta.updated",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "service_id": 9,
+    "eta_at": "2026-11-05T13:52:00+00:00"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "allocation.declined",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "allocation_id": 311,
+    "passenger_id": 4021,
+    "service_id": 9
+  }
+}

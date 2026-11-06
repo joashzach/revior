@@ -1,0 +1,37 @@
+{
+  "type": "service.rerouted",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "service_id": 9,
+    "polyline": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          80.0442,
+          12.8231
+        ],
+        [
+          80.1177,
+          12.9249
+        ],
+        [
+          80.2206,
+          13.0067
+        ]
+      ]
+    },
+    "skipped_stops": [
+      {
+        "id": 9,
+        "code": "VAN",
+        "name": "Vandalur",
+        "lat": 12.8914,
+        "lng": 80.0817,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      }
+    ]
+  }
+}

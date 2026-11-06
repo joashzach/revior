@@ -1,0 +1,17 @@
+{
+  "type": "disruption.resolved",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "disruption": {
+      "id": 3,
+      "type": "cancellation",
+      "service_id": 1,
+      "edge_id": null,
+      "delay_minutes": null,
+      "reason": "Waterlogging",
+      "created_at": "2026-11-05T12:31:00+00:00",
+      "resolved_at": "2026-11-05T13:00:00+00:00"
+    }
+  }
+}

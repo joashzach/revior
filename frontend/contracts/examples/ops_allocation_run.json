@@ -1,0 +1,19 @@
+{
+  "run_id": 5,
+  "stats": {
+    "units": 340,
+    "placed_choice1": 301,
+    "placed_choice2": 20,
+    "placed_auto": 8,
+    "waitlisted": 7,
+    "unresolved": 4,
+    "duration_ms": 420,
+    "fill_rate_by_service": [
+      {
+        "service_id": 9,
+        "label": "MTC 570A Potheri → Guindy",
+        "fill_rate": 1.0
+      }
+    ]
+  }
+}

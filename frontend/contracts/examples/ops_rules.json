@@ -1,0 +1,39 @@
+{
+  "active": {
+    "version": 2,
+    "weights": {
+      "medical": 30,
+      "wheelchair": 30,
+      "elderly": 15,
+      "with_children": 10,
+      "deadline_urgency": 20,
+      "wait_time": 20
+    }
+  },
+  "history": [
+    {
+      "version": 1,
+      "weights": {
+        "medical": 30,
+        "wheelchair": 30,
+        "elderly": 15,
+        "with_children": 10,
+        "deadline_urgency": 20,
+        "wait_time": 20
+      },
+      "created_at": "2026-11-05T12:00:00+00:00"
+    },
+    {
+      "version": 2,
+      "weights": {
+        "medical": 30,
+        "wheelchair": 30,
+        "elderly": 15,
+        "with_children": 10,
+        "deadline_urgency": 20,
+        "wait_time": 20
+      },
+      "created_at": "2026-11-05T12:40:00+00:00"
+    }
+  ]
+}

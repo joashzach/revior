@@ -1,0 +1,42 @@
+{
+  "id": 12,
+  "origin": {
+    "id": 6,
+    "code": "POT",
+    "name": "Potheri",
+    "lat": 12.8231,
+    "lng": 80.0442,
+    "kind": "rail_station",
+    "is_hub": true,
+    "is_default_hub": true
+  },
+  "destination": {
+    "id": 11,
+    "code": "TAM",
+    "name": "Tambaram",
+    "lat": 12.9249,
+    "lng": 80.1177,
+    "kind": "rail_station",
+    "is_hub": false,
+    "is_default_hub": false
+  },
+  "mode": "cab",
+  "capacity": 4,
+  "seats_taken": 2,
+  "status": "forming",
+  "members": [
+    {
+      "passenger_id": 4021,
+      "name": "Asha Wheeler",
+      "seat_count": 1
+    },
+    {
+      "passenger_id": 4033,
+      "name": "Priya Iyer",
+      "seat_count": 1
+    }
+  ],
+  "route_km": 24.6,
+  "fare_total": 542.8,
+  "fare_per_seat": 271.4
+}

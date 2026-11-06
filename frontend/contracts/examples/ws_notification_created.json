@@ -1,0 +1,13 @@
+{
+  "type": "notification.created",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "id": 55,
+    "template": "placed",
+    "title": "You have a seat",
+    "body": "Placed on MTC 570A (seat W01). Accept within 10 minutes.",
+    "created_at": "2026-11-05T12:32:00+00:00",
+    "read": false
+  }
+}

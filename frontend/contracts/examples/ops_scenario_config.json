@@ -1,0 +1,11 @@
+{
+  "batch_window_seconds": 30,
+  "hold_seconds": 120,
+  "auto_run_on_batch_close": true,
+  "delay_threshold_minutes": 20,
+  "hub_radius_km": 10,
+  "open_booking_enabled": false,
+  "sim_speed": 10,
+  "demo_mode": true,
+  "join_qr_mode": "corner"
+}

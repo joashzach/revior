@@ -1,0 +1,61 @@
+{
+  "nodes": [
+    {
+      "id": 6,
+      "code": "POT",
+      "name": "Potheri",
+      "lat": 12.8231,
+      "lng": 80.0442,
+      "kind": "rail_station",
+      "is_hub": true,
+      "is_default_hub": true
+    },
+    {
+      "id": 11,
+      "code": "TAM",
+      "name": "Tambaram",
+      "lat": 12.9249,
+      "lng": 80.1177,
+      "kind": "rail_station",
+      "is_hub": false,
+      "is_default_hub": false
+    },
+    {
+      "id": 15,
+      "code": "GND",
+      "name": "Guindy",
+      "lat": 13.0067,
+      "lng": 80.2206,
+      "kind": "rail_station",
+      "is_hub": false,
+      "is_default_hub": false
+    }
+  ],
+  "edges": [
+    {
+      "id": 40,
+      "from_node_id": 8,
+      "to_node_id": 9,
+      "mode": "road",
+      "road_name": "GST Road",
+      "is_closed": false,
+      "polyline": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            80.0442,
+            12.8231
+          ],
+          [
+            80.1177,
+            12.9249
+          ],
+          [
+            80.2206,
+            13.0067
+          ]
+        ]
+      }
+    }
+  ]
+}

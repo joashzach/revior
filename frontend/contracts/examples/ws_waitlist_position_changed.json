@@ -1,0 +1,10 @@
+{
+  "type": "waitlist.position_changed",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "service_id": 9,
+    "position": 1,
+    "total": 5
+  }
+}

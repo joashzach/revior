@@ -1,0 +1,39 @@
+{
+  "by_needs_class": [
+    {
+      "needs_class": "accessible",
+      "placement_rate": 1.0,
+      "wait_p50": 1.0,
+      "wait_p90": 2.0
+    },
+    {
+      "needs_class": "priority",
+      "placement_rate": 0.98,
+      "wait_p50": 1.0,
+      "wait_p90": 3.0
+    },
+    {
+      "needs_class": "general",
+      "placement_rate": 0.93,
+      "wait_p50": 2.0,
+      "wait_p90": 6.0
+    }
+  ],
+  "by_destination": [
+    {
+      "destination": {
+        "id": 11,
+        "code": "TAM",
+        "name": "Tambaram",
+        "lat": 12.9249,
+        "lng": 80.1177,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "placement_rate": 0.96,
+      "unresolved": 1
+    }
+  ],
+  "wait_gini": 0.18
+}

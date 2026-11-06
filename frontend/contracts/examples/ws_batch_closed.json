@@ -1,0 +1,9 @@
+{
+  "type": "batch.closed",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "batch_id": 7,
+    "closes_at": "2026-11-05T12:31:30+00:00"
+  }
+}

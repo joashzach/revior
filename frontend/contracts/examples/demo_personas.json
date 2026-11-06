@@ -1,0 +1,54 @@
+{
+  "items": [
+    {
+      "id": 4021,
+      "title": "Wheelchair user → Guindy",
+      "emoji": "♿",
+      "summary": "Needs accessible seat · travelling alone",
+      "destination": {
+        "id": 15,
+        "code": "GND",
+        "name": "Guindy",
+        "lat": 13.0067,
+        "lng": 80.2206,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "party_size": 1,
+      "needs": {
+        "wheelchair": true,
+        "elderly": false,
+        "with_children": false,
+        "medical": false,
+        "connection_deadline_at": null
+      },
+      "is_taken": false
+    },
+    {
+      "id": 4022,
+      "title": "Family of 4 → Tambaram",
+      "emoji": "👨‍👩‍👧‍👦",
+      "summary": "Needs accessible seat · travelling alone",
+      "destination": {
+        "id": 15,
+        "code": "GND",
+        "name": "Guindy",
+        "lat": 13.0067,
+        "lng": 80.2206,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "party_size": 1,
+      "needs": {
+        "wheelchair": true,
+        "elderly": false,
+        "with_children": false,
+        "medical": false,
+        "connection_deadline_at": null
+      },
+      "is_taken": true
+    }
+  ]
+}

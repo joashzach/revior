@@ -1,0 +1,120 @@
+/*
+ * Revior design tokens.
+ * Source of truth: frontend/DESIGN.md ("Monad" style reference: editorial tech journal on warm parchment).
+ * Values marked FALLBACK are not defined in DESIGN.md and come from the interface-craft skill defaults
+ * (semantic status colours, motion, focus ring). They are listed in the final report.
+ */
+:root {
+  /* ---- DESIGN.md colours ---- */
+  --color-parchment: #f6f3f1;
+  --color-lake-blue: #2b59d1;
+  --color-periwinkle-mist: #cfdaf5;
+  --color-sky-blue: #a0b5eb;
+  --color-mint: #a7fccd;
+  --color-coral: #ff9473;
+  --color-gold: #ecda98;
+  --color-crimson: #f37a0a;
+  --color-off-black: #242424;
+  --color-ink: #000000;
+  --color-graphite: #4e4d4d;
+  --color-smoke: #797776;
+  --color-ash: #cecac8;
+
+  /* ---- roles (DESIGN.md "Agent Prompt Guide": text/background/border/accent) ---- */
+  --bg: var(--color-parchment);
+  --surface: var(--color-parchment);
+  --surface-2: var(--color-periwinkle-mist);
+  --surface-inverse: var(--color-off-black);
+  --border: var(--color-ash);
+  --text: var(--color-off-black);
+  --text-muted: var(--color-graphite);
+  --text-faint: var(--color-smoke);
+  --on-inverse: var(--color-parchment);
+  --accent: var(--color-lake-blue);
+  --accent-contrast: #ffffff;
+  --accent-hover: #234bb0; /* FALLBACK: accent L -0.05 */
+  --accent-pressed: #1c3d94; /* FALLBACK: accent L -0.10 */
+  --accent-subtle: #e4ebfa; /* FALLBACK: tint of periwinkle for selected rows */
+  --focus-ring: var(--color-lake-blue);
+
+  /* ---- FALLBACK semantic status colours (DESIGN.md has none; OKLCH, warm-tinted, AA on their -bg) ---- */
+  --success: oklch(0.5 0.12 155);
+  --success-bg: oklch(0.945 0.045 155);
+  --success-fg: oklch(0.33 0.09 155);
+  --warning: oklch(0.6 0.14 70);
+  --warning-bg: oklch(0.95 0.06 88);
+  --warning-fg: oklch(0.4 0.09 62);
+  --danger: oklch(0.54 0.19 27);
+  --danger-bg: oklch(0.95 0.03 27);
+  --danger-fg: oklch(0.42 0.16 27);
+  --info: oklch(0.5 0.14 264);
+  --info-bg: var(--color-periwinkle-mist);
+  --info-fg: oklch(0.35 0.13 264);
+
+  /* ---- typography (DESIGN.md; substitutes self-hosted: Instrument Serif ~ Untitled Serif, IBM Plex Mono ~ ABC Diatype Mono) ---- */
+  --font-serif: 'Instrument Serif', 'Untitled Serif', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', 'ABC Diatype Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --text-caption: 12px;
+  --text-body-sm: 14px;
+  --text-body: 16px;
+  --text-label: 18px;
+  --text-body-lg: 20px;
+  --text-subheading: 24px;
+  --text-heading-sm: 32px;
+  --text-heading: 40px;
+  --text-heading-lg: 48px;
+  --text-display: 80px;
+  --tracking-caption: -0.033em;
+  --tracking-body-sm: -0.02em;
+  --tracking-body: -0.025em;
+  --tracking-label: -0.022em;
+  --tracking-heading: -0.02em;
+  --leading-heading: 1.2;
+  --leading-body: 1.35;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  /* ---- spacing (8px base, DESIGN.md) ---- */
+  --spacing-unit: 8px;
+  --page-max-width: 1432px;
+  --section-gap: 64px;
+  --card-padding: 40px;
+  --element-gap: 16px;
+
+  /* ---- radius (DESIGN.md: buttons 100px, cards 40px, tags/pills full, min card radius 16px) ---- */
+  --radius-card: 40px;
+  --radius-card-sm: 24px; /* FALLBACK: dense ops/passenger-mobile cards keep >= 16px per DESIGN.md */
+  --radius-panel: 16px;
+  --radius-button: 100px;
+  --radius-pill: 9999px;
+
+  /* ---- elevation (DESIGN.md: one ambient shadow; cards use borders) ---- */
+  --shadow-md: rgba(0, 0, 0, 0.1) 0px 0px 10px 0px;
+
+  /* ---- FALLBACK motion tokens (skill §5) ---- */
+  --dur-instant: 80ms;
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 320ms;
+  --dur-page: 480ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-emph: cubic-bezier(0.2, 0, 0, 1);
+
+  /* layout */
+  --nav-h: 72px;
+  --sidebar-w: 248px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0ms;
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+    --dur-page: 0ms;
+  }
+}

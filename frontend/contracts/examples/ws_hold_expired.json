@@ -1,0 +1,8 @@
+{
+  "type": "hold.expired",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "allocation_id": 311
+  }
+}

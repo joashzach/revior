@@ -1,0 +1,18 @@
+{
+  "state": "WAITLISTED",
+  "batch": null,
+  "allocation": null,
+  "swap_offer": null,
+  "waitlist": [
+    {
+      "service_id": 9,
+      "label": "MTC 570A Potheri → Guindy",
+      "position": 2,
+      "total": 5,
+      "is_swap": false
+    }
+  ],
+  "resolved_alternative": null,
+  "headline": "Waitlisted #2 for MTC 570A Potheri → Guindy",
+  "server_time": "2026-11-05T12:33:00+00:00"
+}
