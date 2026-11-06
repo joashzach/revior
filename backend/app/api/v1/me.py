@@ -306,3 +306,42 @@ async def swap(request: HttpRequest, body: SwapIn, p: Passenger = Depends(curren
 async def claim(request: HttpRequest, body: ClaimIn, p: Passenger = Depends(current_passenger),
                 session: AsyncSession = Depends(get_session)) -> dict:
     return await _mutate(request, p, session, f"claim:{body.service_id}", lambda s, sc, pp: holds_dom.claim(s, sc, pp, body.service_id))
+
+
+# ---- alternatives + pods (F13, F14) ---------------------------------------------------------------------
+from app.domain import alternatives as alt_dom  # noqa: E402
+from app.domain import pods as pods_dom  # noqa: E402
+from app.schemas.contract import AltAcceptIn, AlternativesOut, PodCreateIn, PodOut, PodsOut  # noqa: E402
+
+
+@router.get("/alternatives", response_model=AlternativesOut)
+async def alternatives(p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    return {"items": await alt_dom.generate(session, sc, snap, p)}
+
+
+@router.post("/alternatives/accept", response_model=MyStatus)
+async def alternatives_accept(body: AltAcceptIn, p: Passenger = Depends(current_passenger),
+                              session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    events = await alt_dom.accept(session, sc, p, body.type, body.ref)
+    await session.flush()
+    st = await build_status(session, sc, await Snapshot.load(session, sc), p)
+    await finish(session, events, sc.slug)
+    return st
+
+
+@router.get("/pods/suggested", response_model=PodsOut)
+async def pods_suggested(p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    return {"items": [await pods_dom.pod_dict(session, snap, pod) for pod in await pods_dom.suggested(session, sc, snap, p)]}
+
+
+@router.post("/pods", response_model=PodOut)
+async def pods_create(body: PodCreateIn, p: Passenger = Depends(current_passenger),
+                      session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    pod, events = await pods_dom.create(session, sc, p, body.destination_node_id, body.mode)
+    out = await pods_dom.pod_dict(session, snap, pod)
+    await finish(session, events, sc.slug)
+    return out

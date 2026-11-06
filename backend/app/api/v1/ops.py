@@ -298,3 +298,27 @@ async def invariants(session: AsyncSession = Depends(get_session)) -> dict:
     sid = sc.id
     await session.rollback()
     return await inv.check(session, sid)
+
+
+# ---- add capacity (F15) ---------------------------------------------------------------------------------------
+from app.domain import capacity as capacity_dom  # noqa: E402
+from app.schemas.contract import AddServiceIn  # noqa: E402
+
+
+@router.post("/services")
+async def add_service(body: AddServiceIn, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    sv, events = await capacity_dom.create_service(
+        session, sc, label=body.label, mode=body.mode, stop_node_ids=body.stop_node_ids,
+        depart_in_minutes=body.depart_in_minutes, total_seats=body.total_seats, accessible_seats=body.accessible_seats)
+    sid, slug, auto = sv.id, sc.slug, bool(cfg_(sc)["auto_run_on_capacity_add"])
+    queued, bev = (0, [])
+    if auto:
+        queued, bev = await capacity_dom.requeue_unplaced(session, sc)
+    snap = await Snapshot.load(session, sc)
+    out = snap.summary(sid)
+    sc_id = sc.id
+    await finish(session, events + bev, slug)
+    if auto:      # F15.2: immediately re-allocate all UNRESOLVED + WAITLISTED units (existing choices kept, plus auto)
+        await runner.execute_run(sc_id, "greedy")
+    return out

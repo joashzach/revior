@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select
 
-from app.api.v1 import auth, me, ops, public
+from app.api.v1 import auth, me, ops, pods, public
 from app.config import get_settings
 from app.db import dispose_engine, get_sessionmaker
 from app.errors import install_error_handlers
@@ -56,7 +56,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"], allow_headers=["*"], expose_headers=["X-Request-ID"])
     app.add_middleware(RequestIdMiddleware)
     install_error_handlers(app)
-    for r in (auth.router, me.router, ops.router, public.router,):
+    for r in (auth.router, me.router, ops.router, pods.router, public.router,):
         app.include_router(r, prefix="/api/v1")
     return app
 
