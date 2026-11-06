@@ -61,7 +61,7 @@ export default function Status() {
       <div className="grid max-w-[760px] content-start gap-6">
         <h1 className="rise flex items-start gap-3 text-[clamp(2rem,1.3rem+2.6vw,3.2rem)] leading-[1.08]" aria-live="polite">
           {d.state === 'CONFIRMED' && <CheckCircle2 className="mt-1.5 size-8 shrink-0 text-success-fg" aria-hidden />}
-          {leadOf(d.headline)}
+          {d.state === 'CONFIRMED' ? leadOf(d.headline).replace(/\s*✓$/, '') : leadOf(d.headline)}
         </h1>
 
         {/* swap offer banner (P-6.x) */}

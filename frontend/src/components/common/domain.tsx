@@ -132,6 +132,8 @@ export function QRPanel({ value, size = 160, caption, className, onDark }: { val
 // ---------- score bars (priority breakdown)
 export function ScoreBars({ breakdown, weights, className }: { breakdown: Record<WhyFeature, number>; weights: Record<string, number>; className?: string }) {
   const order: WhyFeature[] = ['medical', 'wheelchair', 'elderly', 'with_children', 'deadline_urgency', 'wait_time']
+  // One shared axis (the largest weight), so raising a weight visibly lengthens its bar and shortens the others.
+  const top = Math.max(1, ...order.map((k) => weights[k] ?? 0))
   return (
     <ul className={cn('grid gap-3.5', className)}>
       {order.map((k) => {
@@ -148,7 +150,7 @@ export function ScoreBars({ breakdown, weights, className }: { breakdown: Record
               </span>
             </div>
             <div className="h-2.5 overflow-hidden rounded-full bg-line" role="img" aria-label={`${S.why.features[k]}: ${pts} of ${max} points`}>
-              <div className="h-full origin-left rounded-full bg-accent transition-[width] duration-500 ease-[var(--ease-out)]" style={{ width: `${clamp((pts / max) * 100, 0, 100)}%` }} />
+              <div className="h-full origin-left rounded-full bg-accent transition-[width] duration-500 ease-[var(--ease-out)]" style={{ width: `${clamp((pts / top) * 100, 0, 100)}%` }} />
             </div>
           </li>
         )

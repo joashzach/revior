@@ -128,29 +128,31 @@ const ServiceLine = memo(function ServiceLine({ id, status, label, positions, on
     const b = setTimeout(() => setDrawing(false), 750)
     return () => { clearTimeout(a); clearTimeout(b) }
   }, [key, positions])
-  useEffect(() => { ref.current?.getElement()?.setAttribute('pathLength', '1') }, [drawing, positions])
+  useEffect(() => { ref.current?.getElement()?.setAttribute('pathLength', '1') }, [drawing, positions, status])
   return (
     <>
       {ghost && <Polyline positions={ghost} pathOptions={{ className: 'rv-line rv-line-ghost rv-line-rerouted' }} interactive={false} />}
-      <Polyline ref={ref} positions={positions} pathOptions={{ className: `rv-line rv-line-${status} ${drawing ? 'rv-line-draw' : ''}` }} eventHandlers={{ click: () => onSelect?.(id) }}>
+      <Polyline key={`${status}-${drawing ? 'draw' : 'still'}`} ref={ref} positions={positions} pathOptions={{ className: `rv-line rv-line-${status} ${drawing ? 'rv-line-draw' : ''}` }} eventHandlers={{ click: () => onSelect?.(id) }}>
         <Tooltip sticky>{label} · {status}</Tooltip>
       </Polyline>
     </>
   )
 })
 
-const Edge = memo(function Edge({ e, onClose }: { e: NetworkEdge; onClose?: (id: number) => void }) {
+const Edge = memo(function Edge({ e, names, onClose }: { e: NetworkEdge; names: Map<number, string>; onClose?: (id: number) => void }) {
   const pos = useMemo(() => toLatLngs(e.polyline), [e.polyline])
   const mid = midpoint(pos)
   if (e.mode === 'walk') return null
   return (
     <>
-      <Polyline positions={pos} pathOptions={{ className: e.is_closed ? 'rv-edge-closed' : 'rv-edge' }} interactive={false} />
+      {/* Leaflet reads className only when a path is created, so the key remounts it when the edge opens or closes */}
+      <Polyline key={e.is_closed ? 'closed' : 'open'} positions={pos} pathOptions={{ className: e.is_closed ? 'rv-edge-closed' : 'rv-edge' }} interactive={false} />
       {!e.is_closed && e.mode === 'road' && (
         <Polyline positions={pos} pathOptions={{ className: 'rv-edge-hit' }}>
           <Popup>
             <div className="grid gap-2 p-1">
               <p className="font-medium">{e.road_name ?? 'Road'}</p>
+              <p className="text-[12px] text-muted">{names.get(e.from_node_id) ?? '?'} → {names.get(e.to_node_id) ?? '?'}</p>
               <Button size="xs" variant="danger" onClick={() => onClose?.(e.id)}>Close this road</Button>
             </div>
           </Popup>
@@ -197,6 +199,7 @@ export function ReviorMap({ onSelectService, onCloseEdge, className, children }:
   const data: OpsMap | undefined = q.data
   const points = useMemo(() => (data?.nodes ?? []).map((n): LatLng => [n.lat, n.lng]), [data?.nodes])
   const modes = useMemo(() => Object.fromEntries((data?.services ?? []).map((s) => [s.id, { mode: s.mode, label: s.label }])), [data?.services])
+  const nodeName = useMemo(() => new Map((data?.nodes ?? []).map((n) => [n.id, n.name])), [data?.nodes])
   const nodeById = useMemo(() => new Map((data?.nodes ?? []).map((n) => [n.id, n])), [data?.nodes])
   const lines = useMemo(() => (data?.services ?? []).map((s) => ({ ...s, positions: toLatLngs(s.polyline) })), [data?.services])
   return (
@@ -205,7 +208,7 @@ export function ReviorMap({ onSelectService, onCloseEdge, className, children }:
         <TileLayer url={env.tileUrl} attribution={env.attribution} />
         <WheelOnFocus />
         <FitOnce points={points} />
-        {data?.edges.map((e) => <Edge key={e.id} e={e} onClose={onCloseEdge} />)}
+        {data?.edges.map((e) => <Edge key={e.id} e={e} names={nodeName} onClose={onCloseEdge} />)}
         {layers.routes && lines.map((s) => <ServiceLine key={s.id} id={s.id} status={s.status} label={s.label} positions={s.positions} onSelect={onSelectService} />)}
         {layers.stations && data?.nodes.map((n) => (
           <Marker key={n.id} position={[n.lat, n.lng]} icon={pinIcon(n)} keyboard={false}>

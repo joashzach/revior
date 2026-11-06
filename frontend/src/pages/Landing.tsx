@@ -30,7 +30,7 @@ function PhoneCard({ step }: { step: number }) {
         <div className="grid gap-3">
           <div className="h-1.5 overflow-hidden rounded-full bg-line"><div className="h-full rounded-full bg-accent transition-[width] duration-500" style={{ width: `${(step + 1) * 25}%` }} /></div>
           <p className="tnum text-[12px] uppercase tracking-[0.05em] text-muted">{f.foot}</p>
-          <div className="grid h-12 place-items-center rounded-button bg-accent text-[13px] uppercase tracking-[0.04em] text-accent-contrast">{step === 2 ? 'Accept seat' : step === 0 ? 'See your options' : step === 1 ? 'Send my request' : 'View boarding pass'}</div>
+          <div aria-hidden className="grid h-12 place-items-center rounded-button border border-ink/60 text-[13px] uppercase tracking-[0.04em]">{step === 2 ? 'Accept seat' : step === 0 ? 'See your options' : step === 1 ? 'Send my request' : 'View boarding pass'}</div>
         </div>
       </div>
     </div>
