@@ -60,3 +60,56 @@ async def patch_config(slug: str, body: ConfigPatch, session: AsyncSession = Dep
     sc.config = {**(sc.config or {}), **patch}
     await finish(session, [], sc.slug)
     return public_config(sc)
+
+
+# ---- demo personas + login QR (F24) --------------------------------------------------------------------
+from fastapi.responses import Response  # noqa: E402
+
+from app.api.v1.me import make_login_qr  # noqa: E402
+from app.domain import personas as personas_dom  # noqa: E402
+from app.domain.snapshot import Snapshot, iso  # noqa: E402
+from app.models import Passenger  # noqa: E402
+from app.serializers import passenger_out, persona_out  # noqa: E402
+from app.services.scenarios import active_scenario  # noqa: E402
+
+
+@router.get("/passengers/{passenger_id}/login-qr")
+async def passenger_login_qr(passenger_id: int, session: AsyncSession = Depends(get_session)) -> dict:
+    p = await session.get(Passenger, passenger_id)
+    if p is None:
+        raise AppError("NOT_FOUND", "Unknown passenger")
+    return await make_login_qr(session, p)
+
+
+@router.get("/demo/personas")
+async def ops_demo_personas(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    snap = await Snapshot.load(session, sc)
+    return {"items": [{**persona_out(p, snap), "claimed_at": iso(p.persona_claimed_at), "state": p.state}
+                      for p in await personas_dom.list_personas(session, sc)]}
+
+
+@router.post("/demo/personas/release-all", status_code=204)
+async def release_all_personas(session: AsyncSession = Depends(get_session)) -> Response:
+    sc = await active_scenario(session)
+    events, ids = [], []
+    for p in await personas_dom.list_personas(session, sc):
+        if p.persona_claimed_at is not None:
+            events += await personas_dom.release(session, sc, p)
+            ids.append(p.id)
+    await finish(session, events, sc.slug)
+    for pid in ids:
+        hub.disconnect_passenger(pid)
+    return Response(status_code=204)
+
+
+@router.post("/demo/personas/{persona_id}/release", status_code=204)
+async def release_persona(persona_id: int, session: AsyncSession = Depends(get_session)) -> Response:
+    sc = await active_scenario(session)
+    p = await session.get(Passenger, persona_id)
+    if p is None or not p.is_demo_persona or p.scenario_id != sc.id:
+        raise AppError("NOT_FOUND", "Unknown persona")
+    events = await personas_dom.release(session, sc, p)
+    await finish(session, events, sc.slug)
+    hub.disconnect_passenger(p.id)
+    return Response(status_code=204)
