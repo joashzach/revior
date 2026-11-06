@@ -9,7 +9,7 @@ import { useIdempotencyKey } from './useIdempotencyKey'
  * Runs an idempotent passenger action: ONE UUID per user tap, reused when the same tap is retried (network error /
  * ALLOCATION_IN_PROGRESS); released after a definitive outcome. Maps ApiError codes per contract §3.
  */
-export function useIdempotentAction<A extends unknown[]>(fn: (key: string, ...args: A) => Promise<MyStatus | unknown>, opts?: { onDone?: (r: any) => void }) {
+export function useIdempotentAction<A extends unknown[]>(fn: (key: string, ...args: A) => Promise<MyStatus | unknown>, opts?: { onDone?: (r: any) => void; onError?: (e: unknown) => boolean }) {
   const qc = useQueryClient()
   const key = useIdempotencyKey()
   const [pending, setPending] = useState(false)
@@ -28,6 +28,7 @@ export function useIdempotentAction<A extends unknown[]>(fn: (key: string, ...ar
         opts?.onDone?.(res)
         return res
       } catch (e) {
+        if (opts?.onError?.(e)) { key.release(); return }
         const ui = describeError(e)
         if (ui.asSuccess) { key.release(); qc.invalidateQueries({ queryKey: qk.status }); opts?.onDone?.(undefined); return }
         if (ui.retryMs) { setTimeout(() => { setPending(false); run(...args) }, ui.retryMs); toastError(e); return }

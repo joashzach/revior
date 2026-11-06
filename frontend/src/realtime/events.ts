@@ -53,7 +53,7 @@ export function invalidationFor(type: string, audience: Audience): QueryKey[] {
     case 'allocation.confirmed':
     case 'allocation.declined':
     case 'seat.released': return [o.capacity, o.allocations, o.kpis]
-    case 'eta.updated': return [o.map, o.services]
+    case 'eta.updated': return [o.services] // geometry is unchanged, so the 700 kB map payload is not refetched
     case 'service.rerouted': return [o.map, o.services, o.capacity]
     case 'rules.updated': return [o.rules, o.allocations]
     case 'pod.updated': return [o.unresolved]

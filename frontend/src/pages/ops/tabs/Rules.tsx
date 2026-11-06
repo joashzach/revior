@@ -30,7 +30,7 @@ export default function Rules() {
   const runPreview = async () => { setBusy(true); try { setPreview(await opsApi.rulesPreview(w)) } catch (e) { toastError(e) } finally { setBusy(false) } }
   const apply = async () => {
     setBusy(true)
-    try { const r = await opsApi.rulesApply(w); toast.success(`Rules v${r.version} applied`); setPreview(null); setConfirm(false); qc.invalidateQueries({ queryKey: qk.ops.rules }); qc.invalidateQueries({ queryKey: qk.why }) } catch (e) { toastError(e) } finally { setBusy(false) }
+    try { const r = await opsApi.rulesApply(w); toast.success(`Rules v${r.version} applied`, { id: 'rules' }); setPreview(null); setConfirm(false); qc.invalidateQueries({ queryKey: qk.ops.rules }); qc.invalidateQueries({ queryKey: qk.why }) } catch (e) { toastError(e) } finally { setBusy(false) }
   }
   return (
     <div className="mt-4 grid gap-6 xl:grid-cols-[1.1fr_1fr]">

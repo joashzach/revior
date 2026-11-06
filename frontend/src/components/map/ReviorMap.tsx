@@ -29,12 +29,15 @@ const pinIcon = (n: NodeRef) =>
   })
 const edgeXIcon = L.divIcon({ className: '', html: '<div class="revior-edge-x" aria-label="Closed road">×</div>', iconSize: [22, 22], iconAnchor: [11, 11] })
 
+/** Fit to the network once, and again whenever the node set changes (scenario switch). */
 function FitOnce({ points }: { points: LatLng[] }) {
   const map = useMap()
-  const done = useRef(false)
+  const sig = useRef('')
   useEffect(() => {
-    if (done.current || points.length < 2) return
-    done.current = true
+    if (points.length < 2) return
+    const s = `${points.length}:${points[0]}:${points[points.length - 1]}`
+    if (s === sig.current) return
+    sig.current = s
     map.fitBounds(L.latLngBounds(points), { padding: [40, 40] })
   }, [map, points])
   return null
@@ -236,7 +239,7 @@ export function MiniMapView({ polyline, serviceId, serviceLabel, mode, hub, dest
     <div className={cn('revior-map relative isolate overflow-hidden rounded-card-sm border border-line', className)}>
       <MapContainer bounds={L.latLngBounds(pts)} boundsOptions={{ padding: [28, 28] }} className="h-full w-full" zoomControl={!!interactive} dragging={!!interactive} scrollWheelZoom={false} doubleClickZoom={!!interactive} touchZoom={!!interactive} keyboard={!!interactive}>
         <TileLayer url={env.tileUrl} attribution={env.attribution} />
-        <Polyline positions={pts} pathOptions={{ className: 'rv-line rv-line-running' }} interactive={false} />
+        <Polyline positions={pts} pathOptions={{ className: 'rv-line rv-line-approx' }} interactive={false} />
         {[hub, destination].map((n) => <Marker key={n.id} position={[n.lat, n.lng]} icon={pinIcon({ ...n, is_hub: true })} keyboard={false}><Tooltip permanent direction="top" offset={[0, -8]} className="revior-label">{n.name}</Tooltip></Marker>)}
         <Vehicles modes={modes} onlyService={serviceId} />
       </MapContainer>

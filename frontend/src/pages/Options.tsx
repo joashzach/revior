@@ -28,6 +28,8 @@ export default function Options() {
   const [second, setSecond] = useState<number | null>(null)
   const [any, setAny] = useState(false)
   const [sending, setSending] = useState(false)
+  const [noGrab, setNoGrab] = useState<Set<number>>(new Set())
+  const [grabNote, setGrabNote] = useState(false)
   const items = opts.data?.items ?? []
   const batch = opts.data?.batch ?? null
   const hasRequest = status.data?.state === 'REQUESTED'
@@ -43,7 +45,19 @@ export default function Options() {
     if (second && !ids.has(second)) setSecond(null)
   }, [items]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const claim = useIdempotentAction((key, sid: number) => meApi.claim(key, sid), { onDone: () => nav('/status') })
+  // TODO(contract): there is no passenger-side open-booking flag. "Seats available now" is shown only once an allocation
+  // run has completed (no open batch and this passenger has moved past AFFECTED) and the option still has seats.
+  const allocationDone = batch === null && !!status.data && !['AFFECTED', 'REGISTERED', 'BOOKED'].includes(status.data.state)
+  const [grabSid, setGrabSid] = useState<number | null>(null)
+  const claim = useIdempotentAction((key, sid: number) => meApi.claim(key, sid), {
+    onDone: () => nav('/status'),
+    onError: (e) => {
+      if (e instanceof ApiError && (e.status === 409 || e.code === 'INVALID_STATE') && grabSid !== null) {
+        setNoGrab((s) => new Set(s).add(grabSid)); setGrabNote(true); qc.invalidateQueries({ queryKey: qk.options }); return true
+      }
+      return false
+    },
+  })
 
   const toggle = (sid: number) => {
     if (any) return
@@ -62,7 +76,6 @@ export default function Options() {
     try {
       await meApi.request({ choice1_service_id: any ? null : first, choice2_service_id: any ? null : second, any_fastest: any })
       qc.invalidateQueries({ queryKey: qk.status })
-      toast.success(S.options.sent)
       nav('/status')
     } catch (e) {
       if (e instanceof ApiError && e.code === 'BATCH_CLOSED' && !retried) {
@@ -86,9 +99,16 @@ export default function Options() {
     <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <div className="grid content-start gap-6 pb-28 lg:pb-0">
         <div className="grid gap-2">
-          <span className="eyebrow rise">{hasRequest ? 'Edit your request' : 'Choose'}</span>
           <h1 className="rise rise-1 text-[clamp(2.2rem,1.4rem+3vw,3.5rem)] leading-[1.05]">{S.options.title}</h1>
         </div>
+
+        {waitAlt && (
+          <div className="rounded-card-sm border border-warning/40 bg-warning-bg p-5 text-warning-fg">
+            <p className="font-medium">{waitAlt.title}</p>
+            <p className="mt-1 text-[14px]">{waitAlt.description}</p>
+            <Button className="mt-3" size="sm" variant="dark" onClick={async () => { try { await meApi.acceptAlternative('WAIT_DELAYED', waitAlt.ref); qc.invalidateQueries({ queryKey: qk.status }); nav('/status') } catch (e) { toastError(e) } }}>Keep my train</Button>
+          </div>
+        )}
 
         {/* batch banner (P-5.1) */}
         <div className="rise rise-2 flex flex-wrap items-center gap-5 rounded-card-sm border border-line p-5 sm:p-6" role="status">
@@ -117,13 +137,7 @@ export default function Options() {
           </label>
         </div>
 
-        {waitAlt && (
-          <div className="rounded-card-sm border border-warning/40 bg-warning-bg p-5 text-warning-fg">
-            <p className="font-medium">{waitAlt.title}</p>
-            <p className="mt-1 text-[14px]">{waitAlt.description}</p>
-            <Button className="mt-3" size="sm" variant="dark" onClick={async () => { try { await meApi.acceptAlternative('WAIT_DELAYED', waitAlt.ref); qc.invalidateQueries({ queryKey: qk.status }); nav('/status') } catch (e) { toastError(e) } }}>Keep my train</Button>
-          </div>
-        )}
+        {grabNote && <p role="status" className="text-[13px] text-muted">{S.options.grabClosed}</p>}
 
         {items.length === 0 ? (
           <EmptyState title="Nothing reaches your stop right now" body={S.options.empty} />
@@ -133,7 +147,8 @@ export default function Options() {
               {items.map((o) => (
                 <motion.li key={o.option_id} layout="position" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}>
                   <ServiceCard option={o} rank={rankOf(o.request_service_id)} disabled={any || !o.meets_deadline} onSelect={() => toggle(o.request_service_id)}
-                    openBooking={!batch} onGrab={() => claim.run(o.request_service_id)} grabbing={claim.pending} />
+                    openBooking={allocationDone && o.seats_left > 0 && !noGrab.has(o.request_service_id)}
+                    onGrab={() => { setGrabSid(o.request_service_id); claim.run(o.request_service_id) }} grabbing={claim.pending} />
                 </motion.li>
               ))}
             </AnimatePresence>

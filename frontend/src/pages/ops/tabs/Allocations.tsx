@@ -52,7 +52,7 @@ export default function Allocations() {
   const [open, setOpen] = useState<number | null>(null)
   useEffect(() => { const t = setTimeout(() => { setDebounced(search); setPage(1) }, 300); return () => clearTimeout(t) }, [search])
   const map = useQuery({ queryKey: qk.ops.map, queryFn: opsApi.map, staleTime: 60_000 })
-  const params = { status: status === ANY ? undefined : status, needs: needs === ANY ? undefined : needs, destination: dest === ANY ? undefined : dest, q: debounced || undefined, page, page_size: 15 }
+  const params = { status: status === ANY ? 'all' : status, needs: needs === ANY ? undefined : needs, destination: dest === ANY ? undefined : dest, q: debounced || undefined, page, page_size: 15 }
   const q = useQuery({ queryKey: [...qk.ops.allocations, params], queryFn: () => opsApi.allocations(params), placeholderData: (p) => p, staleTime: 3_000 })
   const pages = q.data ? Math.max(1, Math.ceil(q.data.total / q.data.page_size)) : 1
   return (

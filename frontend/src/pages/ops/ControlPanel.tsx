@@ -49,7 +49,7 @@ function Disruptions({ prefill }: { prefill: Prefill | null }) {
     setBusy(true)
     try {
       const r = await opsApi.createDisruption({ ...query(), reason: reason.trim() || (type === 'closure' ? 'Road closed' : type === 'delay' ? 'Delay' : 'Service cancelled') })
-      toast.success(`Disruption created. ${r.affected_count} passengers affected`)
+      toast.success(`Disruption created. ${r.affected_count} passengers affected`, { id: 'disruption', description: r.batch ? undefined : 'No request window opened' })
       setPreview(null); setReason(''); setServiceId(''); setEdgeId('')
       for (const k of [qk.ops.map, qk.ops.services, qk.ops.disruptions, qk.ops.kpis]) qc.invalidateQueries({ queryKey: k })
     } catch (e) { toastError(e) } finally { setBusy(false) }
@@ -111,12 +111,12 @@ function Allocation({ batchOpen }: { batchOpen: boolean }) {
   const batch = useQuery({ queryKey: qk.ops.batch, queryFn: opsApi.batchCurrent, refetchInterval: 4_000 })
   const refresh = () => { for (const k of [qk.ops.kpis, qk.ops.batch, qk.ops.capacity, qk.ops.allocations, qk.ops.unresolved, qk.ops.clusters, qk.ops.map]) qc.invalidateQueries({ queryKey: k }) }
   const close = async () => { setBusy('close'); try { await opsApi.closeBatch(); toast('Batch closed'); refresh() } catch (e) { toastError(e) } finally { setBusy(null) } }
-  const run = async () => { setBusy('run'); try { const r = await opsApi.runAllocation(mode); setStats(r.stats); toast.success(`Allocation done in ${r.stats.duration_ms} ms`); refresh() } catch (e) { toastError(e) } finally { setBusy(null) } }
+  const run = async () => { setBusy('run'); try { const r = await opsApi.runAllocation(mode); setStats(r.stats); toast.success(`Allocation done in ${r.stats.duration_ms} ms`, { id: 'alloc' }); refresh() } catch (e) { toastError(e) } finally { setBusy(null) } }
   const b = batch.data?.batch
   return (
     <div className="grid gap-4">
       <div className="flex items-center justify-between gap-3 rounded-panel border border-line p-4">
-        <div className="grid gap-0.5"><span className="eyebrow">Batch</span><span className="text-[15px]">{b ? `Open until ${fmtTime(b.closes_at)}` : batchOpen ? 'Open' : 'No open batch'}</span></div>
+        <div className="grid gap-0.5"><span className="eyebrow">Batch</span><span className="text-[15px]">{b || batchOpen ? 'Window open' : 'No request window'}</span></div>
         <div className="text-right"><span className="tnum font-serif text-[36px] leading-none"><NumberRoll value={batch.data?.request_count ?? 0} /></span><span className="block text-[11px] uppercase tracking-[0.06em] text-muted">requests</span></div>
       </div>
       <div className="flex flex-wrap items-end gap-2">
@@ -198,7 +198,7 @@ export function ControlPanel({ prefill, batchOpen }: { slug: string; prefill: Pr
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList aria-label="Controls">
           <TabsTrigger value="disruptions">Disruptions</TabsTrigger>
-          <TabsTrigger value="allocation">Allocation</TabsTrigger>
+          <TabsTrigger value="allocation">Allocate</TabsTrigger>
           <TabsTrigger value="capacity">Add capacity</TabsTrigger>
         </TabsList>
         <div className="mt-4">

@@ -34,7 +34,7 @@ function PodCard({ pod, mine, onJoin, joining, onLeave, onConfirm }: { pod: Pod;
       <div className="flex flex-wrap gap-3">
         {mine ? (
           <>
-            <Button variant="primary" size="sm" disabled={pod.seats_taken < 2 || pod.status === 'confirmed'} onClick={onConfirm}>Confirm pod</Button>
+            <Button variant="dark" size="sm" disabled={pod.seats_taken < 2 || pod.status === 'confirmed'} onClick={onConfirm}>Confirm cab</Button>
             <Button variant="ghost" size="sm" onClick={onLeave}>Leave</Button>
           </>
         ) : (
@@ -63,11 +63,11 @@ export default function Alternatives() {
     setBusy(true)
     try { await fn(); if (ok) toast.success(ok); refreshAll() } catch (e) { toastError(e); refreshAll() } finally { setBusy(false) }
   }
-  const choose = (a: Alternative) => run(async () => { await meApi.acceptAlternative(a.type, a.ref); setConfirm(null); nav('/status') }, 'Choice saved')
+  const choose = (a: Alternative) => run(async () => { await meApi.acceptAlternative(a.type, a.ref); setConfirm(null); nav('/status') })
   const request = (a: Alternative) => run(async () => {
     await meApi.request({ any_fastest: false, choice1_service_id: a.legs[0]?.service.id ?? null })
     nav('/status')
-  }, 'Request sent')
+  })
 
   if (alts.isLoading) return <SkeletonBlocks rows={3} rowClass="h-40" />
   if (alts.isError) return <ErrorState title="We couldn't load alternatives" onRetry={() => alts.refetch()} />
@@ -80,8 +80,7 @@ export default function Alternatives() {
   return (
     <div className="grid gap-8">
       <div className="grid gap-2">
-        <span className="eyebrow rise">Other ways home</span>
-        <h1 className="rise rise-1 text-[clamp(2.2rem,1.4rem+3vw,3.5rem)] leading-[1.05]">Alternatives</h1>
+        <h1 className="rise text-[clamp(2.2rem,1.4rem+3vw,3.5rem)] leading-[1.05]">Other ways home</h1>
       </div>
 
       {items.length === 0 ? (
@@ -105,7 +104,7 @@ export default function Alternatives() {
                 </div>
                 <div>
                   {a.requires_allocation
-                    ? <Button size="sm" variant="primary" loading={busy} onClick={() => request(a)}>Request this <ArrowRight /></Button>
+                    ? <Button size="sm" variant="dark" loading={busy} onClick={() => request(a)}>Request a seat <ArrowRight /></Button>
                     : <Button size="sm" variant="dark" onClick={() => setConfirm(a)}>Choose this</Button>}
                 </div>
               </li>
@@ -120,7 +119,7 @@ export default function Alternatives() {
             <span className="eyebrow">Share the ride</span>
             <h2 className="text-[clamp(1.8rem,1.3rem+1.6vw,2.4rem)]">Shared cabs{dest ? ` to ${dest.name}` : ''}</h2>
           </div>
-          {!myPod && <Button variant="dark" size="sm" onClick={() => setCreateOpen(true)}><Plus /> Create pod</Button>}
+          {!myPod && <Button variant="dark" size="sm" onClick={() => setCreateOpen(true)}><Plus /> Start a cab</Button>}
         </div>
         {pods.isLoading ? <SkeletonBlocks rows={1} rowClass="h-40" /> : podItems.length === 0 ? (
           <EmptyState title="No shared cabs yet" body="Start one and others heading your way can join." />
@@ -133,8 +132,8 @@ export default function Alternatives() {
                   mine={myPod?.id === p.id}
                   joining={joiningId === p.id && join.pending}
                   onJoin={() => { setJoiningId(p.id); join.run(p.id) }}
-                  onLeave={() => run(() => meApi.leavePod(p.id), 'You left the pod')}
-                  onConfirm={() => run(() => meApi.confirmPod(p.id), 'Pod confirmed')}
+                  onLeave={() => run(() => meApi.leavePod(p.id))}
+                  onConfirm={() => run(() => meApi.confirmPod(p.id))}
                 />
               </li>
             ))}
@@ -152,10 +151,10 @@ export default function Alternatives() {
         onConfirm={() => confirm && choose(confirm)}
       />
 
-      <Sheet open={createOpen} onOpenChange={setCreateOpen} title="Create a shared cab" description={dest ? `Heading to ${dest.name}. Others going the same way can join and split the fare.` : undefined}>
+      <Sheet open={createOpen} onOpenChange={setCreateOpen} title="Start a shared cab" description={dest ? `Heading to ${dest.name}. Others going the same way can join and split the fare.` : undefined}>
         <div className="grid gap-4 pb-4">
           <Select label="Vehicle" value={mode} onValueChange={(v) => setMode(v as 'cab' | 'auto')} options={[{ value: 'cab', label: 'Cab · up to 4 seats' }, { value: 'auto', label: 'Auto · up to 3 seats' }]} />
-          <Button variant="primary" loading={busy} onClick={() => dest && run(async () => { await meApi.createPod(dest.id, mode); setCreateOpen(false) }, 'Pod created')}>Create pod</Button>
+          <Button variant="primary" loading={busy} onClick={() => dest && run(async () => { await meApi.createPod(dest.id, mode); setCreateOpen(false) })}>Start cab</Button>
         </div>
       </Sheet>
     </div>

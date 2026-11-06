@@ -14,12 +14,12 @@ import { SocketManager } from './ws'
 /** Live ops-only state that is not a server query (stress counters, last reroute for map animation). */
 interface LiveStore {
   stress: { running: boolean; progress: StressProgress | null; result: StressResult | null }
-  rerouted: Record<number, number>
+  rerouted: Record<number, { at: number; skipped: string[] }>
   judgesJoined: number
   lastRun: RunStats | null
   setLastRun: (r: RunStats) => void
   setStress: (p: Partial<LiveStore['stress']>) => void
-  markRerouted: (id: number) => void
+  markRerouted: (id: number, skipped?: string[]) => void
   bumpJudges: (n?: number) => void
 }
 export const useLiveStore = create<LiveStore>((set, get) => ({
@@ -29,9 +29,26 @@ export const useLiveStore = create<LiveStore>((set, get) => ({
   lastRun: null,
   setLastRun: (r) => set({ lastRun: r }),
   setStress: (p) => set({ stress: { ...get().stress, ...p } }),
-  markRerouted: (id) => set({ rerouted: { ...get().rerouted, [id]: Date.now() } }),
+  markRerouted: (id, skipped = []) => set({ rerouted: { ...get().rerouted, [id]: { at: Date.now(), skipped } } }),
   bumpJudges: (n = 1) => set({ judgesJoined: n === 0 ? 0 : get().judgesJoined + n }),
 }))
+
+/** Coalesce bursts of events: each query refetches at most once per 400 ms window. */
+const pending = new Map<string, readonly unknown[]>()
+let flushTimer: ReturnType<typeof setTimeout> | null = null
+function scheduleInvalidate(client: { invalidateQueries: (o: { queryKey: readonly unknown[] }) => unknown }, keys: readonly (readonly unknown[])[]) {
+  for (const k of keys) pending.set(JSON.stringify(k), k)
+  if (flushTimer || !pending.size) return
+  flushTimer = setTimeout(() => {
+    flushTimer = null
+    const batch = [...pending.values()]
+    pending.clear()
+    for (const k of batch) client.invalidateQueries({ queryKey: k })
+  }, 400)
+}
+
+const onStatus = () => typeof window !== 'undefined' && window.location.pathname.startsWith('/status')
+let lastTyped = 0
 
 /** Wires one socket per app (PRD §6.2) + event → cache invalidation / toasts (PRD §6.3) + polling fallback. */
 export function useRealtime(kind: 'passenger' | 'ops') {
@@ -61,7 +78,7 @@ export function useRealtime(kind: 'passenger' | 'ops') {
   useEffect(() => {
     const client = qcRef.current
     return bus.on((m) => {
-      for (const key of invalidationFor(m.type, kind)) client.invalidateQueries({ queryKey: key })
+      scheduleInvalidate(client, invalidationFor(m.type, kind))
       const d = m.data
       switch (m.type) {
         case 'vehicle.positions':
@@ -71,24 +88,29 @@ export function useRealtime(kind: 'passenger' | 'ops') {
           if (kind === 'ops') client.setQueryData<Kpis>(qk.ops.kpis, d)
           break
         case 'offer.created':
-          toast.success(S.status.cascadeToast, { description: d.allocation?.service?.label })
+          lastTyped = Date.now()
+          toast.success(S.status.cascadeToast, { id: 'offer', description: d.allocation?.service?.label })
           break
         case 'swap.offer_created':
-          toast('Your preferred option has a seat', { description: d.allocation?.service?.label })
+          lastTyped = Date.now()
+          if (!onStatus()) toast('Your preferred option has a seat', { id: 'swap', description: d.allocation?.service?.label })
           break
         case 'hold.expiring':
           try { navigator.vibrate?.(200) } catch { /* unsupported (iOS Safari): silent */ }
-          toast.warning('Your hold ends in 30 seconds')
+          if (!onStatus()) toast.warning('Your hold ends in 30 seconds', { id: 'expiring' })
           break
         case 'hold.expired':
-          toast.error(S.errors.holdExpired)
+          toast.error(S.errors.holdExpired, { id: 'expired' })
           break
         case 'service.rerouted':
-          useLiveStore.getState().markRerouted(d.service_id)
-          toast(kind === 'ops' ? 'Service re-routed' : 'Your bus is re-routing', { description: d.skipped_stops?.length ? `No longer stops at ${d.skipped_stops.map((n: any) => n.name).join(', ')}` : undefined })
+          useLiveStore.getState().markRerouted(d.service_id, (d.skipped_stops ?? []).map((n: any) => n.name))
+          lastTyped = Date.now()
+          // rail short-termination arrives as the same event; the passenger banner on /status already says it
+          if (kind === 'ops' || !onStatus()) toast(kind === 'ops' ? 'Service re-routed' : 'Your vehicle was re-routed', { id: 'rerouted', description: d.skipped_stops?.length ? `No longer stops at ${d.skipped_stops.map((n: any) => n.name).join(', ')}` : undefined })
           break
         case 'notification.created':
-          if (kind === 'passenger') toast(d.title, { description: d.body })
+          // a typed event (offer, swap, re-route) already toasted, and /status shows the same facts inline
+          if (kind === 'passenger' && !onStatus() && Date.now() - lastTyped > 3000) toast(d.title, { id: `n-${d.id}`, description: d.body })
           break
         case 'passenger.registered':
           if (kind === 'ops') toast(`Judge joined: ${d.passenger?.name} → ${d.passenger?.destination?.name}`)
@@ -98,13 +120,13 @@ export function useRealtime(kind: 'passenger' | 'ops') {
           break
         case 'allocation.run_completed':
           if (kind === 'ops') useLiveStore.getState().setLastRun(d.stats)
-          if (kind === 'ops') toast.success(`Allocation done in ${d.stats.duration_ms} ms`, { description: `${d.stats.placed_choice1} on 1st choice, ${d.stats.waitlisted} waitlisted, ${d.stats.unresolved} unresolved` })
+          if (kind === 'ops') toast.success(`Allocation done in ${d.stats.duration_ms} ms`, { id: 'alloc', description: `${d.stats.placed_choice1} on 1st choice, ${d.stats.waitlisted} waitlisted, ${d.stats.unresolved} unresolved` })
           break
         case 'disruption.created':
-          if (kind === 'ops') toast(`Disruption created`, { description: d.disruption?.reason || undefined })
+          if (kind === 'ops') toast(`Disruption created`, { id: 'disruption', description: d.disruption?.reason || undefined })
           break
         case 'rules.updated':
-          toast(`Priority rules updated to v${d.version}`)
+          toast(`Priority rules updated to v${d.version}`, { id: 'rules' })
           break
         case 'stress.progress':
           useLiveStore.getState().setStress({ running: true, progress: d, result: null })

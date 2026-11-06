@@ -30,7 +30,7 @@ function PhoneCard({ step }: { step: number }) {
         <div className="grid gap-3">
           <div className="h-1.5 overflow-hidden rounded-full bg-line"><div className="h-full rounded-full bg-accent transition-[width] duration-500" style={{ width: `${(step + 1) * 25}%` }} /></div>
           <p className="tnum text-[12px] uppercase tracking-[0.05em] text-muted">{f.foot}</p>
-          <div className="grid h-12 place-items-center rounded-button bg-accent text-[13px] uppercase tracking-[0.04em] text-accent-contrast">{step === 2 ? 'Accept seat' : step === 0 ? 'Choose an alternative' : step === 1 ? 'Send my request' : 'View boarding pass'}</div>
+          <div className="grid h-12 place-items-center rounded-button bg-accent text-[13px] uppercase tracking-[0.04em] text-accent-contrast">{step === 2 ? 'Accept seat' : step === 0 ? 'See your options' : step === 1 ? 'Send my request' : 'View boarding pass'}</div>
         </div>
       </div>
     </div>
@@ -77,14 +77,12 @@ export default function Landing() {
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-10 h-[520px] w-[620px] rounded-full opacity-70 blur-[70px]" style={{ background: 'linear-gradient(135deg, color-mix(in oklab, var(--color-coral) 70%, transparent), color-mix(in oklab, var(--color-sky-blue) 80%, transparent))' }} />
           <div className="relative mx-auto grid max-w-[1200px] items-center gap-14 px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:pb-28 lg:pt-16">
             <div className="grid gap-8">
-              <span className="eyebrow">Built in 24 hours · Chennai suburban network</span>
+              <span className="eyebrow">Disruption recovery for suburban rail</span>
               <h1 className="text-[clamp(3rem,1.6rem+5.6vw,5rem)] leading-[1.02]">{L.heroTitle}</h1>
               <p className="max-w-[46ch] text-[18px] text-muted sm:text-[20px]">{L.heroSub}</p>
-              <div className="flex flex-wrap items-center gap-3">
+              <div>
                 <Link to="/demo-join" className={buttonVariants({ variant: 'primary', size: 'lg' })}>{L.ctaDemo} <ArrowRight /></Link>
-                <Link to="/join" className={buttonVariants({ variant: 'ghost', size: 'lg' })}>{L.ctaJoin}</Link>
               </div>
-              <p className="text-[13px] text-muted"><Link to="/login" className="underline decoration-line underline-offset-4 hover:decoration-ink">{L.ctaLogin}</Link> if you already have an account.</p>
             </div>
             <div className="grid gap-6">
               <PhoneCard step={2} />
@@ -140,7 +138,7 @@ export default function Landing() {
         <footer className="border-t border-line">
           <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-5 py-10 text-[13px] text-muted sm:px-8">
             <p>{L.footer}</p>
-            <p>{L.team} · <a className="underline decoration-line underline-offset-4 hover:decoration-ink" href="https://github.com/" rel="noreferrer">GitHub</a></p>
+            <p>{L.team}</p>
           </div>
         </footer>
       </main>

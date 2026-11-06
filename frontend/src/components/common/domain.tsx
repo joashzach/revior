@@ -1,4 +1,4 @@
-import { Accessibility, Baby, Bus, BusFront, Check, Clock, HeartPulse, Hourglass, PersonStanding, Plane, TrainFront, Users, type LucideIcon } from 'lucide-react'
+import { Accessibility, Baby, Bus, BusFront, Clock, HeartPulse, Hourglass, PersonStanding, Plane, TrainFront, Users, type LucideIcon } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import { useEffect, useRef, useState } from 'react'
 import type { Needs, Option, ServiceMode, WhyFeature } from '@/api/types'
@@ -212,9 +212,9 @@ export function ServiceCard({ option, rank, disabled, onSelect, onGrab, grabbing
         )}
         {option.accessible && <Pill tone="info" icon={Accessibility} size="sm">{S.options.accessible}</Pill>}
         {option.transfers > 0 && <Pill tone="neutral" size="sm">{option.transfers} change</Pill>}
-        <Pill tone={option.meets_deadline ? 'success' : 'danger'} icon={option.meets_deadline ? Check : Clock} size="sm">
-          {option.meets_deadline ? S.options.meetsDeadline : S.options.missesDeadline}
-        </Pill>
+        {!option.meets_deadline && (
+          <Pill tone="danger" icon={Clock} size="sm">{S.options.missesDeadline}</Pill>
+        )}
       </div>
       {selectable && (
         <button
@@ -228,12 +228,13 @@ export function ServiceCard({ option, rank, disabled, onSelect, onGrab, grabbing
         </button>
       )}
       {openBooking && !option.is_full && onGrab && (
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-wrap items-center gap-3 border-t border-line pt-3">
+          <span className="text-[13px] text-muted">{S.options.seatsNow}</span>
           <button
             type="button"
             onClick={onGrab}
             disabled={grabbing}
-            className="press inline-flex h-10 items-center rounded-button bg-accent px-5 text-[13px] uppercase tracking-[0.04em] text-accent-contrast hover:bg-accent-hover disabled:opacity-50"
+            className="press inline-flex h-10 items-center rounded-button border border-ink px-5 text-[13px] uppercase tracking-[0.04em] hover:bg-ink hover:text-bg disabled:opacity-50"
           >
             {S.options.grab}
           </button>

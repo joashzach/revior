@@ -31,3 +31,6 @@ export function uuid(): string {
 export const ordinal = (n: number) => (n === 1 ? '1st' : n === 2 ? '2nd' : `${n}th`)
 
 export const fmtInr = (n: number) => `₹${Math.round(n).toLocaleString("en-IN")}`
+
+/** The server `headline` is one sentence plus detail ("Placed on your 1st choice ✓ - MTC 570A…"). Screens show the lead; the detail lives in the card. */
+export const leadOf = (headline: string) => headline.split(/\s[—–-]\s/)[0].replace(/\.$/, '')

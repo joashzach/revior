@@ -25,7 +25,6 @@ export default function Why() {
     <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <div className="grid content-start gap-6">
         <div className="grid gap-2">
-          <span className="eyebrow rise">Transparency</span>
           <h1 className="rise rise-1 text-[clamp(2.2rem,1.4rem+3vw,3.5rem)] leading-[1.05]">{S.why.title}</h1>
         </div>
         <section className="rise rise-2 grid gap-6 rounded-card-sm border border-line p-6 sm:p-8" aria-label="Score breakdown">

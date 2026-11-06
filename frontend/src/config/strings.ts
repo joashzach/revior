@@ -42,14 +42,13 @@ export const S = {
     rateLimited: 'Too many attempts, wait a moment.',
     invalidState: 'That changed while you were looking. Updated.',
     boundaryTitle: 'This screen hit a problem',
-    boundaryBody: 'Reload to pick up where you were. Your seat and place in line are safe.',
+    boundaryBody: 'Reload to pick up where you were. Your seat and waitlist position are safe.',
   },
 
   landing: {
     heroTitle: 'Everyone stranded. Everyone home.',
     heroSub: 'Revior treats a cancelled train as one group problem, not hundreds of separate searches. Passengers choose, Revior allocates fairly, and every decision comes with a reason.',
     ctaDemo: 'Try the live demo',
-    ctaJoin: 'Join as a passenger',
     ctaLogin: 'Log in',
     howTitle: 'How a cancellation plays out',
     steps: [
@@ -101,8 +100,7 @@ export const S = {
   },
 
   trip: {
-    quiet: "We'll alert you if anything changes.",
-    chooseCta: 'Choose an alternative',
+    chooseCta: 'See your options',
     onTime: 'On time',
     cancelled: 'Cancelled',
     delayed: (m: number) => `Delayed +${m} min`,
@@ -120,9 +118,10 @@ export const S = {
     pick1: 'Pick your 1st choice',
     first: '1st',
     second: '2nd',
-    grab: 'Grab now',
+    grab: 'Take a seat',
+    seatsNow: 'Seats available now',
+    grabClosed: 'Taking seats directly is closed right now. Send a request instead.',
     waitlist: 'Full: join waitlist',
-    meetsDeadline: 'Meets your deadline',
     missesDeadline: 'Arrives after your deadline',
     accessible: 'Accessible seats',
     empty: 'No services reach your destination right now. Check Alternatives for shared cabs and nearby hubs.',

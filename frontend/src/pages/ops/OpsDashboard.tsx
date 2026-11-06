@@ -48,7 +48,7 @@ function Kpi({ label, value, suffix, tone }: { label: string; value: number | st
 
 function BatchChip({ closesAt }: { closesAt: string | null }) {
   const secs = useCountdown(closesAt)
-  if (!closesAt) return <span className="hidden text-[12px] uppercase tracking-[0.06em] text-muted xl:inline">No open batch</span>
+  if (!closesAt) return null
   return <span className="tnum rounded-full border border-warning/50 bg-warning-bg px-3 py-1 text-[13px] text-warning-fg" role="timer">Batch closes {Math.floor(secs / 60)}:{String(secs % 60).padStart(2, '0')}</span>
 }
 
@@ -100,7 +100,6 @@ export default function OpsDashboard() {
       <header className="sticky top-0 z-40 border-b border-line bg-bg/95 backdrop-blur-sm">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-5 py-3">
           <ReviorLogo />
-          <span className="rounded-full border border-line px-2.5 py-0.5 text-[11px] uppercase tracking-[0.06em] text-muted">Operations</span>
           <div className="w-56">
             <Select label="Scenario" value={scenarios.data?.items.find((s) => s.is_active)?.slug} onValueChange={(v) => v !== active.data?.slug && setScenarioPick(v)}
               options={(scenarios.data?.items ?? []).map((s) => ({ value: s.slug, label: s.name }))} placeholder="Scenario" />

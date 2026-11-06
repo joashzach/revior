@@ -9,7 +9,7 @@ export default function MiniMap({ serviceId }: { serviceId: number }) {
   return (
     <figure className="grid gap-2">
       <MiniMapView className="h-56" polyline={null} serviceId={s.id} serviceLabel={s.label} mode={s.mode} hub={s.origin} destination={s.destination} />
-      <figcaption className="text-[12px] text-muted">Your vehicle appears here once it is moving. The line is a straight guide, not the road.</figcaption>
+      <figcaption className="text-[12px] text-muted">Approximate route. Your vehicle appears once it is moving.</figcaption>
     </figure>
   )
 }

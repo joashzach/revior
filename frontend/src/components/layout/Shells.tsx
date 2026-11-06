@@ -1,7 +1,5 @@
-import { ArrowUpRight } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { ReviorLogo } from '@/components/brand/ReviorLogo'
-import { buttonVariants } from '@/components/ui/button'
 import { S } from '@/config/strings'
 import { cn } from '@/lib/utils'
 
@@ -19,10 +17,7 @@ export function MarketingNav() {
     <header className="mx-auto flex h-[72px] w-full max-w-[1200px] items-center justify-between px-5 sm:px-8">
       <Link to="/" aria-label="Revior home"><ReviorLogo /></Link>
       <nav aria-label="Main" className="flex items-center gap-2 sm:gap-3">
-        <NavLink to="/login" className="press hidden h-10 items-center rounded-button px-4 text-[13px] uppercase tracking-[0.05em] hover:bg-ink/6 sm:flex">{S.landing.ctaLogin}</NavLink>
-        <Link to="/demo-join" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
-          Live demo <ArrowUpRight />
-        </Link>
+        <NavLink to="/login" className="press flex h-11 items-center rounded-button px-4 text-[13px] uppercase tracking-[0.05em] text-muted hover:text-ink">{S.landing.ctaLogin}</NavLink>
       </nav>
     </header>
   )

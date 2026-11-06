@@ -131,7 +131,7 @@ export function PassengerShell() {
       <div className="flex min-h-dvh min-w-0 flex-col pb-[calc(76px+var(--safe-bottom))] lg:pb-0">
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-line bg-bg/95 px-4 pt-[var(--safe-top)] backdrop-blur-sm sm:px-6 lg:px-10">
           <div className="lg:hidden"><ReviorLogo size="sm" /></div>
-          <div className="hidden lg:block"><span className="eyebrow">Passenger</span></div>
+          <div className="hidden lg:block" />
           <div className="flex items-center gap-1">
             <span className="lg:hidden"><LiveDot showLabel={false} /></span>
             <NotificationsBell />

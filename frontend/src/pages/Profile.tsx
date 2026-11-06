@@ -2,7 +2,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Expand, LogOut, Shuffle, Users } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
 import { authApi, meApi, publicApi } from '@/api/endpoints'
 import { toastError } from '@/api/errors'
 import { qk } from '@/api/queryKeys'
@@ -53,7 +52,6 @@ export default function Profile() {
       const r = await meApi.demoSwitch(mode, id)
       setPickOpen(false)
       complete(r.token, r.passenger, '/trip')
-      toast.success(`You are now ${r.persona.title}`)
     } catch (e) { toastError(e); qc.invalidateQueries({ queryKey: qk.personas }) } finally { setBusy(false) }
   }
   const logout = async () => {
@@ -67,7 +65,6 @@ export default function Profile() {
     <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <div className="grid content-start gap-6">
         <div className="grid gap-2">
-          <span className="eyebrow rise">Account</span>
           <h1 className="rise rise-1 text-[clamp(2.2rem,1.4rem+3vw,3.5rem)] leading-[1.05]">{S.profile.title}</h1>
         </div>
 
