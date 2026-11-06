@@ -30,7 +30,8 @@ export function LiveDot({ className, showLabel = true }: { className?: string; s
 export function NumberRoll({ value, className, suffix }: { value: number | string; className?: string; suffix?: string }) {
   const text = typeof value === 'number' ? value.toLocaleString('en-IN') : value
   return (
-    <span className={cn('tnum relative inline-flex overflow-hidden align-baseline', className)} aria-label={`${text}${suffix ?? ''}`}>
+    <span className={cn('tnum relative inline-flex overflow-hidden align-baseline', className)}>
+      <span className="sr-only">{text}{suffix}</span>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
           key={text}
@@ -39,7 +40,7 @@ export function NumberRoll({ value, className, suffix }: { value: number | strin
           exit={{ y: -8, opacity: 0, filter: 'blur(2px)', transition: { duration: 0.12 } }}
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
           aria-hidden
-        >
+       >
           {text}
           {suffix}
         </motion.span>

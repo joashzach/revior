@@ -100,9 +100,9 @@ export default function Landing() {
               <h2 id="how" className="max-w-[16ch] text-[clamp(2.4rem,1.4rem+3vw,3.5rem)]">{L.howTitle}</h2>
               <ol className="mt-12 grid gap-0">
                 {L.steps.map((s, i) => (
-                  <li key={s.k} ref={setRef(i)} data-i={i} className={cn('border-t border-line py-10 transition-opacity duration-300 lg:min-h-[44vh]', i === active ? 'opacity-100' : 'opacity-55 lg:opacity-40')}>
-                    <span className="tnum font-serif text-[44px] leading-none text-accent">{String(i + 1).padStart(2, '0')}</span>
-                    <h3 className="mt-3 text-[28px]">{s.k}</h3>
+                  <li key={s.k} ref={setRef(i)} data-i={i} className={cn('border-t border-line py-10 transition-colors duration-300 lg:min-h-[44vh]', i === active ? 'text-ink' : 'text-muted')}>
+                    <span className={cn('tnum font-serif text-[44px] leading-none transition-colors duration-300', i === active ? 'text-accent' : 'text-faint')}>{String(i + 1).padStart(2, '0')}</span>
+                    <h3 className={cn('mt-3 text-[28px] transition-colors duration-300', i !== active && 'text-muted')}>{s.k}</h3>
                     <p className="mt-3 max-w-[48ch] text-muted">{s.d}</p>
                   </li>
                 ))}

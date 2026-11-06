@@ -18,6 +18,8 @@
   --color-ink: #000000;
   --color-graphite: #4e4d4d;
   --color-smoke: #797776;
+  /* FALLBACK (not in DESIGN.md): Smoke is 4.03:1 on Parchment, below WCAG AA 4.5:1, so text uses this 5.25:1 shade. Smoke stays for non-text marks. */
+  --color-smoke-text: #676564;
   --color-ash: #cecac8;
 
   /* ---- roles (DESIGN.md "Agent Prompt Guide": text/background/border/accent) ---- */
@@ -28,7 +30,7 @@
   --border: var(--color-ash);
   --text: var(--color-off-black);
   --text-muted: var(--color-graphite);
-  --text-faint: var(--color-smoke);
+  --text-faint: var(--color-smoke-text);
   --on-inverse: var(--color-parchment);
   --accent: var(--color-lake-blue);
   --accent-contrast: #ffffff;
