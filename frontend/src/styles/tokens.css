@@ -1,6 +1,6 @@
 /*
  * Revior design tokens.
- * Source of truth: frontend/DESIGN.md ("Monad" style reference: editorial tech journal on warm parchment).
+ * Source of truth: frontend/docs/DESIGN.md ("Monad" style reference: editorial tech journal on warm parchment).
  * Values marked FALLBACK are not defined in DESIGN.md and come from the interface-craft skill defaults
  * (semantic status colours, motion, focus ring). They are listed in the final report.
  */

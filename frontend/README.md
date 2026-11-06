@@ -2,7 +2,9 @@
 
 Landing page, passenger app and operator dashboard for Revior, a disruption-recovery platform. Default hub: Potheri, Chennai.
 
-React 18 · Vite · TypeScript (strict) · Tailwind 4 with tokens from `DESIGN.md` · Radix/shadcn-style primitives · TanStack Query · react-router · react-leaflet · Recharts · Motion · vaul · sonner · react-hook-form + zod.
+React 18 · Vite · TypeScript (strict) · Tailwind 4 with tokens from [`docs/DESIGN.md`](docs/DESIGN.md) · Radix/shadcn-style primitives · TanStack Query · react-router · react-leaflet · Recharts · Motion · vaul · sonner · react-hook-form + zod.
+
+Specs live in [`docs/`](docs/): [frontend PRD](docs/frontend-PRD.md), [API contract](docs/API-contract.md), [design system](docs/DESIGN.md). The backend PRD is at [`../docs/backend-PRD.md`](../docs/backend-PRD.md).
 
 ## Run it
 

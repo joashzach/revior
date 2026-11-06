@@ -131,8 +131,8 @@ const ServiceLine = memo(function ServiceLine({ id, status, label, positions, on
   useEffect(() => { ref.current?.getElement()?.setAttribute('pathLength', '1') }, [drawing, positions, status])
   return (
     <>
-      {ghost && <Polyline positions={ghost} pathOptions={{ className: 'rv-line rv-line-ghost rv-line-rerouted' }} interactive={false} />}
-      <Polyline key={`${status}-${drawing ? 'draw' : 'still'}`} ref={ref} positions={positions} pathOptions={{ className: `rv-line rv-line-${status} ${drawing ? 'rv-line-draw' : ''}` }} eventHandlers={{ click: () => onSelect?.(id) }}>
+      {ghost && <Polyline positions={ghost} className={'rv-line rv-line-ghost rv-line-rerouted'} interactive={false} />}
+      <Polyline key={`${status}-${drawing ? 'draw' : 'still'}`} ref={ref} positions={positions} className={`rv-line rv-line-${status} ${drawing ? 'rv-line-draw' : ''}`} eventHandlers={{ click: () => onSelect?.(id) }}>
         <Tooltip sticky>{label} · {status}</Tooltip>
       </Polyline>
     </>
@@ -146,9 +146,9 @@ const Edge = memo(function Edge({ e, names, onClose }: { e: NetworkEdge; names: 
   return (
     <>
       {/* Leaflet reads className only when a path is created, so the key remounts it when the edge opens or closes */}
-      <Polyline key={e.is_closed ? 'closed' : 'open'} positions={pos} pathOptions={{ className: e.is_closed ? 'rv-edge-closed' : 'rv-edge' }} interactive={false} />
+      <Polyline key={e.is_closed ? 'closed' : 'open'} positions={pos} className={e.is_closed ? 'rv-edge-closed' : 'rv-edge'} interactive={false} />
       {!e.is_closed && e.mode === 'road' && (
-        <Polyline positions={pos} pathOptions={{ className: 'rv-edge-hit' }}>
+        <Polyline positions={pos} className={'rv-edge-hit'}>
           <Popup>
             <div className="grid gap-2 p-1">
               <p className="font-medium">{e.road_name ?? 'Road'}</p>
@@ -242,7 +242,7 @@ export function MiniMapView({ polyline, serviceId, serviceLabel, mode, hub, dest
     <div className={cn('revior-map relative isolate overflow-hidden rounded-card-sm border border-line', className)}>
       <MapContainer bounds={L.latLngBounds(pts)} boundsOptions={{ padding: [28, 28] }} className="h-full w-full" zoomControl={!!interactive} dragging={!!interactive} scrollWheelZoom={false} doubleClickZoom={!!interactive} touchZoom={!!interactive} keyboard={!!interactive}>
         <TileLayer url={env.tileUrl} attribution={env.attribution} />
-        <Polyline positions={pts} pathOptions={{ className: 'rv-line rv-line-approx' }} interactive={false} />
+        <Polyline positions={pts} className={'rv-line rv-line-approx'} interactive={false} />
         {[hub, destination].map((n) => <Marker key={n.id} position={[n.lat, n.lng]} icon={pinIcon({ ...n, is_hub: true })} keyboard={false}><Tooltip permanent direction="top" offset={[0, -8]} className="revior-label">{n.name}</Tooltip></Marker>)}
         <Vehicles modes={modes} onlyService={serviceId} />
       </MapContainer>
