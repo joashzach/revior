@@ -16,14 +16,13 @@ import { useCompleteLogin } from '@/hooks/useCompleteLogin'
 import { usePersonas, useHealthSync } from '@/hooks/queries'
 import { cn } from '@/lib/utils'
 
-function PersonaCard({ p, busy, onPick, i }: { p: Persona; busy: boolean; onPick: () => void; i: number }) {
+function PersonaCard({ p, busy, onPick }: { p: Persona; busy: boolean; onPick: () => void }) {
   return (
-    <m.li initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 8) * 0.04, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+    <m.li initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
       <button
         type="button"
         disabled={p.is_taken || busy}
         onClick={onPick}
-        aria-label={`${p.title}${p.is_taken ? ', taken' : ''}`}
         className={cn(
           'press grid h-full w-full gap-3 rounded-card-sm border p-5 text-left transition-[border-color,background-color] duration-150 sm:p-6',
           p.is_taken ? 'cursor-not-allowed border-line bg-ink/[0.03] opacity-60' : 'border-line hover:border-accent hover:bg-accent-subtle',
@@ -34,7 +33,7 @@ function PersonaCard({ p, busy, onPick, i }: { p: Persona; busy: boolean; onPick
           {p.is_taken && <Pill tone="neutral" size="sm">{S.common.taken}</Pill>}
         </div>
         <div className="grid gap-1.5">
-          <h3 className="text-[24px] leading-tight">{p.title}</h3>
+          <h2 className="text-[24px] leading-tight">{p.title}</h2>
           <p className="text-[14px] text-muted">{p.summary}</p>
         </div>
         <p className="text-[13px] text-faint">To {p.destination.name}{p.party_size > 1 ? ` · party of ${p.party_size}` : ''}</p>
@@ -83,7 +82,7 @@ export default function DemoJoin() {
         <EmptyState title="No personas free" body={S.persona.empty} action={<Button variant="primary" onClick={() => claim({ surprise: true })}>{S.persona.surprise}</Button>} />
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((p, i) => <PersonaCard key={p.id} p={p} i={i} busy={busy} onPick={() => claim({ persona_id: p.id })} />)}
+          {items.map((p) => <PersonaCard key={p.id} p={p} busy={busy} onPick={() => claim({ persona_id: p.id })} />)}
         </ul>
       )}
       <p className="text-[14px] text-muted">

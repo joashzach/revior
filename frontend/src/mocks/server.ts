@@ -323,7 +323,7 @@ function createDisruption(b: T.DisruptionIn) {
         p.state = 'AFFECTED'
         p.affectedAt = Date.now()
         affected++
-        notify(p, 'disruption_alert', b.type === 'cancellation' ? 'Your train is cancelled' : 'Your train is delayed', `${b.reason || 'Service disruption'}. Choose an alternative now.`)
+        notify(p, 'disruption_alert', b.type === 'cancellation' ? 'Your train is cancelled' : 'Your train is delayed', `${b.reason || 'Service disruption'}. Choose how to get home.`)
       }
     }
   }
@@ -519,7 +519,7 @@ r('GET', '/me/alternatives', 'passenger', ({ token }) => {
   const p = passengerOf(token)
   const items: T.Alternative[] = []
   for (const o of optionsFor(p).filter((x) => !x.is_full && x.meets_deadline).slice(0, 3)) {
-    items.push({ type: o.is_multi_leg ? 'MULTI_LEG' : 'LATER_SERVICE', ref: o.is_multi_leg ? `MULTI:${o.option_id}` : `SVC:${o.request_service_id}`, title: o.is_multi_leg ? 'Bus to Tambaram, then local onward' : `Service: ${o.label}`, description: `${o.seats_left} seats left.`, eta_at: o.eta_at, legs: o.legs, pod: null, requires_allocation: true })
+    items.push({ type: o.is_multi_leg ? 'MULTI_LEG' : 'LATER_SERVICE', ref: o.is_multi_leg ? `MULTI:${o.option_id}` : `SVC:${o.request_service_id}`, title: o.is_multi_leg ? 'Bus to Tambaram, then local onward' : o.label, description: `${o.seats_left} ${o.seats_left === 1 ? 'seat' : 'seats'} left.`, eta_at: o.eta_at, legs: o.legs, pod: null, requires_allocation: true })
   }
   for (const pod of M.pods.filter((x) => x.status === 'forming' && !x.memberIds.includes(p.id))) {
     items.push({ type: 'POD', ref: `POD:${pod.id}`, title: `Share a ${pod.mode} to ${pod.destination.name}`, description: `${pod.seats_taken}/${pod.capacity} seats taken.`, eta_at: M.iso(Date.now() + 40 * MIN), legs: [], pod: podOut(pod), requires_allocation: false })

@@ -6,20 +6,34 @@ import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { Check, ChevronDown, X } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
-import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react'
+import { forwardRef, useRef, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import { Drawer } from 'vaul'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
+
+/** Radix only restores focus to a <Trigger>. Ours open from ordinary buttons, so remember the opener and focus it on close. */
+function useRestoreFocus() {
+  const opener = useRef<HTMLElement | null>(null)
+  return {
+    onOpenAutoFocus: () => { opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null },
+    onCloseAutoFocus: (e: Event) => {
+      const el = opener.current
+      if (el && document.contains(el)) { e.preventDefault(); el.focus() }
+    },
+  }
+}
 
 // ---------- Dialog (decisions that need focus: confirm reset / decline / apply)
 export const Dialog = DialogPrimitive.Root
 export const DialogTrigger = DialogPrimitive.Trigger
 
 export function DialogContent({ title, description, children, className, hideClose }: { title: string; description?: string; children: ReactNode; className?: string; hideClose?: boolean }) {
+  const restore = useRestoreFocus()
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-off-black/40 data-[state=open]:animate-[fade-in_var(--dur-base)_var(--ease-out)]" />
       <DialogPrimitive.Content
+        {...restore}
         className={cn(
           'fixed left-1/2 top-1/2 z-50 w-[min(92vw,520px)] -translate-x-1/2 -translate-y-1/2 rounded-card-sm border border-line bg-bg p-7 shadow-pop outline-none',
           'data-[state=open]:animate-[pop-in_var(--dur-slow)_var(--ease-out)]',
@@ -83,6 +97,7 @@ export function Sheet({ open, onOpenChange, title, description, children, tall }
 
 /** Side panel on laptop (Radix dialog sliding from the right). */
 export function SidePanel({ open, onOpenChange, title, children }: { open: boolean; onOpenChange: (o: boolean) => void; title: string; children: ReactNode }) {
+  const restore = useRestoreFocus()
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <AnimatePresence>
@@ -91,7 +106,7 @@ export function SidePanel({ open, onOpenChange, title, children }: { open: boole
             <DialogPrimitive.Overlay asChild forceMount>
               <m.div className="fixed inset-0 z-50 bg-off-black/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
             </DialogPrimitive.Overlay>
-            <DialogPrimitive.Content asChild forceMount>
+            <DialogPrimitive.Content asChild forceMount {...restore}>
               <m.aside
                 className="scroll-thin fixed bottom-0 right-0 top-0 z-50 w-[min(96vw,560px)] overflow-y-auto border-l border-line bg-bg p-7 outline-none"
                 initial={{ x: 48, opacity: 0 }}
