@@ -359,6 +359,9 @@ async def create(session: AsyncSession, sc: Scenario, *, type_: str, service_id:
     # notifications
     label = _target_label(snap, d, edges)
     notes = [notif.make(p, "disruption_alert", {"message": _alert_message(snap, d, label)}) for p in imp.ticket_affected]
+    if batch is not None and batch_audience:
+        closes = batch.closes_at.strftime("%H:%M")
+        notes += [notif.make(p, "batch_open", {"closes": closes}) for p in imp.ticket_affected if not p.is_seeded]
     for p, _ in imp.lost_seat:
         notes.append(notif.make(p, "disruption_alert", {"message": f"Your seat was cancelled ({label})."}))
     for p, a in imp.reoffer:

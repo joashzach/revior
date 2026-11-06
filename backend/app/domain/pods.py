@@ -15,6 +15,7 @@ from app.domain.tickets import haversine_km
 from app.errors import AppError
 from app.models import Passenger, Pod, PodMember, Request, Scenario, WaitlistEntry
 from app.services import audit
+from app.services import notifications as notif
 from app.ws.events import Event, ev
 
 # mock fares (PRD F14.4): base + per_km x route_km, split equally among seats
@@ -139,9 +140,15 @@ async def create(session: AsyncSession, sc: Scenario, p: Passenger, destination_
     return pod, await _events(session, snap, pod)
 
 
-async def _events(session: AsyncSession, snap: Snapshot, pod: Pod) -> list[Event]:
+async def _events(session: AsyncSession, snap: Snapshot, pod: Pod, actor: Passenger | None = None,
+                  what: str = "") -> list[Event]:
     d = await pod_dict(session, snap, pod)
-    return [ev("pod.updated", {"pod": d}, ops=True, to=[m["passenger_id"] for m in d["members"]])]
+    events = [ev("pod.updated", {"pod": d}, ops=True, to=[m["passenger_id"] for m in d["members"]])]
+    if actor is not None and what:                       # `pod_update` notification for everyone else in the pod
+        others = [p for _, p in await members_of(session, pod.id) if p.id != actor.id]
+        msg = f"{actor.name} {what} - {d['seats_taken']}/{d['capacity']} seats, about ₹{d['fare_per_seat']:.0f} each."
+        events += await notif.emit(session, [notif.make(p, "pod_update", {"message": msg}) for p in others])
+    return events
 
 
 async def join(session: AsyncSession, sc: Scenario, p: Passenger, pod_id: int) -> tuple[Pod, list[Event]]:
@@ -167,7 +174,7 @@ async def join(session: AsyncSession, sc: Scenario, p: Passenger, pod_id: int) -
     await audit.write(session, [audit.row(sc.id, "pod.joined", "pod", pod.id, f"{p.name} joined the shared {pod.mode} to "
                                           f"{snap.nodes[pod.destination_node_id].name} ({taken}/{pod.capacity} seats).",
                                           actor="passenger", actor_id=p.id, passenger_id=p.id)])
-    return pod, await _events(session, snap, pod)
+    return pod, await _events(session, snap, pod, p, "joined your shared " + pod.mode)
 
 
 async def leave(session: AsyncSession, sc: Scenario, p: Passenger, pod_id: int) -> list[Event]:
@@ -194,7 +201,14 @@ async def leave(session: AsyncSession, sc: Scenario, p: Passenger, pod_id: int) 
     await audit.write(session, [audit.row(sc.id, "pod.left", "pod", pod.id, f"{p.name} left the shared {pod.mode}.",
                                           actor="passenger", actor_id=p.id, passenger_id=p.id)])
     d = await pod_dict(session, snap, pod)
-    return [ev("pod.updated", {"pod": d}, ops=True, to=list(dict.fromkeys(audience)))]
+    events = [ev("pod.updated", {"pod": d}, ops=True, to=list(dict.fromkeys(audience)))]
+    rest = [m["passenger_id"] for m in d["members"]]
+    if rest:
+        who = await session.get(Passenger, p.id)
+        msg = f"{who.name} left the shared {pod.mode} - {d['seats_taken']}/{d['capacity']} seats, about ₹{d['fare_per_seat']:.0f} each."
+        others = [x for _, x in await members_of(session, pod.id)]
+        events += await notif.emit(session, [notif.make(x, "pod_update", {"message": msg}) for x in others])
+    return events
 
 
 async def confirm(session: AsyncSession, sc: Scenario, p: Passenger, pod_id: int) -> tuple[Pod, list[Event]]:
@@ -214,4 +228,4 @@ async def confirm(session: AsyncSession, sc: Scenario, p: Passenger, pod_id: int
     snap = await Snapshot.load(session, sc)
     await audit.write(session, [audit.row(sc.id, "pod.confirmed", "pod", pod.id, f"{p.name} confirmed the pod "
                                           f"({len(members)} members).", actor="passenger", actor_id=p.id, passenger_id=p.id)])
-    return pod, await _events(session, snap, pod)
+    return pod, await _events(session, snap, pod, p, "confirmed your shared " + pod.mode)

@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 
 import pytest
 
@@ -6,6 +7,7 @@ from app.domain.state import can, transition
 from app.errors import AppError
 from app.models import Passenger
 from app.security import auth_limiter, register_limiter
+from tests.helpers import post_retry
 
 API = "/api/v1"
 
@@ -226,3 +228,34 @@ def test_state_machine_unit():
     assert transition(p, "AFFECTED") is True and p.state == "AFFECTED"
     assert transition(p, "REQUESTED") and transition(p, "HELD") and transition(p, "CONFIRMED")
     assert transition(p, "BOOKED", force=True) and p.state == "BOOKED"
+
+
+async def test_twenty_parallel_claims_of_one_persona_exactly_one_wins(client, potheri):
+    pid = (await client.get(f"{API}/demo/personas")).json()["items"][3]["id"]
+    rs = await asyncio.gather(*[post_retry(client, f"{API}/auth/demo-claim", json={"persona_id": pid}) for _ in range(20)])
+    assert sorted(r.status_code for r in rs) == [200] + [409] * 19, [r.status_code for r in rs]
+    assert all(r.json()["error"]["code"] == "PERSONA_TAKEN" for r in rs if r.status_code == 409)
+    winner = next(r for r in rs if r.status_code == 200).json()
+    assert winner["passenger"]["id"] == pid
+    # the pool shows it taken exactly once and the same persona cannot be picked again via switch either
+    items = {i["id"]: i["is_taken"] for i in (await client.get(f"{API}/demo/personas")).json()["items"]}
+    assert items[pid] is True and sum(items.values()) == 1
+    other = await client.post(f"{API}/auth/demo-claim", json={"surprise": True})
+    assert other.status_code == 200 and other.json()["passenger"]["id"] != pid
+
+
+async def test_batch_open_and_pod_update_notifications(client, potheri, ops_headers):
+    from tests.helpers import cancel, claim_persona
+    ta, pa = await claim_persona(client, "commuter-guindy")
+    await cancel(client, ops_headers)
+    notes = (await client.get(f"{API}/me/notifications", headers=bearer(ta))).json()["items"]
+    assert {"disruption_alert", "batch_open"} <= {n["template"] for n in notes}
+    assert "close at" in next(n for n in notes if n["template"] == "batch_open")["body"]
+    tb, _ = await claim_persona(client, "parent-tambaram")
+    tc, _ = await claim_persona(client, "family-tambaram")
+    tam = (await client.get(f"{API}/destinations", params={"q": "Tambaram"})).json()["items"][0]["id"]
+    pod = (await client.post(f"{API}/me/pods", json={"destination_node_id": tam, "mode": "auto"}, headers=bearer(tb))).json()
+    r = await client.post(f"{API}/pods/{pod['id']}/join", headers={**bearer(ta), "Idempotency-Key": str(uuid.uuid4())})
+    assert r.status_code == 200, r.text
+    got = (await client.get(f"{API}/me/notifications", headers=bearer(tb))).json()["items"]
+    assert any(n["template"] == "pod_update" and pa["name"] in n["body"] for n in got)
