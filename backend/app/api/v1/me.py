@@ -236,3 +236,20 @@ async def submit_request(body: RequestIn, p: Passenger = Depends(current_passeng
            "choice2_service_id": req.choice2_service_id, "any_fastest": req.any_fastest}
     await finish(session, events, sc.slug)
     return out
+
+
+# ---- status + why (F10.3, F17.3) ------------------------------------------------------------------------
+from app.domain.status import build_status, build_why  # noqa: E402
+from app.schemas.contract import MyStatus, Why  # noqa: E402
+
+
+@router.get("/status", response_model=MyStatus)
+async def my_status(p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    return await build_status(session, sc, snap, p)
+
+
+@router.get("/why", response_model=Why)
+async def my_why(p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    return await build_why(session, sc, snap, p)

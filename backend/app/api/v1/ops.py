@@ -223,3 +223,61 @@ async def batches_close(session: AsyncSession = Depends(get_session)) -> dict:
     out = batch_out(b)
     await finish(session, events, sc.slug)
     return out
+
+
+# ---- allocation, audit, passenger detail (F8, F17.3-4) -------------------------------------------------------
+from app.domain import runner  # noqa: E402
+from app.domain.rules import active_rule  # noqa: E402
+from app.domain.status import build_status, build_why  # noqa: E402
+from app.models import AllocationRun, AuditLog, PriorityRule  # noqa: E402
+from app.schemas.contract import OpenBookingIn, RunIn  # noqa: E402
+
+
+@router.post("/allocation/run")
+async def allocation_run(body: RunIn, session: AsyncSession = Depends(get_session)) -> dict:
+    sid = (await active_scenario(session)).id
+    await session.rollback()
+    return await runner.execute_run(sid, body.mode)
+
+
+@router.get("/allocation/runs/{run_id}")
+async def allocation_run_get(run_id: int, session: AsyncSession = Depends(get_session)) -> dict:
+    run = await session.get(AllocationRun, run_id)
+    if run is None:
+        raise AppError("NOT_FOUND", "Unknown run")
+    rule = await session.get(PriorityRule, run.rule_version_id) if run.rule_version_id else None
+    return {"id": run.id, "mode": run.mode, "started_at": iso(run.started_at), "finished_at": iso(run.finished_at),
+            "rule_version": rule.version if rule else 0, "stats": run.stats}
+
+
+def _page(page: int, page_size: int) -> tuple[int, int]:
+    return max(1, page), min(max(1, page_size), 200)
+
+
+@router.get("/audit")
+async def audit_log(passenger_id: int | None = None, entity: str | None = None, page: int = 1, page_size: int = 50,
+                    session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    page, page_size = _page(page, page_size)
+    q = select(AuditLog).where(AuditLog.scenario_id == sc.id)
+    if passenger_id is not None:
+        q = q.where(AuditLog.passenger_id == passenger_id)
+    if entity:
+        q = q.where(AuditLog.entity_type == entity)
+    total = (await session.execute(select(func.count()).select_from(q.subquery()))).scalar()
+    rows = (await session.execute(q.order_by(AuditLog.id.desc()).offset((page - 1) * page_size).limit(page_size))).scalars().all()
+    return {"items": [{"id": a.id, "actor": a.actor, "action": a.action, "entity_type": a.entity_type,
+                       "entity_id": a.entity_id, "explanation": a.explanation, "created_at": iso(a.created_at)} for a in rows],
+            "page": page, "page_size": page_size, "total": total}
+
+
+@router.get("/passengers/{passenger_id}")
+async def passenger_detail(passenger_id: int, session: AsyncSession = Depends(get_session)) -> dict:
+    p = await session.get(Passenger, passenger_id)
+    if p is None:
+        raise AppError("NOT_FOUND", "Unknown passenger")
+    from app.models import Scenario
+    sc = await session.get(Scenario, p.scenario_id)
+    snap = await Snapshot.load(session, sc)
+    return {"passenger": passenger_out(p, snap), "status": await build_status(session, sc, snap, p),
+            "why": await build_why(session, sc, snap, p)}
