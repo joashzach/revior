@@ -322,3 +322,9 @@ async def add_service(body: AddServiceIn, session: AsyncSession = Depends(get_se
     if auto:      # F15.2: immediately re-allocate all UNRESOLVED + WAITLISTED units (existing choices kept, plus auto)
         await runner.execute_run(sc_id, "greedy")
     return out
+
+
+@router.get("/kpis")
+async def kpis_endpoint(session: AsyncSession = Depends(get_session)) -> dict:
+    from app.domain import metrics
+    return await metrics.kpis(session, await active_scenario(session))

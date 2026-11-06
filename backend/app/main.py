@@ -11,6 +11,7 @@ from app.db import dispose_engine, get_sessionmaker
 from app.errors import install_error_handlers
 from app.logging import RequestIdMiddleware, configure_logging
 from app.models import Node
+from app.ws import routes as ws_routes
 
 log = structlog.get_logger()
 
@@ -39,8 +40,14 @@ async def lifespan(app: FastAPI):
             await bootstrap()
         except Exception:  # DB not migrated yet etc. — keep the app up so /health reports it
             log.error("bootstrap_failed", exc_info=True)
+    if s.RUN_BACKGROUND_LOOPS:
+        from app.jobs.loops import LoopRunner
+        loops = LoopRunner()
+        loops.start()
     log.info("revior_started", version=s.APP_VERSION, demo_mode=s.DEMO_MODE)
     yield
+    if loops:
+        await loops.stop()
     await dispose_engine()
 
 
@@ -56,8 +63,9 @@ def create_app() -> FastAPI:
         allow_methods=["*"], allow_headers=["*"], expose_headers=["X-Request-ID"])
     app.add_middleware(RequestIdMiddleware)
     install_error_handlers(app)
-    for r in (auth.router, me.router, ops.router, pods.router, public.router,):
+    for r in (public.router, auth.router, me.router, pods.router, ops.router):
         app.include_router(r, prefix="/api/v1")
+    app.include_router(ws_routes.router)
     return app
 
 
