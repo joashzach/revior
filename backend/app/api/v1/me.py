@@ -253,3 +253,56 @@ async def my_status(p: Passenger = Depends(current_passenger), session: AsyncSes
 async def my_why(p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
     sc, snap = await load_ctx(session, p)
     return await build_why(session, sc, snap, p)
+
+
+# ---- holds, swap, claim (F9, F11, F16) — all require `Idempotency-Key` ---------------------------------------
+from fastapi import Request as HttpRequest  # noqa: E402
+
+from app.domain import holds as holds_dom  # noqa: E402
+from app.domain import idempotency as idem  # noqa: E402
+from app.schemas.contract import AllocationActionIn, ClaimIn, SwapIn  # noqa: E402
+
+
+async def _mutate(request: HttpRequest, p: Passenger, session: AsyncSession, endpoint: str, action) -> dict:
+    """Run ``action(session, sc, p) -> events`` exactly once per Idempotency-Key and return fresh MyStatus."""
+    key = idem.key_of(request)
+    # Lock the passenger row FIRST: the idempotency-key insert takes a FOR KEY SHARE lock on it through the FK, and
+    # upgrading that to FOR UPDATE afterwards deadlocks when the same passenger fires several requests at once.
+    await session.refresh(p, with_for_update=True)        # one mutating action per passenger at a time
+    replay = await idem.claim_key(session, key, p.id, endpoint)
+    if replay is not None:
+        await session.rollback()
+        return replay
+    sc, snap = await load_ctx(session, p)
+    events = await action(session, sc, p)
+    await session.flush()
+    st = await build_status(session, sc, await Snapshot.load(session, sc), p)
+    await idem.store_response(session, key, p.id, st)
+    await finish(session, events, sc.slug)
+    return st
+
+
+@router.post("/allocation/accept", response_model=MyStatus)
+async def allocation_accept(request: HttpRequest, body: AllocationActionIn | None = None,
+                            p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
+    aid = body.allocation_id if body else None
+    return await _mutate(request, p, session, "accept", lambda s, sc, pp: holds_dom.accept(s, sc, pp, aid))
+
+
+@router.post("/allocation/decline", response_model=MyStatus)
+async def allocation_decline(request: HttpRequest, body: AllocationActionIn | None = None,
+                             p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
+    aid = body.allocation_id if body else None
+    return await _mutate(request, p, session, "decline", lambda s, sc, pp: holds_dom.decline(s, sc, pp, aid))
+
+
+@router.post("/swap", response_model=MyStatus)
+async def swap(request: HttpRequest, body: SwapIn, p: Passenger = Depends(current_passenger),
+               session: AsyncSession = Depends(get_session)) -> dict:
+    return await _mutate(request, p, session, f"swap:{body.service_id}", lambda s, sc, pp: holds_dom.request_swap(s, sc, pp, body.service_id))
+
+
+@router.post("/claim", response_model=MyStatus)
+async def claim(request: HttpRequest, body: ClaimIn, p: Passenger = Depends(current_passenger),
+                session: AsyncSession = Depends(get_session)) -> dict:
+    return await _mutate(request, p, session, f"claim:{body.service_id}", lambda s, sc, pp: holds_dom.claim(s, sc, pp, body.service_id))

@@ -281,3 +281,20 @@ async def passenger_detail(passenger_id: int, session: AsyncSession = Depends(ge
     snap = await Snapshot.load(session, sc)
     return {"passenger": passenger_out(p, snap), "status": await build_status(session, sc, snap, p),
             "why": await build_why(session, sc, snap, p)}
+
+
+@router.post("/open-booking")
+async def open_booking(body: OpenBookingIn, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    sc.config = {**(sc.config or {}), "open_booking_enabled": body.enabled}
+    await finish(session, [], sc.slug)
+    return {"enabled": body.enabled}
+
+
+@router.get("/invariants")
+async def invariants(session: AsyncSession = Depends(get_session)) -> dict:
+    from app.domain import invariants as inv
+    sc = await active_scenario(session)
+    sid = sc.id
+    await session.rollback()
+    return await inv.check(session, sid)
