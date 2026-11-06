@@ -84,7 +84,18 @@ export default function Status() {
 
         {d.state === 'HELD' && a && (
           <>
-            <div className="rise flex flex-wrap items-center justify-between gap-4 rounded-card-sm border border-warning/40 bg-warning-bg p-6 text-warning-fg">
+            {a.choice_rank === '1' ? (
+              <div role="status" className="rise flex items-center gap-3 rounded-card-sm border border-success/40 bg-success-bg p-5 text-success-fg">
+                <CheckCircle2 className="size-6 shrink-0" aria-hidden /> <p className="text-[18px]">Your first pick has a seat</p>
+              </div>
+            ) : (
+              <div role="status" className="rise flex flex-wrap items-center gap-3 rounded-card-sm border border-warning/40 bg-warning-bg p-5 text-warning-fg">
+                <Repeat className="size-6 shrink-0" aria-hidden />
+                <p className="text-[18px]">Moved to {a.service.label}</p>
+                <Link to="/why" className="ml-auto text-[13px] underline underline-offset-4">See why</Link>
+              </div>
+            )}
+            <div className="rise flex flex-wrap items-center justify-between gap-4 rounded-card-sm border border-line p-6">
               <HoldTimer expiresAt={a.hold_expires_at} />
             </div>
             <AllocationCard a={a} />

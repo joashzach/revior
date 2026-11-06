@@ -66,7 +66,7 @@ export default function DemoJoin() {
   return (
     <div className="grid gap-8 pt-4">
       <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
-        <div className="grid max-w-[22ch] gap-3 sm:max-w-[30ch]">
+        <div className="grid max-w-[34ch] gap-3 sm:max-w-[40ch]">
           <span className="eyebrow rise">Live demo</span>
           <h1 className="rise rise-1 text-[clamp(2.4rem,1.4rem+3.4vw,4rem)] leading-[1.04]">{S.persona.title}</h1>
         </div>

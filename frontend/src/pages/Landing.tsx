@@ -77,7 +77,7 @@ export default function Landing() {
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-10 h-[520px] w-[620px] rounded-full opacity-70 blur-[70px]" style={{ background: 'linear-gradient(135deg, color-mix(in oklab, var(--color-coral) 70%, transparent), color-mix(in oklab, var(--color-sky-blue) 80%, transparent))' }} />
           <div className="relative mx-auto grid max-w-[1200px] items-center gap-14 px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:pb-28 lg:pt-16">
             <div className="grid gap-8">
-              <span className="eyebrow">Hackathon PS2 · The Stranded Network</span>
+              <span className="eyebrow">Built in 24 hours · Chennai suburban network</span>
               <h1 className="text-[clamp(3rem,1.6rem+5.6vw,5rem)] leading-[1.02]">{L.heroTitle}</h1>
               <p className="max-w-[46ch] text-[18px] text-muted sm:text-[20px]">{L.heroSub}</p>
               <div className="flex flex-wrap items-center gap-3">

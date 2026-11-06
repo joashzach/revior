@@ -29,3 +29,5 @@ export function uuid(): string {
 
 /** Ordinal for choice ranks: 1 -> "1st". */
 export const ordinal = (n: number) => (n === 1 ? '1st' : n === 2 ? '2nd' : `${n}th`)
+
+export const fmtInr = (n: number) => `₹${Math.round(n).toLocaleString("en-IN")}`

@@ -64,7 +64,7 @@ export const S = {
       { k: 'Transparent priority', d: 'Medical need, wheelchair, age, children, connection deadline and waiting time. Ticket price is never used.' },
       { k: 'Zero over-allocation', d: 'Seats are locked in the database. We hammer it with 1000 simultaneous requests for 10 seats and check that exactly 10 are held.' },
     ],
-    footer: 'Built for hackathon problem statement PS2, “The Stranded Network”.',
+    footer: 'Built in 24 hours for a hackathon.',
     team: 'Team Revior',
   },
 

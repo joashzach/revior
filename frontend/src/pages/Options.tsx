@@ -86,7 +86,7 @@ export default function Options() {
     <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <div className="grid content-start gap-6 pb-28 lg:pb-0">
         <div className="grid gap-2">
-          <span className="eyebrow rise">{hasRequest ? 'Edit your request' : 'Step 2 · choose'}</span>
+          <span className="eyebrow rise">{hasRequest ? 'Edit your request' : 'Choose'}</span>
           <h1 className="rise rise-1 text-[clamp(2.2rem,1.4rem+3vw,3.5rem)] leading-[1.05]">{S.options.title}</h1>
         </div>
 

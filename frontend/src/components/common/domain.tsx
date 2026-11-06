@@ -167,7 +167,7 @@ export function SeatsBar({ left, total }: { left: number; total?: number }) {
       <div className="h-2 w-24 overflow-hidden rounded-full bg-line" aria-hidden>
         <div className={cn('h-full rounded-full', TONE_SOLID[tone])} style={{ width: `${pct}%` }} />
       </div>
-      <span className="tnum text-[13px] text-muted">{left <= 0 ? S.common.full : `${left} seats left`}</span>
+      <span className="tnum text-[13px] text-muted">{left <= 0 ? S.common.full : `${left} ${left === 1 ? "seat" : "seats"} left`}</span>
     </div>
   )
 }
