@@ -20,7 +20,7 @@ from app.domain import routing as rt
 from app.errors import AppError
 from app.models import (Edge, Group, Node, Passenger, PriorityRule, Scenario, Seat, Service, ServiceStop)
 from app.security import hash_password_sync
-from app.seed.generator import calibrate_capacity, generate_passengers
+from app.seed.generator import calibrate_capacity, expand_vehicles, generate_passengers
 from app.services.scenarios import default_config
 
 log = structlog.get_logger()
@@ -98,8 +98,9 @@ async def reset_scenario(session: AsyncSession, slug: str) -> dict:
 
     # ---- services (routes + schedule)
     dwell = catalog.dwell_minutes
+    svc_defs = expand_vehicles(catalog.services)
     svc_rows, svc_routes, serving, popularity, eta = [], {}, {}, {}, {}
-    for d in catalog.services:
+    for d in svc_defs:
         mode_graph = graphs["rail" if d["mode"] == "local_train" else "road"]
         gmode = "rail" if d["mode"] == "local_train" else "road"
         stop_codes = d.get("route") or d["stops"]
@@ -120,19 +121,32 @@ async def reset_scenario(session: AsyncSession, slug: str) -> dict:
                              has_seat_inventory=bool(d.get("inventory")), depart_at=route[0].depart_at,
                              arrive_at=route[-1].arrive_at, polyline=pl, created_by="seed", version=1,
                              total_seats=0, accessible_seats=0, delay_minutes=0))
-    svc_id = {code: i for i, code in await bulk(session, Service, svc_rows, (Service.id, Service.code))}
-    stop_rows = [dict(service_id=svc_id[code], seq=i, node_id=s.node_id, arrive_at=s.arrive_at,
-                      depart_at=s.depart_at, is_skipped=False, is_via=s.is_via)
-                 for code, route in svc_routes.items() for i, s in enumerate(route)]
-    await bulk(session, ServiceStop, stop_rows)
-
-    # ---- passengers
+    # ---- passengers (plan first: the plan decides which vehicles exist and how big they are)
     meta = catalog.scenario
     hub_id = node_id[gen_cfg["hub"]]
     featured = meta["featured_service"]
-    local_codes = [d["code"] for d in catalog.services if d["mode"] == "local_train" and not d.get("inventory")]
+    local_codes = [d["code"] for d in svc_defs if d["mode"] == "local_train" and not d.get("inventory")]
+    caps_by_mode = {"bus": 50, "shuttle": 30, "charter_bus": 50, "local_train": 60, **(gen_cfg.get("vehicle_caps") or {})}
+    leftover = int(gen_cfg.get("demo_leftover_seats", 3))
+    load_cap = {d["code"]: caps_by_mode[d["mode"]] - leftover for d in svc_defs if d.get("inventory") and d.get("calibrate")}
+    opens_after = {d["code"]: (d["clone_of"] if d["code"].endswith("-2") else d["clone_of"] + "-" + str(int(d["code"].rsplit("-", 1)[1]) - 1))
+                   for d in svc_defs if d.get("clone_of")}
     gen = generate_passengers(gen_cfg, rng, t0=t0, hub_id=hub_id, node_ids=node_id, featured_code=featured,
-                              local_codes=local_codes, serving=serving, popularity=popularity, eta=eta)
+                              local_codes=local_codes, serving=serving, popularity=popularity, eta=eta, load_cap=load_cap,
+                              opens_after=opens_after)
+    if gen_cfg.get("capacity_mode") == "calibrated":
+        caps = calibrate_capacity(svc_defs, gen, featured, leftover, float(gen_cfg.get("scarce_capacity_ratio", 0.7)),
+                                  caps_by_mode)
+    else:
+        caps = {d["code"]: (min(int(d.get("seats", 40)), caps_by_mode[d["mode"]]), min(max(2, int(d.get("accessible_seats", 2))), 4))
+                for d in svc_defs if d.get("inventory") and not d.get("clone_of")}
+    keep = {r["code"] for r in svc_rows if (not r["has_seat_inventory"]) or r["code"] in caps}
+    svc_rows = [dict(r, total_seats=caps.get(r["code"], (0, 0))[0], accessible_seats=caps.get(r["code"], (0, 0))[1])
+                for r in svc_rows if r["code"] in keep]
+    svc_id = {code: i for i, code in await bulk(session, Service, svc_rows, (Service.id, Service.code))}
+    await bulk(session, ServiceStop, [dict(service_id=svc_id[code], seq=i, node_id=s.node_id, arrive_at=s.arrive_at,
+                                           depart_at=s.depart_at, is_skipped=False, is_via=s.is_via)
+                                      for code, route in svc_routes.items() if code in keep for i, s in enumerate(route)])
     # groups
     gids = []
     big = [p for p in gen if p["party_size"] > 1]
@@ -177,22 +191,13 @@ async def reset_scenario(session: AsyncSession, slug: str) -> dict:
             state="BOOKED", registered_at=t0 - timedelta(hours=1) + timedelta(seconds=i), seed_plan=None))
     await bulk(session, Passenger, rows + persona_rows)
 
-    # ---- seats + calibrated capacity
-    if gen_cfg.get("capacity_mode") == "calibrated":
-        caps = calibrate_capacity(catalog.services, gen, featured, int(gen_cfg.get("demo_leftover_seats", 3)),
-                                  float(gen_cfg.get("scarce_capacity_ratio", 0.7)))
-    else:
-        caps = {d["code"]: (int(d.get("seats", 40)), int(d.get("accessible_seats", 2)))
-                for d in catalog.services if d.get("inventory")}
-    seat_rows, svc_updates = [], []
+    # ---- seats
+    seat_rows = []
     for code, (total, acc) in caps.items():
         sid = svc_id[code]
         seat_rows += [dict(service_id=sid, seat_no=f"W{i:02d}", is_accessible=True, status="free") for i in range(1, acc + 1)]
         seat_rows += [dict(service_id=sid, seat_no=f"{i:03d}", is_accessible=False, status="free")
                       for i in range(1, total - acc + 1)]
-        svc_updates.append({"id": sid, "total_seats": total, "accessible_seats": acc})
-    if svc_updates:
-        await session.execute(update(Service), svc_updates)
     await bulk(session, Seat, seat_rows)
 
     # ---- rules, scenario row

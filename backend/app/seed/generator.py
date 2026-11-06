@@ -42,7 +42,13 @@ def generate_passengers(
     serving: dict[str, list[int]],
     popularity: dict[str, float],
     eta: dict[str, dict[int, float]] | None = None,
+    load_cap: dict[str, int] | None = None,
+    opens_after: dict[str, str] | None = None,
 ) -> list[dict[str, Any]]:
+    """``load_cap``: max first-choice seat demand per vehicle (vehicle size minus the leftover seats). A vehicle that
+    is full is not offered as a choice, so demand spills onto the extra vehicles generated on the same route."""
+    load_cap = load_cap or {}
+    opens_after = opens_after or {}
     n = int(cfg["count"])
     dest_w = {k: float(v) for k, v in cfg["destinations"].items()}
     total_w = sum(dest_w.values())
@@ -76,7 +82,14 @@ def generate_passengers(
         ticket = featured_code if (not others or rng.random() < cfg["featured_share"]) else rng.choice(others)
         dest_id = node_ids[dest_code]
         cands = candidate_services(hub_id, dest_id, serving, popularity, eta, deadline_min)
-        cands = {k: w / (1 + load.get(k, 0) / 35.0) for k, w in cands.items()}
+        def opened(k: str) -> bool:
+            """an extra vehicle opens once the previous one on the route is mostly full (or can't take this party)"""
+            prev = opens_after.get(k)
+            if prev is None:
+                return True
+            return load.get(prev, 0) >= 0.8 * load_cap.get(prev, 0) or load.get(prev, 0) + party > load_cap.get(prev, 10 ** 9)
+        cands = {k: w / (1 + load.get(k, 0) / 35.0) for k, w in cands.items()
+                 if load.get(k, 0) + party <= load_cap.get(k, 10 ** 9) and opened(k)}
         roll = rng.random()
         plan: dict[str, Any] = {"c1": None, "c2": None, "any": False}
         if not cands:
@@ -89,7 +102,7 @@ def generate_passengers(
         elif roll < ch["both"] + ch["any_fastest"]:
             plan["any"] = True
             # remember where "any, fastest" will land (earliest arrival) so capacity can be calibrated for it
-            plan["fast"] = min(cands, key=lambda c: (eta.get(c, {}).get(dest_id, 1e9), c)) if eta else None
+            plan["fast"] = min(cands, key=lambda c: (eta.get(c, {}).get(dest_id, 1e9), c)) if (eta and cands) else None
             if plan["fast"]:
                 load[plan["fast"]] = load.get(plan["fast"], 0) + party
         else:
@@ -112,10 +125,11 @@ def calibrate_capacity(
     featured_code: str,
     leftover: int,
     scarce_ratio: float,
+    caps_by_mode: dict[str, int],
 ) -> dict[str, tuple[int, int]]:
-    """seats = first-choice demand on the service + leftover (judges compete for the last few seats);
-    `scarce` services get ratio x demand so at least one destination is under-supplied.
-    Returns {code: (total_seats, accessible_seats)}."""
+    """Seats per vehicle = its first-choice demand + leftover (judges compete for the last few seats), never above
+    the realistic size of the vehicle type. `scarce` vehicles get ratio x demand so at least one destination is
+    under-supplied. Extra vehicles (clones) nobody needs are dropped. Returns {code: (seats, accessible)}."""
     demand: dict[str, int] = {}
     wc_demand: dict[str, int] = {}
     for p in passengers:
@@ -130,11 +144,32 @@ def calibrate_capacity(
     for s in service_defs:
         if not s.get("inventory"):
             continue
+        cap = int(caps_by_mode.get(s["mode"], 60))
+        code = s["code"]
         base, acc = int(s.get("seats", 40)), int(s.get("accessible_seats", 2))
-        if s.get("calibrate") and demand.get(s["code"], 0) > 0:
-            d = demand[s["code"]]
+        if s.get("calibrate") and demand.get(code, 0) > 0:
+            d = demand[code]
             seats = max(10, int(d * scarce_ratio)) if s.get("scarce") else d + leftover
-            acc = max(2, wc_demand.get(s["code"], 0) + 1)
-            base = seats
-        out[s["code"]] = (base, min(acc, base))
+            base, acc = seats, max(2, wc_demand.get(code, 0) + 1)
+        elif s.get("clone_of"):
+            continue                      # an extra vehicle nobody needed
+        base = min(base, cap)
+        out[code] = (base, min(max(2, acc), 4, base))
+    return out
+
+
+def expand_vehicles(service_defs: list[dict[str, Any]], stagger_min: int = 6) -> list[dict[str, Any]]:
+    """`vehicles: N` on a seat-bearing service generates N-1 extra vehicles on the same route (own code/label,
+    departing `stagger_min` later each) instead of enlarging one vehicle."""
+    out: list[dict[str, Any]] = []
+    for d in service_defs:
+        out.append(d)
+        for k in range(2, int(d.get("vehicles", 1)) + 1):
+            c = {**d, "code": f"{d['code']}-{k}", "label": f"{d['label']} ({k})", "clone_of": d["code"]}
+            c.pop("vehicles", None)
+            if "anchor" in c:
+                c["anchor"] = {**c["anchor"], "offset_min": c["anchor"]["offset_min"] + stagger_min * (k - 1)}
+            else:
+                c["origin_offset_min"] = c.get("origin_offset_min", 0) + stagger_min * (k - 1)
+            out.append(c)
     return out

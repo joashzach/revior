@@ -9,7 +9,8 @@ deadline: {share: 0.1, airport_share: 0.5, airport_minutes: [80, 130], other_min
 groups: {count: 6, min_size: 2, max_size: 4}
 choices: {both: 0.7, any_fastest: 0.2, one: 0.1}
 capacity_mode: calibrated
-demo_leftover_seats: 3
+demo_leftover_seats: 3          # free seats left on every popular vehicle for the judges
+vehicle_caps: {bus: 50, shuttle: 30, charter_bus: 50, local_train: 60}   # realistic vehicle sizes
 scarce_capacity_ratio: 0.7
 first_names: [Aarav, Ishaan, Riya, Sana, Rohan, Neha, Vikram, Pooja, Kabir, Tanvi]
 last_names: [Patil, Shah, Desai, Joshi, Kulkarni, Mehta, Naik, Gupta, Sawant, Khan]

@@ -9,7 +9,8 @@ deadline: {share: 0.15, airport_share: 0.8, airport_minutes: [75, 130], other_mi
 groups: {count: 60, min_size: 2, max_size: 5}
 choices: {both: 0.70, any_fastest: 0.20, one: 0.10}
 capacity_mode: calibrated      # or "fixed"
-demo_leftover_seats: 3
+demo_leftover_seats: 3          # free seats left on every popular vehicle for the judges
+vehicle_caps: {bus: 50, shuttle: 30, charter_bus: 50, local_train: 60}   # realistic vehicle sizes
 scarce_capacity_ratio: 0.7
 first_names: [Arun, Priya, Karthik, Divya, Suresh, Meena, Ravi, Lakshmi, Vijay, Kavitha, Anand, Deepa, Manoj, Revathi, Ganesh, Sangeetha, Prakash, Nandini, Senthil, Anitha, Murali, Bharathi, Dinesh, Swetha, Balaji, Janani, Naveen, Pooja, Harish, Gayathri]
 last_names: [Kumar, Raj, Subramanian, Iyer, Nair, Pillai, Krishnan, Narayanan, Venkatesh, Sundaram, Murugan, Babu, Selvam, Rao, Menon, Chandran, Natarajan, Ramesh, Gopal, Balan]
