@@ -113,3 +113,113 @@ async def release_persona(persona_id: int, session: AsyncSession = Depends(get_s
     await finish(session, events, sc.slug)
     hub.disconnect_passenger(p.id)
     return Response(status_code=204)
+
+
+# ---- network, services, disruptions, batches (F5, F6, F18.7) ---------------------------------------------
+from sqlalchemy import func  # noqa: E402
+
+from app.domain import batches as batches_dom  # noqa: E402
+from app.domain import disruption as disruption_dom  # noqa: E402
+from app.domain.snapshot import linestring, seat_counts  # noqa: E402
+from app.models import Disruption, Edge, WaitlistEntry  # noqa: E402
+from app.schemas.contract import DisruptionIn  # noqa: E402
+from app.serializers import batch_out  # noqa: E402
+
+
+def canonical_edges(edges: list[Edge]) -> list[Edge]:
+    """One row per physical segment (the lower id of each twin pair)."""
+    seen: dict[tuple, Edge] = {}
+    for e in sorted(edges, key=lambda x: x.id):
+        seen.setdefault((e.mode, frozenset((e.from_node_id, e.to_node_id))), e)
+    return list(seen.values())
+
+
+def edge_out(e: Edge) -> dict:
+    return {"id": e.id, "from_node_id": e.from_node_id, "to_node_id": e.to_node_id, "mode": e.mode,
+            "road_name": e.road_name, "is_closed": e.is_closed, "polyline": linestring(e.polyline)}
+
+
+@router.get("/network")
+async def network(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    snap = await Snapshot.load(session, sc)
+    edges = await disruption_dom.load_edges(session, sc, polylines=True)
+    return {"nodes": [snap.node_ref(i) for i in sorted(snap.nodes)],
+            "edges": [edge_out(e) for e in canonical_edges(edges)]}
+
+
+@router.get("/services")
+async def list_services(status: str | None = None, mode: str | None = None,
+                        session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    snap = await Snapshot.load(session, sc, polylines=True)
+    counts = await seat_counts(session, list(snap.services))
+    wl = dict((await session.execute(select(WaitlistEntry.service_id, func.count()).where(
+        WaitlistEntry.scenario_id == sc.id, WaitlistEntry.status == "active").group_by(WaitlistEntry.service_id))).all())
+    items = []
+    for sid, sv in snap.services.items():
+        if (status and sv.status != status) or (mode and sv.mode != mode):
+            continue
+        c = counts[sid]
+        items.append({**snap.summary(sid), "total_seats": sv.total_seats, "held": c["held"], "confirmed": c["confirmed"],
+                      "free": c["free"], "accessible_free": c["accessible_free"], "waitlist_len": wl.get(sid, 0),
+                      "polyline": linestring(sv.polyline)})
+    return {"items": items}
+
+
+@router.get("/disruptions/preview")
+async def disruption_preview(type: str, service_id: int | None = None, edge_id: int | None = None,
+                             delay_minutes: int | None = None, session: AsyncSession = Depends(get_session)) -> dict:
+    if type not in ("cancellation", "delay", "closure"):
+        raise AppError("VALIDATION_ERROR", "Unknown disruption type", {"fields": {"type": "cancellation|delay|closure"}})
+    sc = await active_scenario(session)
+    return await disruption_dom.preview(session, sc, type, service_id, edge_id, delay_minutes)
+
+
+@router.post("/disruptions")
+async def create_disruption(body: DisruptionIn, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    d, affected, batch, events = await disruption_dom.create(
+        session, sc, type_=body.type, service_id=body.service_id, edge_id=body.edge_id,
+        delay_minutes=body.delay_minutes, reason=body.reason)
+    out = {"disruption": disruption_dom.disruption_dict(d), "affected_count": affected,
+           "batch": batch_out(batch) if batch else None}
+    await finish(session, events, sc.slug)
+    return out
+
+
+@router.get("/disruptions")
+async def list_disruptions(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    return {"items": await disruption_dom.list_disruptions(session, sc)}
+
+
+@router.post("/disruptions/{disruption_id}/resolve")
+async def resolve_disruption(disruption_id: int, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    d = await session.get(Disruption, disruption_id)
+    if d is None or d.scenario_id != sc.id:
+        raise AppError("NOT_FOUND", "Unknown disruption")
+    events = await disruption_dom.resolve(session, sc, d)
+    out = {"id": d.id, "resolved_at": d.resolved_at.isoformat()}
+    await finish(session, events, sc.slug)
+    return out
+
+
+@router.get("/batches/current")
+async def batches_current(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    b = await batches_dom.current_batch(session, sc)
+    return {"batch": batch_out(b) if b else None, "request_count": await batches_dom.request_count(session, b) if b else 0}
+
+
+@router.post("/batches/current/close")
+async def batches_close(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    b = await batches_dom.open_batch_row(session, sc)
+    if b is None:
+        raise AppError("INVALID_STATE", "There is no open batch")
+    events = await batches_dom.close_batch(session, sc, b, clock.utcnow())
+    out = batch_out(b)
+    await finish(session, events, sc.slug)
+    return out

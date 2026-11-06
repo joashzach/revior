@@ -172,3 +172,67 @@ async def demo_switch(body: DemoSwitchIn, p: Passenger = Depends(current_passeng
     await finish(session, events, sc.slug)
     hub.disconnect_passenger(old_id)
     return out
+
+
+# ---- options + request (F4.2, F6.1) --------------------------------------------------------------------
+from app.domain import batches as batches_dom  # noqa: E402
+from app.models import Batch as _Batch  # noqa: E402
+from app.domain.options import compute_options, option_dict, requestable  # noqa: E402
+from app.domain.snapshot import seat_counts  # noqa: E402
+from app.domain.state import REQUESTABLE  # noqa: E402
+from app.models import Allocation, Request  # noqa: E402
+from app.schemas.contract import OptionsOut, RequestIn, RequestOut  # noqa: E402
+from app.serializers import batch_out  # noqa: E402
+
+
+async def _options_for(session: AsyncSession, sc: Scenario, snap: Snapshot, p: Passenger):
+    counts = await seat_counts(session, [s for s, v in snap.services.items() if v.has_seat_inventory])
+    return compute_options(snap, p, clock.utcnow(), counts)
+
+
+@router.get("/options", response_model=OptionsOut)
+async def options(p: Passenger = Depends(current_passenger), session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    opts = await _options_for(session, sc, snap, p)
+    b = await batches_dom.open_batch_row(session, sc)
+    return {"items": [option_dict(snap, o) for o in opts], "batch": batch_out(b) if b else None}
+
+
+@router.post("/request", response_model=RequestOut)
+async def submit_request(body: RequestIn, p: Passenger = Depends(current_passenger),
+                         session: AsyncSession = Depends(get_session)) -> dict:
+    sc, snap = await load_ctx(session, p)
+    if p.state not in REQUESTABLE:
+        raise AppError("INVALID_STATE", f"You can't send a request while {p.state}", {"state": p.state})
+    if body.choice1_service_id is None and body.choice2_service_id is not None:
+        body.choice1_service_id, body.choice2_service_id = body.choice2_service_id, None
+    if body.choice1_service_id is None and not body.any_fastest:
+        raise AppError("VALIDATION_ERROR", "Pick at least one option or choose 'Any, fastest'",
+                       {"fields": {"choice1_service_id": "required unless any_fastest"}})
+    if body.choice1_service_id is not None and body.choice1_service_id == body.choice2_service_id:
+        raise AppError("VALIDATION_ERROR", "Choose two different options", {"fields": {"choice2_service_id": "duplicate"}})
+    valid = requestable(await _options_for(session, sc, snap, p))
+    for field_, sid in (("choice1_service_id", body.choice1_service_id), ("choice2_service_id", body.choice2_service_id)):
+        if sid is not None and sid not in valid:
+            raise AppError("VALIDATION_ERROR", "That option is not available for you",
+                           {"fields": {field_: "not one of your feasible options"}})
+    # a passenger whose previous request sits in an already-closed batch cannot edit it any more
+    closed = (await session.execute(select(Request).join(_Batch, _Batch.id == Request.batch_id).where(
+        Request.passenger_id == p.id, Request.status == "queued", _Batch.status != "open"))).scalars().first()
+    if closed is not None:
+        raise AppError("BATCH_CLOSED", "Window closed — you're in the next batch", {"batch_id": closed.batch_id})
+    now = clock.utcnow()
+    batch, events = await batches_dom.get_or_open_batch(session, sc, "late_request", now, audience=[p.id])
+    req = (await session.execute(select(Request).where(Request.batch_id == batch.id, Request.passenger_id == p.id))).scalars().first()
+    if req is None:
+        req = Request(scenario_id=sc.id, batch_id=batch.id, passenger_id=p.id)
+        session.add(req)
+    req.choice1_service_id, req.choice2_service_id = body.choice1_service_id, body.choice2_service_id
+    req.any_fastest, req.status, req.created_at = body.any_fastest, "queued", now
+    from app.domain.state import transition
+    transition(p, "REQUESTED")
+    await session.flush()
+    out = {"id": req.id, "batch": batch_out(batch), "choice1_service_id": req.choice1_service_id,
+           "choice2_service_id": req.choice2_service_id, "any_fastest": req.any_fastest}
+    await finish(session, events, sc.slug)
+    return out
