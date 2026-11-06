@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 import structlog
+from sqlalchemy.exc import IntegrityError
 
 log = structlog.get_logger()
 
@@ -21,6 +22,10 @@ ERROR_STATUS = {
     "POD_FULL": 409,
     "RATE_LIMITED": 429,
     "IDEMPOTENCY_CONFLICT": 409,
+    "INVALID_CREDENTIALS": 401,
+    "QR_TOKEN_INVALID": 401,
+    "PERSONA_TAKEN": 409,
+    "EMAIL_TAKEN": 409,
 }
 
 _HTTP_TO_CODE = {401: "UNAUTHORIZED", 403: "FORBIDDEN", 404: "NOT_FOUND", 429: "RATE_LIMITED"}
@@ -52,8 +57,12 @@ def install_error_handlers(app: FastAPI) -> None:
             {"loc": list(e.get("loc", [])), "msg": e.get("msg"), "type": e.get("type")}
             for e in exc.errors()
         ]
+        fields = {}
+        for e in exc.errors():
+            loc = [str(x) for x in e.get("loc", []) if x not in ("body", "query", "path")]
+            fields.setdefault(".".join(loc) or "_", e.get("msg"))
         return JSONResponse(
-            envelope("VALIDATION_ERROR", "Request validation failed", {"errors": errs}),
+            envelope("VALIDATION_ERROR", "Request validation failed", {"fields": fields, "errors": errs}),
             status_code=422,
         )
 
@@ -63,6 +72,15 @@ def install_error_handlers(app: FastAPI) -> None:
         return JSONResponse(
             envelope(code, str(exc.detail)), status_code=exc.status_code, headers=exc.headers
         )
+
+    @app.exception_handler(IntegrityError)
+    async def _integrity(request: Request, exc: IntegrityError):
+        """Partial unique indexes are the last line of defence for the invariants; losing such a race is a conflict."""
+        msg = str(getattr(exc, "orig", exc))
+        log.warning("integrity_conflict", path=request.url.path, detail=msg[:200])
+        if "uq_passengers_scenario_email" in msg:
+            return JSONResponse(envelope("EMAIL_TAKEN", "That email is already registered"), status_code=409)
+        return JSONResponse(envelope("INVALID_STATE", "That action conflicts with the current state - refresh and retry"), status_code=409)
 
     @app.exception_handler(Exception)
     async def _unhandled(request: Request, exc: Exception):

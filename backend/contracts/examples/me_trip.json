@@ -1,0 +1,43 @@
+{
+  "ticket": {
+    "ticket_id": "VT-3FA9C2",
+    "service": {
+      "id": 1,
+      "code": "EMU-CGL-BCH-1810",
+      "label": "6:10 PM Chengalpattu → Chennai Beach local",
+      "mode": "local_train",
+      "status": "cancelled",
+      "delay_minutes": 0,
+      "depart_at": "2026-11-05T12:30:00+00:00",
+      "arrive_at": "2026-11-05T14:10:00+00:00",
+      "origin": {
+        "id": 1,
+        "code": "CGL",
+        "name": "Chengalpattu",
+        "lat": 12.6819,
+        "lng": 79.9888,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "destination": {
+        "id": 18,
+        "code": "BCH",
+        "name": "Chennai Beach",
+        "lat": 13.095,
+        "lng": 80.2907,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "accessible": false
+    }
+  },
+  "disruption": {
+    "id": 3,
+    "type": "cancellation",
+    "reason": "Waterlogging near Guduvanchery",
+    "created_at": "2026-11-05T12:31:00+00:00"
+  },
+  "headline": "Your train is cancelled — waterlogging near Guduvanchery"
+}

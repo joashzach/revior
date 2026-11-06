@@ -22,11 +22,31 @@ def get_engine() -> AsyncEngine:
         # Direct (session-mode) connection; pool 10–20 per PRD §9.8.
         _engine = create_async_engine(
             get_settings().DATABASE_URL,
-            pool_size=10,
-            max_overflow=10,
+            pool_size=get_settings().DB_POOL_SIZE,
+            max_overflow=get_settings().DB_MAX_OVERFLOW,
+            pool_timeout=get_settings().DB_POOL_TIMEOUT,
             pool_pre_ping=True,
+            connect_args={"server_settings": {"jit": "off"}},  # JIT adds 100-200 ms to first big statements
         )
         _sessionmaker = async_sessionmaker(_engine, expire_on_commit=False)
+        slow = get_settings().SQL_SLOW_MS
+        if slow > 0:
+            import time
+
+            import structlog
+            from sqlalchemy import event
+
+            log = structlog.get_logger("sql")
+
+            @event.listens_for(_engine.sync_engine, "before_cursor_execute")
+            def _before(conn, cur, stmt, params, ctx, many):
+                conn.info["t0"] = time.perf_counter()
+
+            @event.listens_for(_engine.sync_engine, "after_cursor_execute")
+            def _after(conn, cur, stmt, params, ctx, many):
+                ms = (time.perf_counter() - conn.info.get("t0", time.perf_counter())) * 1000
+                if ms >= slow:
+                    log.warning("slow_sql", ms=round(ms), stmt=" ".join(stmt.split())[:140])
     return _engine
 
 
@@ -74,5 +94,19 @@ async def acquire_xact_lock(session: AsyncSession, namespace: str, scenario_id: 
 async def try_xact_lock(session: AsyncSession, namespace: str, scenario_id: int) -> bool:
     res = await session.execute(
         text("SELECT pg_try_advisory_xact_lock(:k)"), {"k": advisory_key(namespace, scenario_id)}
+    )
+    return bool(res.scalar())
+
+
+async def acquire_xact_lock_shared(session: AsyncSession, namespace: str, scenario_id: int) -> None:
+    """Shared advisory lock: many claims/cascades coexist; an allocation run (exclusive) waits for them."""
+    await session.execute(
+        text("SELECT pg_advisory_xact_lock_shared(:k)"), {"k": advisory_key(namespace, scenario_id)}
+    )
+
+
+async def try_xact_lock_shared(session: AsyncSession, namespace: str, scenario_id: int) -> bool:
+    res = await session.execute(
+        text("SELECT pg_try_advisory_xact_lock_shared(:k)"), {"k": advisory_key(namespace, scenario_id)}
     )
     return bool(res.scalar())

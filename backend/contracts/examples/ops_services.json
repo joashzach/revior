@@ -1,0 +1,58 @@
+{
+  "items": [
+    {
+      "id": 9,
+      "code": "MTC-570A",
+      "label": "MTC 570A Potheri → Guindy",
+      "mode": "bus",
+      "status": "scheduled",
+      "delay_minutes": 0,
+      "depart_at": "2026-11-05T12:35:00+00:00",
+      "arrive_at": "2026-11-05T13:40:00+00:00",
+      "origin": {
+        "id": 6,
+        "code": "POT",
+        "name": "Potheri",
+        "lat": 12.8231,
+        "lng": 80.0442,
+        "kind": "rail_station",
+        "is_hub": true,
+        "is_default_hub": true
+      },
+      "destination": {
+        "id": 15,
+        "code": "GND",
+        "name": "Guindy",
+        "lat": 13.0067,
+        "lng": 80.2206,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "accessible": true,
+      "total_seats": 45,
+      "held": 10,
+      "confirmed": 32,
+      "free": 3,
+      "accessible_free": 1,
+      "waitlist_len": 2,
+      "polyline": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            80.0442,
+            12.8231
+          ],
+          [
+            80.1177,
+            12.9249
+          ],
+          [
+            80.2206,
+            13.0067
+          ]
+        ]
+      }
+    }
+  ]
+}

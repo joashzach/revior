@@ -1,0 +1,27 @@
+{
+  "items": [
+    {
+      "passenger": {
+        "id": 4021,
+        "name": "Asha Wheeler",
+        "party_size": 1,
+        "needs": {
+          "wheelchair": true,
+          "elderly": false,
+          "with_children": false,
+          "medical": false,
+          "connection_deadline_at": null
+        }
+      },
+      "score": 72.0,
+      "choice_rank": "1",
+      "service_label": "MTC 570A Potheri → Guindy",
+      "status": "held",
+      "hold_expires_at": "2026-11-05T12:36:00+00:00",
+      "explanation": "Choice 1 MTC 570A had a free accessible seat. Priority 72 = wheelchair +30, waited 1h +10, deadline +32."
+    }
+  ],
+  "page": 1,
+  "page_size": 50,
+  "total": 1
+}

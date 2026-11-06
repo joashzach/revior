@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "id": 11,
+      "code": "TAM",
+      "name": "Tambaram",
+      "lat": 12.9249,
+      "lng": 80.1177,
+      "kind": "rail_station",
+      "is_hub": false,
+      "is_default_hub": false
+    },
+    {
+      "id": 15,
+      "code": "GND",
+      "name": "Guindy",
+      "lat": 13.0067,
+      "lng": 80.2206,
+      "kind": "rail_station",
+      "is_hub": false,
+      "is_default_hub": false
+    },
+    {
+      "id": 18,
+      "code": "BCH",
+      "name": "Chennai Beach",
+      "lat": 13.095,
+      "lng": 80.2907,
+      "kind": "rail_station",
+      "is_hub": false,
+      "is_default_hub": false
+    }
+  ]
+}

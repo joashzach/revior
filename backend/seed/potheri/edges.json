@@ -1,0 +1,371 @@
+[
+ {
+  "from": "CGL",
+  "to": "PRN",
+  "mode": "rail",
+  "distance_km": 4.41,
+  "base_minutes": 6.3,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "PRN",
+  "to": "SPK",
+  "mode": "rail",
+  "distance_km": 4.04,
+  "base_minutes": 5.8,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "SPK",
+  "to": "MMN",
+  "mode": "rail",
+  "distance_km": 5.91,
+  "base_minutes": 8.4,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "MMN",
+  "to": "KTM",
+  "mode": "rail",
+  "distance_km": 2.89,
+  "base_minutes": 4.1,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "KTM",
+  "to": "POT",
+  "mode": "rail",
+  "distance_km": 1.44,
+  "base_minutes": 2.1,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "POT",
+  "to": "GUD",
+  "mode": "rail",
+  "distance_km": 3.15,
+  "base_minutes": 4.5,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "GUD",
+  "to": "URP",
+  "mode": "rail",
+  "distance_km": 2.34,
+  "base_minutes": 3.3,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "URP",
+  "to": "VAN",
+  "mode": "rail",
+  "distance_km": 4.18,
+  "base_minutes": 6.0,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "VAN",
+  "to": "PER",
+  "mode": "rail",
+  "distance_km": 1.93,
+  "base_minutes": 2.8,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "PER",
+  "to": "TAM",
+  "mode": "rail",
+  "distance_km": 4.16,
+  "base_minutes": 5.9,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "TAM",
+  "to": "CHR",
+  "mode": "rail",
+  "distance_km": 4.23,
+  "base_minutes": 6.0,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "CHR",
+  "to": "PLV",
+  "mode": "rail",
+  "distance_km": 2.21,
+  "base_minutes": 3.2,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "PLV",
+  "to": "TIR",
+  "mode": "rail",
+  "distance_km": 2.53,
+  "base_minutes": 3.6,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "TIR",
+  "to": "GND",
+  "mode": "rail",
+  "distance_km": 7.39,
+  "base_minutes": 10.6,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "GND",
+  "to": "MBM",
+  "mode": "rail",
+  "distance_km": 3.9,
+  "base_minutes": 5.6,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "MBM",
+  "to": "EGM",
+  "mode": "rail",
+  "distance_km": 6.3,
+  "base_minutes": 9.0,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "EGM",
+  "to": "BCH",
+  "mode": "rail",
+  "distance_km": 4.44,
+  "base_minutes": 6.3,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "CGL",
+  "to": "PRN",
+  "mode": "road",
+  "distance_km": 5.01,
+  "base_minutes": 11.1,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "PRN",
+  "to": "SPK",
+  "mode": "road",
+  "distance_km": 4.59,
+  "base_minutes": 10.2,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "SPK",
+  "to": "MMN",
+  "mode": "road",
+  "distance_km": 6.71,
+  "base_minutes": 14.9,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "MMN",
+  "to": "KTM",
+  "mode": "road",
+  "distance_km": 3.29,
+  "base_minutes": 7.3,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "KTM",
+  "to": "POT",
+  "mode": "road",
+  "distance_km": 1.64,
+  "base_minutes": 3.6,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "POT",
+  "to": "GUD",
+  "mode": "road",
+  "distance_km": 3.58,
+  "base_minutes": 8.0,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "GUD",
+  "to": "URP",
+  "mode": "road",
+  "distance_km": 2.65,
+  "base_minutes": 5.9,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "URP",
+  "to": "VAN",
+  "mode": "road",
+  "distance_km": 4.75,
+  "base_minutes": 10.6,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "VAN",
+  "to": "PER",
+  "mode": "road",
+  "distance_km": 2.2,
+  "base_minutes": 4.9,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "PER",
+  "to": "TAM",
+  "mode": "road",
+  "distance_km": 4.73,
+  "base_minutes": 10.5,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "TAM",
+  "to": "CHR",
+  "mode": "road",
+  "distance_km": 4.81,
+  "base_minutes": 10.7,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "CHR",
+  "to": "PLV",
+  "mode": "road",
+  "distance_km": 2.51,
+  "base_minutes": 5.6,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "PLV",
+  "to": "TIR",
+  "mode": "road",
+  "distance_km": 2.87,
+  "base_minutes": 6.4,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "TIR",
+  "to": "GND",
+  "mode": "road",
+  "distance_km": 8.39,
+  "base_minutes": 18.7,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "GND",
+  "to": "MBM",
+  "mode": "road",
+  "distance_km": 4.44,
+  "base_minutes": 9.9,
+  "road_name": "GST Road",
+  "bidirectional": true
+ },
+ {
+  "from": "MBM",
+  "to": "EGM",
+  "mode": "road",
+  "distance_km": 7.16,
+  "base_minutes": 15.9,
+  "road_name": "Anna Salai",
+  "bidirectional": true
+ },
+ {
+  "from": "EGM",
+  "to": "BCH",
+  "mode": "road",
+  "distance_km": 5.05,
+  "base_minutes": 11.2,
+  "road_name": "Anna Salai",
+  "bidirectional": true
+ },
+ {
+  "from": "URP",
+  "to": "NED",
+  "mode": "road",
+  "distance_km": 7.0,
+  "base_minutes": 11.0,
+  "road_name": "Outer Ring Road",
+  "bidirectional": true
+ },
+ {
+  "from": "NED",
+  "to": "MUD",
+  "mode": "road",
+  "distance_km": 5.5,
+  "base_minutes": 8.0,
+  "road_name": "Vandalur-Kelambakkam Road",
+  "bidirectional": true
+ },
+ {
+  "from": "MUD",
+  "to": "PER",
+  "mode": "road",
+  "distance_km": 3.5,
+  "base_minutes": 6.0,
+  "road_name": "Vandalur-Kelambakkam Road",
+  "bidirectional": true
+ },
+ {
+  "from": "MUD",
+  "to": "TAM",
+  "mode": "road",
+  "distance_km": 5.0,
+  "base_minutes": 8.5,
+  "road_name": "Mudichur Road",
+  "bidirectional": true
+ },
+ {
+  "from": "POT",
+  "to": "KTM",
+  "mode": "walk",
+  "distance_km": 2.3,
+  "base_minutes": 28,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "POT",
+  "to": "GUD",
+  "mode": "walk",
+  "distance_km": 3.6,
+  "base_minutes": 45,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "KTM",
+  "to": "MMN",
+  "mode": "walk",
+  "distance_km": 3.9,
+  "base_minutes": 48,
+  "road_name": null,
+  "bidirectional": true
+ }
+]

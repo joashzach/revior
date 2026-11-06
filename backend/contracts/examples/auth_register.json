@@ -1,0 +1,77 @@
+{
+  "token": "<jwt>",
+  "passenger": {
+    "id": 4021,
+    "name": "Asha Wheeler",
+    "email": "wheelchair-guindy@demo.revior.test",
+    "phone": null,
+    "is_seeded": false,
+    "is_demo_persona": false,
+    "hub": {
+      "id": 6,
+      "code": "POT",
+      "name": "Potheri",
+      "lat": 12.8231,
+      "lng": 80.0442,
+      "kind": "rail_station",
+      "is_hub": true,
+      "is_default_hub": true
+    },
+    "destination": {
+      "id": 15,
+      "code": "GND",
+      "name": "Guindy",
+      "lat": 13.0067,
+      "lng": 80.2206,
+      "kind": "rail_station",
+      "is_hub": false,
+      "is_default_hub": false
+    },
+    "party_size": 1,
+    "needs": {
+      "wheelchair": true,
+      "elderly": false,
+      "with_children": false,
+      "medical": false,
+      "connection_deadline_at": null
+    },
+    "allow_auto": true,
+    "state": "BOOKED",
+    "ticket_id": "VT-3FA9C2",
+    "affected_at": "2026-11-05T12:31:00+00:00"
+  },
+  "ticket": {
+    "ticket_id": "VT-3FA9C2",
+    "service": {
+      "id": 1,
+      "code": "EMU-CGL-BCH-1810",
+      "label": "6:10 PM Chengalpattu → Chennai Beach local",
+      "mode": "local_train",
+      "status": "scheduled",
+      "delay_minutes": 0,
+      "depart_at": "2026-11-05T12:30:00+00:00",
+      "arrive_at": "2026-11-05T14:10:00+00:00",
+      "origin": {
+        "id": 1,
+        "code": "CGL",
+        "name": "Chengalpattu",
+        "lat": 12.6819,
+        "lng": 79.9888,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "destination": {
+        "id": 18,
+        "code": "BCH",
+        "name": "Chennai Beach",
+        "lat": 13.095,
+        "lng": 80.2907,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "accessible": false
+    }
+  }
+}

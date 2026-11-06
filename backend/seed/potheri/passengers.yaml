@@ -1,0 +1,26 @@
+hub: POT
+count: 400
+featured_share: 0.96          # tickets on the featured service; the rest on other unreserved locals
+other_ticket_services: [EMU-CGL-BCH-1825, EMU-CGL-BCH-1840]
+destinations: {TAM: 25, CHR: 12, TIR: 15, GND: 20, EGM: 12, BCH: 16}
+airport_node: TIR
+needs: {wheelchair: 0.05, elderly: 0.10, with_children: 0.12, medical: 0.03}
+deadline: {share: 0.15, airport_share: 0.8, airport_minutes: [75, 130], other_minutes: [110, 190]}
+groups: {count: 60, min_size: 2, max_size: 5}
+choices: {both: 0.70, any_fastest: 0.20, one: 0.10}
+capacity_mode: calibrated      # or "fixed"
+demo_leftover_seats: 3
+scarce_capacity_ratio: 0.7
+first_names: [Arun, Priya, Karthik, Divya, Suresh, Meena, Ravi, Lakshmi, Vijay, Kavitha, Anand, Deepa, Manoj, Revathi, Ganesh, Sangeetha, Prakash, Nandini, Senthil, Anitha, Murali, Bharathi, Dinesh, Swetha, Balaji, Janani, Naveen, Pooja, Harish, Gayathri]
+last_names: [Kumar, Raj, Subramanian, Iyer, Nair, Pillai, Krishnan, Narayanan, Venkatesh, Sundaram, Murugan, Babu, Selvam, Rao, Menon, Chandran, Natarajan, Ramesh, Gopal, Balan]
+personas:
+  - {slug: wheelchair-guindy, emoji: "♿", title: "Wheelchair user → Guindy", summary: "Needs accessible seat · travelling alone", name: "Asha Wheeler", destination: GND, needs: {wheelchair: true}}
+  - {slug: family-tambaram, emoji: "👨‍👩‍👧‍👦", title: "Family of 4 → Tambaram", summary: "Must stay together · with children", name: "Rao Family", destination: TAM, party_size: 4, needs: {with_children: true}}
+  - {slug: airport-deadline, emoji: "✈️", title: "Airport deadline → Tirusulam", summary: "Flight check-in closes soon", name: "Nikhil Flyer", destination: TIR, deadline_minutes: 95}
+  - {slug: elderly-chromepet, emoji: "👵", title: "Elderly commuter → Chromepet", summary: "Senior citizen · travelling alone", name: "Kamala Devi", destination: CHR, needs: {elderly: true}}
+  - {slug: medical-egmore, emoji: "🏥", title: "Medical appointment → Egmore", summary: "Hospital visit · medical priority", name: "Imran Care", destination: EGM, needs: {medical: true}}
+  - {slug: student-beach, emoji: "🎒", title: "Student → Chennai Beach", summary: "Exam in the evening · general", name: "Sneha Student", destination: BCH, deadline_minutes: 170}
+  - {slug: commuter-guindy, emoji: "💼", title: "Office commuter → Guindy", summary: "Heading home · general", name: "Rohit Commuter", destination: GND}
+  - {slug: parent-tambaram, emoji: "👩‍🍼", title: "Parent with toddler → Tambaram", summary: "Travelling with a young child", name: "Meera Parent", destination: TAM, needs: {with_children: true}}
+  - {slug: friends-chromepet, emoji: "🧑‍🤝‍🧑", title: "Two friends → Chromepet", summary: "Party of 2 · general", name: "Dev and Kiran", destination: CHR, party_size: 2}
+  - {slug: night-shift-beach, emoji: "🌙", title: "Night-shift worker → Chennai Beach", summary: "Shift starts soon · general", name: "Farhan Shift", destination: BCH, deadline_minutes: 160}

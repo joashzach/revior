@@ -1,0 +1,12 @@
+{
+  "id": 901,
+  "batch": {
+    "id": 7,
+    "status": "open",
+    "opens_at": "2026-11-05T12:31:00+00:00",
+    "closes_at": "2026-11-05T12:31:30+00:00"
+  },
+  "choice1_service_id": 9,
+  "choice2_service_id": 10,
+  "any_fastest": false
+}

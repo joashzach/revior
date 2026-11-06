@@ -1,0 +1,11 @@
+{
+  "type": "stress.progress",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "sent": 500,
+    "ok": 10,
+    "conflicts": 480,
+    "errors": 0
+  }
+}

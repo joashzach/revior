@@ -1,0 +1,202 @@
+[
+ {
+  "code": "CGL",
+  "name": "Chengalpattu",
+  "lat": 12.6819,
+  "lng": 79.9888,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "PRN",
+  "name": "Paranur",
+  "lat": 12.7173,
+  "lng": 79.9958,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "SPK",
+  "name": "Singaperumal Koil",
+  "lat": 12.7476,
+  "lng": 80.0092,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "MMN",
+  "name": "Maraimalai Nagar",
+  "lat": 12.7937,
+  "lng": 80.024,
+  "kind": "rail_station",
+  "is_hub": true,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "KTM",
+  "name": "Kattankulathur",
+  "lat": 12.8139,
+  "lng": 80.0366,
+  "kind": "rail_station",
+  "is_hub": true,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "POT",
+  "name": "Potheri",
+  "lat": 12.8231,
+  "lng": 80.0442,
+  "kind": "rail_station",
+  "is_hub": true,
+  "is_default_hub": true,
+  "verified": false
+ },
+ {
+  "code": "GUD",
+  "name": "Guduvanchery",
+  "lat": 12.8436,
+  "lng": 80.0602,
+  "kind": "rail_station",
+  "is_hub": true,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "URP",
+  "name": "Urapakkam",
+  "lat": 12.8625,
+  "lng": 80.063,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "VAN",
+  "name": "Vandalur",
+  "lat": 12.8914,
+  "lng": 80.0817,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "PER",
+  "name": "Perungalathur",
+  "lat": 12.9055,
+  "lng": 80.089,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "TAM",
+  "name": "Tambaram",
+  "lat": 12.9249,
+  "lng": 80.1177,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "CHR",
+  "name": "Chromepet",
+  "lat": 12.9516,
+  "lng": 80.1403,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "PLV",
+  "name": "Pallavaram",
+  "lat": 12.9675,
+  "lng": 80.1491,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "TIR",
+  "name": "Tirusulam (Airport)",
+  "lat": 12.9823,
+  "lng": 80.1639,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "GND",
+  "name": "Guindy",
+  "lat": 13.0067,
+  "lng": 80.2206,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "MBM",
+  "name": "Mambalam",
+  "lat": 13.0386,
+  "lng": 80.2217,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "EGM",
+  "name": "Egmore",
+  "lat": 13.0732,
+  "lng": 80.2609,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "BCH",
+  "name": "Chennai Beach",
+  "lat": 13.095,
+  "lng": 80.2907,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "NED",
+  "name": "Nedungundram Jn (Outer Ring Rd)",
+  "lat": 12.873,
+  "lng": 80.095,
+  "kind": "bus_stop",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "MUD",
+  "name": "Mudichur Jn (Vandalur-Kelambakkam Rd)",
+  "lat": 12.9,
+  "lng": 80.105,
+  "kind": "bus_stop",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ }
+]

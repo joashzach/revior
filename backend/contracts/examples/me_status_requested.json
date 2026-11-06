@@ -1,0 +1,15 @@
+{
+  "state": "REQUESTED",
+  "batch": {
+    "id": 7,
+    "status": "open",
+    "opens_at": "2026-11-05T12:31:00+00:00",
+    "closes_at": "2026-11-05T12:31:30+00:00"
+  },
+  "allocation": null,
+  "swap_offer": null,
+  "waitlist": [],
+  "resolved_alternative": null,
+  "headline": "Request received — allocating soon",
+  "server_time": "2026-11-05T12:33:00+00:00"
+}

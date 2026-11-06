@@ -1,0 +1,62 @@
+[
+ {
+  "code": "CSMT",
+  "name": "Mumbai CSMT",
+  "lat": 18.9398,
+  "lng": 72.8355,
+  "kind": "rail_station",
+  "is_hub": true,
+  "is_default_hub": true,
+  "verified": false
+ },
+ {
+  "code": "BYC",
+  "name": "Byculla",
+  "lat": 18.9764,
+  "lng": 72.8326,
+  "kind": "rail_station",
+  "is_hub": true,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "DDR",
+  "name": "Dadar",
+  "lat": 19.0178,
+  "lng": 72.8478,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "KRL",
+  "name": "Kurla",
+  "lat": 19.0652,
+  "lng": 72.8795,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "GTK",
+  "name": "Ghatkopar",
+  "lat": 19.086,
+  "lng": 72.9081,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ },
+ {
+  "code": "TNA",
+  "name": "Thane",
+  "lat": 19.186,
+  "lng": 72.9755,
+  "kind": "rail_station",
+  "is_hub": false,
+  "is_default_hub": false,
+  "verified": false
+ }
+]

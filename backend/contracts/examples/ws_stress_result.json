@@ -1,0 +1,13 @@
+{
+  "type": "stress.result",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "total": 1000,
+    "confirmed": 10,
+    "capacity": 10,
+    "over_allocations": 0,
+    "five_xx": 0,
+    "passed": true
+  }
+}

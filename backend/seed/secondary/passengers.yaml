@@ -1,0 +1,19 @@
+hub: CSMT
+count: 50
+featured_share: 1.0
+other_ticket_services: []
+destinations: {DDR: 30, KRL: 30, GTK: 20, TNA: 20}
+airport_node: TNA
+needs: {wheelchair: 0.06, elderly: 0.10, with_children: 0.10, medical: 0.04}
+deadline: {share: 0.1, airport_share: 0.5, airport_minutes: [80, 130], other_minutes: [110, 180]}
+groups: {count: 6, min_size: 2, max_size: 4}
+choices: {both: 0.7, any_fastest: 0.2, one: 0.1}
+capacity_mode: calibrated
+demo_leftover_seats: 3
+scarce_capacity_ratio: 0.7
+first_names: [Aarav, Ishaan, Riya, Sana, Rohan, Neha, Vikram, Pooja, Kabir, Tanvi]
+last_names: [Patil, Shah, Desai, Joshi, Kulkarni, Mehta, Naik, Gupta, Sawant, Khan]
+personas:
+  - {slug: wheelchair-dadar, emoji: "♿", title: "Wheelchair user → Dadar", summary: "Needs accessible seat · travelling alone", name: "Asha Wheeler", destination: DDR, needs: {wheelchair: true}}
+  - {slug: family-thane, emoji: "👨‍👩‍👧‍👦", title: "Family of 4 → Thane", summary: "Must stay together · with children", name: "Patil Family", destination: TNA, party_size: 4, needs: {with_children: true}}
+  - {slug: commuter-kurla, emoji: "💼", title: "Office commuter → Kurla", summary: "Heading home · general", name: "Rohit Commuter", destination: KRL}

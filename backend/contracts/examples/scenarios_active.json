@@ -1,0 +1,16 @@
+{
+  "slug": "potheri-demo",
+  "name": "Potheri - Chengalpattu to Chennai Beach corridor",
+  "default_hub": {
+    "id": 6,
+    "code": "POT",
+    "name": "Potheri",
+    "lat": 12.8231,
+    "lng": 80.0442,
+    "kind": "rail_station",
+    "is_hub": true,
+    "is_default_hub": true
+  },
+  "join_url": "http://localhost:5173/demo-join?scenario=potheri-demo",
+  "demo_mode": true
+}

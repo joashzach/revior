@@ -5,6 +5,7 @@ services:
       POSTGRES_USER: stranded
       POSTGRES_PASSWORD: stranded
       POSTGRES_DB: stranded
+    command: ["postgres", "-c", "jit=off", "-c", "max_connections=100"]
     ports:
       - "${DB_HOST_PORT:-5433}:5432"
     volumes:
@@ -22,10 +23,14 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql+asyncpg://stranded:stranded@db:5432/stranded
-      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me-dev-secret-change-me}
       OPS_PASSWORD: ${OPS_PASSWORD:-ops-change-me}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      FRONTEND_BASE_URL: ${FRONTEND_BASE_URL:-http://localhost:5173}
+      DEMO_PERSONA_PASSWORD: ${DEMO_PERSONA_PASSWORD:-revior-demo}
       DEMO_MODE: ${DEMO_MODE:-true}
+      BATCH_WINDOW_SECONDS: ${BATCH_WINDOW_SECONDS:-150}
+      HOLD_SECONDS: ${HOLD_SECONDS:-600}
     ports:
       - "${API_HOST_PORT:-8000}:8000"
 

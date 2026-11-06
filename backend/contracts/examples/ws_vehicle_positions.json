@@ -1,0 +1,15 @@
+{
+  "type": "vehicle.positions",
+  "ts": "2026-11-05T12:31:00+00:00",
+  "scenario": "potheri-demo",
+  "data": {
+    "items": [
+      {
+        "service_id": 9,
+        "lat": 12.85,
+        "lng": 80.06,
+        "progress": 0.1
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+# Offsets are minutes from scenario t0. `anchor` pins the departure time at a given node.
+scenario:
+  slug: potheri-demo
+  name: "Potheri - Chengalpattu to Chennai Beach corridor"
+  default_hub: POT
+  featured_service: EMU-CGL-BCH-1810
+  rng_seed: 42
+dwell_minutes: 1
+services:
+  # ---- original local trains: unreserved (no seat inventory)
+  - {code: EMU-CGL-BCH-1810, label: "6:10 PM Chengalpattu → Chennai Beach local", mode: local_train, route: [CGL, BCH], stop_all: true, anchor: {node: POT, offset_min: 20}}
+  - {code: EMU-CGL-BCH-1825, label: "6:25 PM Chengalpattu → Chennai Beach local", mode: local_train, route: [CGL, BCH], stop_all: true, anchor: {node: POT, offset_min: 35}}
+  - {code: EMU-CGL-BCH-1840, label: "6:40 PM Chengalpattu → Chennai Beach local", mode: local_train, route: [CGL, BCH], stop_all: true, anchor: {node: POT, offset_min: 50}}
+  - {code: EMU-CGL-TBM-1855, label: "6:55 PM Chengalpattu → Tambaram local", mode: local_train, route: [CGL, TAM], stop_all: true, anchor: {node: POT, offset_min: 65}}
+  - {code: EMU-BCH-CGL-1830, label: "6:30 PM Chennai Beach → Chengalpattu local", mode: local_train, route: [BCH, CGL], stop_all: true, anchor: {node: POT, offset_min: 40}}
+  - {code: EMU-BCH-CGL-1900, label: "7:00 PM Chennai Beach → Chengalpattu local", mode: local_train, route: [BCH, CGL], stop_all: true, anchor: {node: POT, offset_min: 70}}
+  # ---- alternative capacity (seat inventory)
+  - {code: MTC-570A, label: "MTC 570A Potheri → Guindy", mode: bus, inventory: true, stops: [POT, GUD, URP, VAN, PER, TAM, CHR, PLV, TIR, GND], origin_offset_min: 15, seats: 45, accessible_seats: 3, popularity: 1.4, calibrate: true}
+  - {code: MTC-570B, label: "MTC 570B Potheri → Guindy", mode: bus, inventory: true, stops: [POT, GUD, URP, VAN, PER, TAM, CHR, PLV, TIR, GND], origin_offset_min: 25, seats: 45, accessible_seats: 3, popularity: 1.0, calibrate: true}
+  - {code: EXP-TAM, label: "Express Potheri → Tambaram", mode: bus, inventory: true, stops: [POT, TAM], origin_offset_min: 20, seats: 40, accessible_seats: 2, popularity: 1.2, calibrate: true}
+  - {code: MTC-599, label: "MTC 599 Potheri → Tambaram", mode: bus, inventory: true, stops: [POT, GUD, URP, VAN, PER, TAM], origin_offset_min: 18, seats: 45, accessible_seats: 3, popularity: 1.0, calibrate: true}
+  - {code: SHT-AIR, label: "Airport Shuttle Potheri → Tirusulam", mode: shuttle, inventory: true, stops: [POT, TAM, TIR], origin_offset_min: 30, seats: 30, accessible_seats: 3, popularity: 1.5, calibrate: true}
+  - {code: SHT-CHR, label: "Shuttle Potheri → Chromepet", mode: shuttle, inventory: true, stops: [POT, TAM, CHR], origin_offset_min: 40, seats: 30, accessible_seats: 2, popularity: 1.0, calibrate: true}
+  - {code: CHR-GND, label: "Charter Potheri → Guindy", mode: charter_bus, inventory: true, stops: [POT, GND], origin_offset_min: 30, seats: 40, accessible_seats: 2, popularity: 0.8, calibrate: true}
+  - {code: CHR-EGM, label: "Charter Potheri → Egmore", mode: charter_bus, inventory: true, stops: [POT, EGM], origin_offset_min: 45, seats: 40, accessible_seats: 2, popularity: 1.0, calibrate: true}
+  - {code: EMU-SEAT-1945, label: "7:45 PM Potheri → Chennai Beach local (seats assured)", mode: local_train, inventory: true, route: [POT, BCH], stop_all: true, origin_offset_min: 75, seats: 60, accessible_seats: 4, popularity: 1.0, calibrate: true, scarce: true}
+  - {code: EMU-SEAT-2005, label: "8:05 PM Potheri → Chennai Beach local (seats assured)", mode: local_train, inventory: true, route: [POT, BCH], stop_all: true, origin_offset_min: 95, seats: 60, accessible_seats: 4, popularity: 0.7, calibrate: true}
+  - {code: EMU-TBM-BCH-1, label: "Tambaram → Chennai Beach local (onward leg)", mode: local_train, inventory: true, route: [TAM, BCH], stop_all: true, origin_offset_min: 55, seats: 80, accessible_seats: 4, popularity: 0, calibrate: false}
+  - {code: EMU-TBM-BCH-2, label: "Tambaram → Chennai Beach local (onward leg, later)", mode: local_train, inventory: true, route: [TAM, BCH], stop_all: true, origin_offset_min: 85, seats: 80, accessible_seats: 4, popularity: 0, calibrate: false}

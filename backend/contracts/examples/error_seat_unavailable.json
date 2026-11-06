@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "SEAT_UNAVAILABLE",
+    "message": "That seat was just taken.",
+    "details": {}
+  }
+}

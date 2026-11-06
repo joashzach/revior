@@ -1,0 +1,53 @@
+{
+  "state": "HELD",
+  "batch": null,
+  "allocation": {
+    "id": 311,
+    "service": {
+      "id": 9,
+      "code": "MTC-570A",
+      "label": "MTC 570A Potheri → Guindy",
+      "mode": "bus",
+      "status": "scheduled",
+      "delay_minutes": 0,
+      "depart_at": "2026-11-05T12:35:00+00:00",
+      "arrive_at": "2026-11-05T13:40:00+00:00",
+      "origin": {
+        "id": 6,
+        "code": "POT",
+        "name": "Potheri",
+        "lat": 12.8231,
+        "lng": 80.0442,
+        "kind": "rail_station",
+        "is_hub": true,
+        "is_default_hub": true
+      },
+      "destination": {
+        "id": 15,
+        "code": "GND",
+        "name": "Guindy",
+        "lat": 13.0067,
+        "lng": 80.2206,
+        "kind": "rail_station",
+        "is_hub": false,
+        "is_default_hub": false
+      },
+      "accessible": true
+    },
+    "seat_count": 1,
+    "seats": [
+      "W01"
+    ],
+    "choice_rank": "1",
+    "status": "held",
+    "is_primary": true,
+    "hold_expires_at": "2026-11-05T12:36:00+00:00",
+    "score": 72.0,
+    "explanation": "Choice 1 MTC 570A had a free accessible seat. Priority 72 = wheelchair +30, waited 1h +10, deadline +32."
+  },
+  "swap_offer": null,
+  "waitlist": [],
+  "resolved_alternative": null,
+  "headline": "Placed on your 1st choice ✓",
+  "server_time": "2026-11-05T12:33:00+00:00"
+}

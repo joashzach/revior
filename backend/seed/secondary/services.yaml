@@ -1,0 +1,13 @@
+scenario:
+  slug: secondary-demo
+  name: "Mumbai CSMT - Central line"
+  default_hub: CSMT
+  featured_service: LOC-CSMT-TNA-1805
+  rng_seed: 7
+dwell_minutes: 1
+services:
+  - {code: LOC-CSMT-TNA-1805, label: "6:05 PM CSMT → Thane local", mode: local_train, route: [CSMT, TNA], stop_all: true, anchor: {node: CSMT, offset_min: 20}}
+  - {code: LOC-CSMT-TNA-1820, label: "6:20 PM CSMT → Thane local", mode: local_train, route: [CSMT, TNA], stop_all: true, anchor: {node: CSMT, offset_min: 35}}
+  - {code: BEST-A1, label: "BEST A1 CSMT → Kurla", mode: bus, inventory: true, stops: [CSMT, BYC, DDR, KRL], origin_offset_min: 15, seats: 40, accessible_seats: 2, popularity: 1.2, calibrate: true}
+  - {code: BEST-A2, label: "BEST A2 CSMT → Ghatkopar", mode: bus, inventory: true, stops: [CSMT, BYC, DDR, KRL, GTK], origin_offset_min: 25, seats: 40, accessible_seats: 2, popularity: 1.0, calibrate: true}
+  - {code: SHT-TNA, label: "Shuttle CSMT → Thane", mode: shuttle, inventory: true, stops: [CSMT, DDR, TNA], origin_offset_min: 35, seats: 30, accessible_seats: 2, popularity: 1.0, calibrate: true, scarce: true}

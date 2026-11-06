@@ -1,0 +1,101 @@
+[
+ {
+  "from": "CSMT",
+  "to": "BYC",
+  "mode": "rail",
+  "distance_km": 4.49,
+  "base_minutes": 6.4,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "BYC",
+  "to": "DDR",
+  "mode": "rail",
+  "distance_km": 5.36,
+  "base_minutes": 7.7,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "DDR",
+  "to": "KRL",
+  "mode": "rail",
+  "distance_km": 6.86,
+  "base_minutes": 9.8,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "KRL",
+  "to": "GTK",
+  "mode": "rail",
+  "distance_km": 4.17,
+  "base_minutes": 6.0,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "GTK",
+  "to": "TNA",
+  "mode": "rail",
+  "distance_km": 14.5,
+  "base_minutes": 20.7,
+  "road_name": null,
+  "bidirectional": true
+ },
+ {
+  "from": "CSMT",
+  "to": "BYC",
+  "mode": "road",
+  "distance_km": 5.1,
+  "base_minutes": 11.3,
+  "road_name": "LBS / P D'Mello Road",
+  "bidirectional": true
+ },
+ {
+  "from": "BYC",
+  "to": "DDR",
+  "mode": "road",
+  "distance_km": 6.09,
+  "base_minutes": 13.5,
+  "road_name": "LBS / P D'Mello Road",
+  "bidirectional": true
+ },
+ {
+  "from": "DDR",
+  "to": "KRL",
+  "mode": "road",
+  "distance_km": 7.79,
+  "base_minutes": 17.3,
+  "road_name": "LBS / P D'Mello Road",
+  "bidirectional": true
+ },
+ {
+  "from": "KRL",
+  "to": "GTK",
+  "mode": "road",
+  "distance_km": 4.74,
+  "base_minutes": 10.5,
+  "road_name": "Eastern Express Highway",
+  "bidirectional": true
+ },
+ {
+  "from": "GTK",
+  "to": "TNA",
+  "mode": "road",
+  "distance_km": 16.48,
+  "base_minutes": 36.6,
+  "road_name": "Eastern Express Highway",
+  "bidirectional": true
+ },
+ {
+  "from": "CSMT",
+  "to": "BYC",
+  "mode": "walk",
+  "distance_km": 3.2,
+  "base_minutes": 38,
+  "road_name": null,
+  "bidirectional": true
+ }
+]
