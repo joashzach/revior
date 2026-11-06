@@ -154,3 +154,26 @@
 @keyframes rise { from { opacity: 0; transform: translateY(8px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
 .rise { animation: rise var(--dur-slow) var(--ease-out) both; }
 .rise-1 { animation-delay: 40ms; } .rise-2 { animation-delay: 90ms; } .rise-3 { animation-delay: 140ms; } .rise-4 { animation-delay: 190ms; }
+
+/* ---- map line styling via classes (SVG renderer), colours from tokens */
+.rv-edge { stroke: var(--text-faint); stroke-width: 2; fill: none; opacity: 0.9; }
+.rv-edge-closed { stroke: var(--danger); stroke-width: 6; stroke-dasharray: 10 8; opacity: 1; fill: none; }
+.rv-edge-hit { stroke: transparent; stroke-width: 18; fill: none; cursor: pointer; }
+.rv-line { stroke-width: 5; fill: none; stroke-linecap: round; stroke-linejoin: round; cursor: pointer; transition: stroke-width 150ms var(--ease-out); }
+.rv-line:hover { stroke-width: 8; }
+.rv-line-scheduled { stroke: var(--info); stroke-width: 3.5; opacity: 0.8; }
+.rv-line-running { stroke: var(--accent); stroke-width: 6.5; }
+.rv-line-delayed { stroke: var(--warning); }
+.rv-line-cancelled { stroke: var(--danger); stroke-dasharray: 3 9; opacity: 0.9; }
+.rv-line-rerouted { stroke: var(--success); }
+.rv-line-completed { stroke: var(--text-faint); }
+.rv-line-ghost { animation: rv-fade 400ms var(--ease-out) forwards; }
+@keyframes rv-fade { from { opacity: 0.8 } to { opacity: 0 } }
+.rv-line-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: rv-draw 600ms var(--ease-out) forwards; }
+@keyframes rv-draw { to { stroke-dashoffset: 0 } }
+@media (prefers-reduced-motion: reduce) {
+  .rv-line-ghost { display: none; animation: none; }
+  .rv-line-draw { stroke-dasharray: none; stroke-dashoffset: 0; animation: none; }
+}
+.revior-vehicle svg { width: 16px; height: 16px; }
+.revior-vehicle { will-change: transform; }

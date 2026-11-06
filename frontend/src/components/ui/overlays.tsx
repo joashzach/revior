@@ -163,12 +163,12 @@ export function PopoverContent({ className, ...p }: ComponentPropsWithoutRef<typ
 // ---------- Select
 export function Select({ value, onValueChange, options, placeholder, label, className }: { value: string | undefined; onValueChange: (v: string) => void; options: { value: string; label: string }[]; placeholder?: string; label?: string; className?: string }) {
   return (
-    <SelectPrimitive.Root value={value} onValueChange={onValueChange}>
+    <SelectPrimitive.Root value={value ?? ''} onValueChange={onValueChange}>
       <SelectPrimitive.Trigger
         aria-label={label}
-        className={cn('press flex h-12 w-full items-center justify-between gap-2 rounded-panel border border-line bg-bg px-4 text-left hover:border-ink/50 data-[placeholder]:text-faint', className)}
+        className={cn('press flex h-12 w-full whitespace-nowrap items-center justify-between gap-2 rounded-panel border border-line bg-bg px-4 text-left hover:border-ink/50 data-[placeholder]:text-faint', className)}
       >
-        <SelectPrimitive.Value placeholder={placeholder} />
+        <span className="min-w-0 flex-1 truncate"><SelectPrimitive.Value placeholder={placeholder} /></span>
         <SelectPrimitive.Icon>
           <ChevronDown className="size-4" />
         </SelectPrimitive.Icon>

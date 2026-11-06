@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import { create } from 'zustand'
 import { qk } from '@/api/queryKeys'
 import { meApi, opsApi } from '@/api/endpoints'
-import type { Kpis, StressProgress, StressResult } from '@/api/types'
+import type { Kpis, RunStats, StressProgress, StressResult } from '@/api/types'
 import { useSession } from '@/app/session'
 import { S } from '@/config/strings'
 import { bus, useConnStore, useVehicleStore } from './bus'
@@ -16,6 +16,8 @@ interface LiveStore {
   stress: { running: boolean; progress: StressProgress | null; result: StressResult | null }
   rerouted: Record<number, number>
   judgesJoined: number
+  lastRun: RunStats | null
+  setLastRun: (r: RunStats) => void
   setStress: (p: Partial<LiveStore['stress']>) => void
   markRerouted: (id: number) => void
   bumpJudges: (n?: number) => void
@@ -24,6 +26,8 @@ export const useLiveStore = create<LiveStore>((set, get) => ({
   stress: { running: false, progress: null, result: null },
   rerouted: {},
   judgesJoined: 0,
+  lastRun: null,
+  setLastRun: (r) => set({ lastRun: r }),
   setStress: (p) => set({ stress: { ...get().stress, ...p } }),
   markRerouted: (id) => set({ rerouted: { ...get().rerouted, [id]: Date.now() } }),
   bumpJudges: (n = 1) => set({ judgesJoined: n === 0 ? 0 : get().judgesJoined + n }),
@@ -93,6 +97,7 @@ export function useRealtime(kind: 'passenger' | 'ops') {
           useLiveStore.getState().bumpJudges()
           break
         case 'allocation.run_completed':
+          if (kind === 'ops') useLiveStore.getState().setLastRun(d.stats)
           if (kind === 'ops') toast.success(`Allocation done in ${d.stats.duration_ms} ms`, { description: `${d.stats.placed_choice1} on 1st choice, ${d.stats.waitlisted} waitlisted, ${d.stats.unresolved} unresolved` })
           break
         case 'disruption.created':
