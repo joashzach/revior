@@ -18,7 +18,21 @@ def hav(a, b):
     return 2 * r * math.asin(math.sqrt(h))
 
 
+def apply_overrides(name, nodes):
+    """coordinate_overrides.json (written by scripts/verify_coordinates.py) holds OSM-confirmed positions."""
+    f = ROOT / name / "coordinate_overrides.json"
+    if not f.exists():
+        return nodes
+    ov = json.loads(f.read_text(encoding="utf-8"))
+    for n in nodes:
+        o = ov.get(n["code"])
+        if o:
+            n.update(lat=o["lat"], lng=o["lng"], verified=bool(o.get("verified")))
+    return nodes
+
+
 def build(name, nodes, rail_chain, road_chain, extra_edges, walk_edges, road_name_fn):
+    nodes = apply_overrides(name, nodes)
     pos = {n["code"]: (n["lat"], n["lng"]) for n in nodes}
     edges = []
 

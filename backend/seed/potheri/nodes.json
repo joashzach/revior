@@ -2,182 +2,182 @@
  {
   "code": "CGL",
   "name": "Chengalpattu",
-  "lat": 12.6819,
-  "lng": 79.9888,
+  "lat": 12.693465,
+  "lng": 79.980516,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "PRN",
   "name": "Paranur",
-  "lat": 12.7173,
-  "lng": 79.9958,
+  "lat": 12.73012,
+  "lng": 79.983963,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "SPK",
   "name": "Singaperumal Koil",
-  "lat": 12.7476,
-  "lng": 80.0092,
+  "lat": 12.761923,
+  "lng": 80.00078,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "MMN",
   "name": "Maraimalai Nagar",
-  "lat": 12.7937,
-  "lng": 80.024,
+  "lat": 12.795822,
+  "lng": 80.02691,
   "kind": "rail_station",
   "is_hub": true,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "KTM",
   "name": "Kattankulathur",
-  "lat": 12.8139,
-  "lng": 80.0366,
+  "lat": 12.805558,
+  "lng": 80.026634,
   "kind": "rail_station",
   "is_hub": true,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "POT",
   "name": "Potheri",
-  "lat": 12.8231,
-  "lng": 80.0442,
+  "lat": 12.820757,
+  "lng": 80.036874,
   "kind": "rail_station",
   "is_hub": true,
   "is_default_hub": true,
-  "verified": false
+  "verified": true
  },
  {
   "code": "GUD",
   "name": "Guduvanchery",
-  "lat": 12.8436,
-  "lng": 80.0602,
+  "lat": 12.84523,
+  "lng": 80.05765,
   "kind": "rail_station",
   "is_hub": true,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "URP",
   "name": "Urapakkam",
-  "lat": 12.8625,
-  "lng": 80.063,
+  "lat": 12.867366,
+  "lng": 80.072022,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "VAN",
   "name": "Vandalur",
-  "lat": 12.8914,
-  "lng": 80.0817,
+  "lat": 12.891606,
+  "lng": 80.084974,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "PER",
   "name": "Perungalathur",
-  "lat": 12.9055,
-  "lng": 80.089,
+  "lat": 12.906637,
+  "lng": 80.096276,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "TAM",
   "name": "Tambaram",
-  "lat": 12.9249,
-  "lng": 80.1177,
+  "lat": 12.925416,
+  "lng": 80.116935,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "CHR",
   "name": "Chromepet",
-  "lat": 12.9516,
-  "lng": 80.1403,
+  "lat": 12.95219,
+  "lng": 80.141168,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "PLV",
   "name": "Pallavaram",
-  "lat": 12.9675,
-  "lng": 80.1491,
+  "lat": 12.967574,
+  "lng": 80.15205,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "TIR",
   "name": "Tirusulam (Airport)",
-  "lat": 12.9823,
-  "lng": 80.1639,
+  "lat": 12.980461,
+  "lng": 80.165793,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "GND",
   "name": "Guindy",
-  "lat": 13.0067,
-  "lng": 80.2206,
+  "lat": 13.008047,
+  "lng": 80.213137,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "MBM",
   "name": "Mambalam",
-  "lat": 13.0386,
-  "lng": 80.2217,
+  "lat": 13.038066,
+  "lng": 80.227775,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "EGM",
   "name": "Egmore",
-  "lat": 13.0732,
-  "lng": 80.2609,
+  "lat": 13.0794,
+  "lng": 80.26277,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "BCH",
   "name": "Chennai Beach",
-  "lat": 13.095,
-  "lng": 80.2907,
+  "lat": 13.091936,
+  "lng": 80.292113,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "NED",

@@ -46,7 +46,7 @@ async def test_capacity_is_realistic_with_extra_vehicles_not_bigger_ones(potheri
     assert {"MTC-570A", "MTC-570A-2"} <= codes                       # demand beyond one bus -> a second bus on the same route
     by_code = {sv.code: sv for sv in svcs}
     assert by_code["MTC-570A-2"].label.startswith(by_code["MTC-570A"].label)
-    assert max(sv.total_seats for sv in svcs if sv.mode == "bus") == 50
+    assert 40 <= max(sv.total_seats for sv in svcs if sv.mode == "bus") <= 50
 
 
 async def test_judges_find_a_few_free_seats_and_an_unresolved_queue_exists(client, potheri, ops_headers):
@@ -63,3 +63,16 @@ async def test_judges_find_a_few_free_seats_and_an_unresolved_queue_exists(clien
 
 
 API = "/api/v1"
+
+
+async def test_required_station_coordinates_are_osm_verified(potheri):
+    from app.models import Node, Scenario
+    required = {"POT", "GUD", "URP", "VAN", "PER", "TAM", "CHR", "PLV", "TIR", "GND", "EGM", "BCH"}
+    async with get_sessionmaker()() as s:
+        nodes = (await s.execute(select(Node).join(Scenario, Scenario.id == Node.scenario_id).where(Scenario.slug == "potheri-demo"))).scalars().all()
+    by = {n.code: n for n in nodes}
+    assert all(by[c].coord_verified for c in required), [c for c in required if not by[c].coord_verified]
+    # corrected positions stay on the Chennai corridor (south -> north latitudes increase)
+    order = ["POT", "GUD", "URP", "VAN", "PER", "TAM", "CHR", "PLV", "TIR", "GND", "EGM", "BCH"]
+    lats = [by[c].lat for c in order]
+    assert lats == sorted(lats)

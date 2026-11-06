@@ -2,61 +2,61 @@
  {
   "code": "CSMT",
   "name": "Mumbai CSMT",
-  "lat": 18.9398,
-  "lng": 72.8355,
+  "lat": 18.940833,
+  "lng": 72.831861,
   "kind": "rail_station",
   "is_hub": true,
   "is_default_hub": true,
-  "verified": false
+  "verified": true
  },
  {
   "code": "BYC",
   "name": "Byculla",
-  "lat": 18.9764,
-  "lng": 72.8326,
+  "lat": 18.976406,
+  "lng": 72.832704,
   "kind": "rail_station",
   "is_hub": true,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "DDR",
   "name": "Dadar",
-  "lat": 19.0178,
-  "lng": 72.8478,
+  "lat": 19.019227,
+  "lng": 72.842848,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "KRL",
   "name": "Kurla",
-  "lat": 19.0652,
-  "lng": 72.8795,
+  "lat": 19.065817,
+  "lng": 72.880284,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "GTK",
   "name": "Ghatkopar",
-  "lat": 19.086,
-  "lng": 72.9081,
+  "lat": 19.086129,
+  "lng": 72.90902,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  },
  {
   "code": "TNA",
   "name": "Thane",
-  "lat": 19.186,
-  "lng": 72.9755,
+  "lat": 19.184614,
+  "lng": 72.971028,
   "kind": "rail_station",
   "is_hub": false,
   "is_default_hub": false,
-  "verified": false
+  "verified": true
  }
 ]

@@ -1,0 +1,62 @@
+{
+ "CSMT": {
+  "lat": 18.940833,
+  "lng": 72.831861,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/13207029322",
+  "match_level": "station",
+  "match": "Chhatrapati Shivaji Maharaj Terminus, Corporation Street, Bori Bunder, Fort, A Ward, Mumbai Zone 1, ",
+  "moved_km": 0.4
+ },
+ "BYC": {
+  "lat": 18.976406,
+  "lng": 72.832704,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "way/207556895",
+  "match_level": "station",
+  "match": "Byculla Railway Station, Byculla East, E Ward, Mumbai Zone 1, Mumbai City District, Maharashtra, Ind",
+  "moved_km": 0.01
+ },
+ "DDR": {
+  "lat": 19.019227,
+  "lng": 72.842848,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/2630075004",
+  "match_level": "station",
+  "match": "Dadar, Ranade Road Extension, Dadar West, G/N Ward, Mumbai Zone 2, Mumbai City District, Maharashtra",
+  "moved_km": 0.54
+ },
+ "KRL": {
+  "lat": 19.065817,
+  "lng": 72.880284,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "way/122303852",
+  "match_level": "station",
+  "match": "Kurla Railway Station, Kurla East, L Ward, Mumbai Zone 5, Mumbai, Mumbai Suburban District, Maharash",
+  "moved_km": 0.11
+ },
+ "GTK": {
+  "lat": 19.086129,
+  "lng": 72.90902,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "way/151489119",
+  "match_level": "station",
+  "match": "Ghatkopar Railway Station, Ghatkopar East, N Ward, Mumbai Zone 6, Mumbai, Mumbai Suburban District, ",
+  "moved_km": 0.1
+ },
+ "TNA": {
+  "lat": 19.184614,
+  "lng": 72.971028,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "way/37840710",
+  "match_level": "station",
+  "match": "Thane Railway Station, Kopri, Thane, Thane Subdistrict, Thane, Maharashtra, India",
+  "moved_km": 0.49
+ }
+}

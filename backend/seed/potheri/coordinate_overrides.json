@@ -1,0 +1,182 @@
+{
+ "CGL": {
+  "lat": 12.693465,
+  "lng": 79.980516,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5273662388",
+  "match_level": "station",
+  "match": "Chengalpatttu Junction, Chennai - Trichy - Dindugal Road (Old NH45), Vedachalam Nagar, Gokulapuram, ",
+  "moved_km": 1.57
+ },
+ "PRN": {
+  "lat": 12.73012,
+  "lng": 79.983963,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5311775875",
+  "match_level": "station",
+  "match": "Paranur, Grand Southern Trunk Road, Chettipunyam, Paranur, Chennai Metropolitan Area, Chengalpattu, ",
+  "moved_km": 1.92
+ },
+ "SPK": {
+  "lat": 12.761923,
+  "lng": 80.00078,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5311775876",
+  "match_level": "station",
+  "match": "Singaperumal Koil, Singaperumalkoil - Sriperumbudur - Thiruvallur - Red Hills Road, Thirukachur, Sin",
+  "moved_km": 1.84
+ },
+ "MMN": {
+  "lat": 12.795822,
+  "lng": 80.02691,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/1180849763",
+  "match_level": "locality",
+  "match": "Maraimalai Nagar, Chennai Metropolitan Area, Chengalpattu, Tamil Nadu, 603209, India",
+  "moved_km": 0.39
+ },
+ "KTM": {
+  "lat": 12.805558,
+  "lng": 80.026634,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5273746526",
+  "match_level": "station",
+  "match": "Kattangulathur, Grand Southern Trunk Road, Kattangulathur, Maraimalai Nagar, Chennai Metropolitan Ar",
+  "moved_km": 1.42
+ },
+ "POT": {
+  "lat": 12.820757,
+  "lng": 80.036874,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5311775878",
+  "match_level": "station",
+  "match": "Potheri, Grand Southern Trunk Road, Kattangulathur, Maraimalai Nagar, Chennai Metropolitan Area, Che",
+  "moved_km": 0.84
+ },
+ "GUD": {
+  "lat": 12.84523,
+  "lng": 80.05765,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5274260962",
+  "match_level": "station",
+  "match": "Guduvancheri, Guduvancheri - Madambakkam Road, Nandhivaram, Guduvancheri, Chennai Metropolitan Area,",
+  "moved_km": 0.33
+ },
+ "URP": {
+  "lat": 12.867366,
+  "lng": 80.072022,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5287023930",
+  "match_level": "station",
+  "match": "Urappakkam, Station Road, Urapakkam, Guduvancheri, Chennai Metropolitan Area, Vandalur, Chengalpattu",
+  "moved_km": 1.12
+ },
+ "VAN": {
+  "lat": 12.891606,
+  "lng": 80.084974,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5311775879",
+  "match_level": "station",
+  "match": "Vandalur, Perungalathur Flyover Ramp, Vandalur, Chennai Metropolitan Area, Vandalur, Chengalpattu, T",
+  "moved_km": 0.36
+ },
+ "PER": {
+  "lat": 12.906637,
+  "lng": 80.096276,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/3016148044",
+  "match_level": "station",
+  "match": "Perungalathur railway station, Perungalathur Maempalam, Peerkankaranai, Perungalathur, Tambaram, Che",
+  "moved_km": 0.8
+ },
+ "TAM": {
+  "lat": 12.925416,
+  "lng": 80.116935,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/442131985",
+  "match_level": "station",
+  "match": "Tambaram Railway Station, Tambaram Flyover Ramp, Irumbuliyur, Tambaram, Chennai Metropolitan Area, T",
+  "moved_km": 0.1
+ },
+ "CHR": {
+  "lat": 12.95219,
+  "lng": 80.141168,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/5273733276",
+  "match_level": "station",
+  "match": "Chromepet, Radha Nagar Subway, New Colony, Chromepet, Pallavaram, Chennai Metropolitan Area, Pallava",
+  "moved_km": 0.11
+ },
+ "PLV": {
+  "lat": 12.967574,
+  "lng": 80.15205,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/4435694788",
+  "match_level": "station",
+  "match": "Pallavaram, Siva Shankaran Street, Old Pallavaram, Pallavaram, Chennai Metropolitan Area, Pallavaram",
+  "moved_km": 0.32
+ },
+ "TIR": {
+  "lat": 12.980461,
+  "lng": 80.165793,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/4885083053",
+  "match_level": "station",
+  "match": "Tirusulam, Grand Southern Trunk Road, Ward 159, St. Thomas Mount Cantonment, Chennai Metropolitan Ar",
+  "moved_km": 0.29
+ },
+ "GND": {
+  "lat": 13.008047,
+  "lng": 80.213137,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/9920341495",
+  "match_level": "station",
+  "match": "Guindy Railway Station, Racecourse Road, Ward 174, Zone 13 Adyar, Chennai, Chennai Metropolitan Area",
+  "moved_km": 0.82
+ },
+ "MBM": {
+  "lat": 13.038066,
+  "lng": 80.227775,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "node/2481259006",
+  "match_level": "station",
+  "match": "Mambalam, Babu Rajendra Prasad 2nd street, Ward 136, Zone 10 Kodambakkam, Chennai, Chennai Metropoli",
+  "moved_km": 0.66
+ },
+ "EGM": {
+  "lat": 13.0794,
+  "lng": 80.26277,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "way/209562041",
+  "match_level": "station",
+  "match": "Egmore Railway Station, Whannels Road, Ward 61, Zone 5 Royapuram, Chennai, Chennai Metropolitan Area",
+  "moved_km": 0.72
+ },
+ "BCH": {
+  "lat": 13.091936,
+  "lng": 80.292113,
+  "verified": true,
+  "source": "osm-nominatim",
+  "osm": "way/217653510",
+  "match_level": "station",
+  "match": "Chennai Beach, Beach Road, Ward 60, Zone 5 Royapuram, Chennai, Chennai Metropolitan Area, Chennai Di",
+  "moved_km": 0.37
+ }
+}
