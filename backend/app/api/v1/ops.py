@@ -328,3 +328,80 @@ async def add_service(body: AddServiceIn, session: AsyncSession = Depends(get_se
 async def kpis_endpoint(session: AsyncSession = Depends(get_session)) -> dict:
     from app.domain import metrics
     return await metrics.kpis(session, await active_scenario(session))
+
+
+# ---- analytics (F18) + rules editor (F17.1-2) + messages ---------------------------------------------------------
+from app.domain import analytics, rules_editor  # noqa: E402
+from app.models import Notification  # noqa: E402
+from app.schemas.contract import WeightsIn  # noqa: E402
+
+
+@router.get("/clusters")
+async def clusters_endpoint(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    return {"items": await analytics.clusters(session, sc, await Snapshot.load(session, sc))}
+
+
+@router.get("/capacity")
+async def capacity_endpoint(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    return {"items": await analytics.capacity_rows(session, sc, await Snapshot.load(session, sc))}
+
+
+@router.get("/allocations")
+async def allocations_endpoint(status: str | None = None, destination: str | None = None, needs: str | None = None,
+                               q: str | None = None, page: int = 1, page_size: int = 50,
+                               session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    page, page_size = _page(page, page_size)
+    return await analytics.allocations_page(session, sc, await Snapshot.load(session, sc), status=status,
+                                            destination=destination, needs=needs, q=q, page=page, page_size=page_size)
+
+
+@router.get("/unresolved")
+async def unresolved_endpoint(limit: int = 50, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    return {"items": await analytics.unresolved_queue(session, sc, await Snapshot.load(session, sc), min(max(limit, 1), 200))}
+
+
+@router.get("/fairness")
+async def fairness_endpoint(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    return await analytics.fairness(session, sc, await Snapshot.load(session, sc))
+
+
+@router.get("/map")
+async def map_endpoint(session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    edges = await disruption_dom.load_edges(session, sc, polylines=True)
+    return await analytics.map_snapshot(session, sc, await Snapshot.load(session, sc, polylines=True), edges, canonical_edges, edge_out)
+
+
+@router.get("/rules")
+async def rules_get(session: AsyncSession = Depends(get_session)) -> dict:
+    return await rules_editor.history(session, await active_scenario(session))
+
+
+@router.post("/rules/preview")
+async def rules_preview(body: WeightsIn, session: AsyncSession = Depends(get_session)) -> dict:
+    return await rules_editor.preview(session, await active_scenario(session), body.weights)
+
+
+@router.post("/rules/apply")
+async def rules_apply(body: WeightsIn, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    version, events = await rules_editor.apply(session, sc, body.weights)
+    await finish(session, events, sc.slug)
+    return {"version": version}
+
+
+@router.get("/notifications")
+async def ops_notifications(page: int = 1, page_size: int = 50, session: AsyncSession = Depends(get_session)) -> dict:
+    sc = await active_scenario(session)
+    page, page_size = _page(page, page_size)
+    total = (await session.execute(select(func.count()).select_from(Notification).where(Notification.scenario_id == sc.id))).scalar()
+    rows = (await session.execute(select(Notification, Passenger.name).join(Passenger, Passenger.id == Notification.passenger_id)
+                                  .where(Notification.scenario_id == sc.id).order_by(Notification.id.desc())
+                                  .offset((page - 1) * page_size).limit(page_size))).all()
+    return {"items": [{"passenger_name": name, "channel": n.channel, "template": n.template, "body": n.body or n.title,
+                       "created_at": iso(n.created_at)} for n, name in rows], "page": page, "page_size": page_size, "total": total}
