@@ -27,9 +27,10 @@ async def run_alloc(client, ops):
 
 
 async def unresolved_ids(limit=5):
+    """Unplaced passengers (UNRESOLVED first, then WAITLISTED — F13 shows alternatives to both)."""
     async with get_sessionmaker()() as s:
-        rows = (await s.execute(select(Passenger.id, Passenger.destination_node_id).where(Passenger.state == "UNRESOLVED")
-                                .order_by(Passenger.id).limit(limit))).all()
+        rows = (await s.execute(select(Passenger.id, Passenger.destination_node_id).where(Passenger.state.in_(("UNRESOLVED", "WAITLISTED")))
+                                .order_by(Passenger.state.desc(), Passenger.id).limit(limit))).all()
     return rows
 
 
@@ -54,10 +55,10 @@ async def test_unresolved_passenger_sees_applicable_alternative_types(client, po
     rows = await unresolved_ids(50)
     assert rows, "scarce capacity must leave an unresolved queue"
     # with every seat taken only pods / nearby hubs apply; free a few seats so seat-bearing options appear too
-    await free_some("EXP-TAM", 6)
-    await free_some("EMU-SEAT-2005", 4)
+    for code in ("EXP-TAM", "MTC-570A", "MTC-570B", "MTC-599", "SHT-AIR", "EMU-SEAT-2005", "EMU-SEAT-1945"):
+        await free_some(code, 6)
     types_seen = set()
-    for pid, _ in rows[:20]:
+    for pid, _ in rows[:40]:
         h = await ptoken(get_sessionmaker(), pid)
         items = (await client.get(f"{API}/me/alternatives", headers=h)).json()["items"]
         types_seen |= {a["type"] for a in items}

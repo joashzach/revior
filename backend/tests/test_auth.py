@@ -118,7 +118,7 @@ async def test_login_qr_roundtrip_and_revocation(client, potheri, ops_headers):
 
 async def test_hub_nearby_radius_and_default_fallback(client, potheri):
     # near Kattankulathur: hubs within 10 km, nearest first, Potheri pre-selected
-    r = await client.post(f"{API}/hubs/nearby", json={"lat": 12.8139, "lng": 80.0366})
+    r = await client.post(f"{API}/hubs/nearby", json={"lat": 12.8056, "lng": 80.0266})   # OSM-verified Kattankulathur
     j = r.json()
     codes = [h["hub"]["code"] for h in j["hubs"]]
     assert j["reason"] == "nearest" and codes[0] == "KTM" and "POT" in codes and "CGL" not in codes
